@@ -1,0 +1,4 @@
+Record=TopLevelDocument|FileName=TOP.SchDoc|SheetNumber=1
+Record=SheetSymbol|SourceDocument=TOP.SchDoc|Designator=Kameras|SchDesignator=Kameras|FileName=Kameras.SchDoc|SheetNumber=2|SymbolType=Normal|RawFileName=Kameras.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=TOP.SchDoc|Designator=Raspberry|SchDesignator=Raspberry|FileName=Raspberry.SchDoc|SheetNumber=4|SymbolType=Normal|RawFileName=Raspberry.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=TOP.SchDoc|Designator=Versorgung|SchDesignator=Versorgung|FileName=Versorgung.SchDoc|SheetNumber=3|SymbolType=Normal|RawFileName=Versorgung.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
