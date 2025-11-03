@@ -1,95 +1,61 @@
 import depthai as dai
-import cv2
-import numpy as np
+from utils.arguments import initialize_argparser
 
-# ===== Pipeline =====
-pipeline = dai.Pipeline()
+_, args = initialize_argparser()
 
-# Mono-Kameras für Stereo
-mono_left = pipeline.create(dai.node.MonoCamera)
-mono_right = pipeline.create(dai.node.MonoCamera)
-mono_left.setBoardSocket(dai.CameraBoardSocket.LEFT)
-mono_right.setBoardSocket(dai.CameraBoardSocket.RIGHT)
-mono_left.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
-mono_right.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+IMG_SHAPE = (640, 400)
 
-# Stereo Depth
-stereo = pipeline.create(dai.node.StereoDepth)
-mono_left.out.link(stereo.left)
-mono_right.out.link(stereo.right)
-stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.FAST_DENSITY)
+visualizer = dai.RemoteConnection(httpPort=8082)
+device = dai.Device(dai.DeviceInfo(args.device)) if args.device else dai.Device()
+if not device.setIrLaserDotProjectorIntensity(1):
+    print(
+        "Failed to set IR laser projector intensity. Maybe your device does not support this feature."
+    )
+with dai.Pipeline(device) as pipeline:
+    print("Creating pipeline...")
+    platform = device.getPlatform()
 
-# RGB-Kamera
-cam = pipeline.create(dai.node.ColorCamera)
-cam.setBoardSocket(dai.CameraBoardSocket.RGB)
-cam.setPreviewSize(300, 300)
-cam.setInterleaved(False)
-cam.setColorOrder(dai.ColorCameraProperties.ColorOrder.BGR)
+    left = pipeline.create(dai.node.Camera).build(dai.CameraBoardSocket.CAM_B)
+    right = pipeline.create(dai.node.Camera).build(dai.CameraBoardSocket.CAM_C)
 
-# Neural Network
-nn = pipeline.create(dai.node.NeuralNetwork)
-nn.setBlobPath("mobilenet-ssd.blob")
-cam.preview.link(nn.input)
+    left_out = left.requestOutput(IMG_SHAPE, type=dai.ImgFrame.Type.NV12)
+    right_out = right.requestOutput(IMG_SHAPE, type=dai.ImgFrame.Type.NV12)
 
-# Output Queues
-xout_rgb = pipeline.create(dai.node.XLinkOut)
-xout_rgb.setStreamName("rgb")
-cam.preview.link(xout_rgb.input)
+    stereo = pipeline.create(dai.node.StereoDepth).build(
+        left=left_out,
+        right=right_out,
+        presetMode=dai.node.StereoDepth.PresetMode.DEFAULT,
+    )
 
-xout_nn = pipeline.create(dai.node.XLinkOut)
-xout_nn.setStreamName("nn")
-nn.out.link(xout_nn.input)
+    rgbd = pipeline.create(dai.node.RGBD).build()
 
-xout_depth = pipeline.create(dai.node.XLinkOut)
-xout_depth.setStreamName("depth")
-stereo.depth.link(xout_depth.input)
+    width, height = IMG_SHAPE
+    if args.mono:
+        cam_node = right
+    else:
+        cam_node = pipeline.create(dai.node.Camera).build(dai.CameraBoardSocket.CAM_A)
 
-# ===== Gerät starten =====
-with dai.Device(pipeline) as device:
-    rgb_q = device.getOutputQueue("rgb", 4, False)
-    nn_q = device.getOutputQueue("nn", 4, False)
-    depth_q = device.getOutputQueue("depth", 4, False)
+    cam_out = cam_node.requestOutput(IMG_SHAPE, type=dai.ImgFrame.Type.RGB888i)
+    cam_out.link(rgbd.inColor)
 
-    while True:
-        rgb_frame = rgb_q.get().getCvFrame()
-        depth_frame = depth_q.get().getFrame()
+    if platform == dai.Platform.RVC4:
+        align = pipeline.create(dai.node.ImageAlign)
+        stereo.depth.link(align.input)
+        cam_out.link(align.inputAlignTo)
+        align.outputAligned.link(rgbd.inDepth)
+    else:
+        cam_out.link(stereo.inputAlignTo)
+        stereo.depth.link(rgbd.inDepth)
 
-        # Inference auslesen
-        in_nn = nn_q.tryGet()
-        if in_nn:
-            # Annahme: NN gibt klassische Mobilenet-SSD-Struktur zurück
-            detections = in_nn.getLayerFp16("detection_out")
-            if len(detections) > 0:
-                for i in range(0, len(detections), 7):
-                    image_id, label, conf, x1, y1, x2, y2 = detections[i:i+7]
-                    if conf < 0.5:
-                        continue
+    visualizer.addTopic("preview", cam_out)
+    visualizer.addTopic("pointcloud", rgbd.pcl)
 
-                    x1 = int(x1 * rgb_frame.shape[1])
-                    y1 = int(y1 * rgb_frame.shape[0])
-                    x2 = int(x2 * rgb_frame.shape[1])
-                    y2 = int(y2 * rgb_frame.shape[0])
+    print("Pipeline created.")
+    pipeline.start()
+    visualizer.registerPipeline(pipeline)
 
-                    cv2.rectangle(rgb_frame, (x1, y1), (x2, y2), (0,255,0), 2)
-
-                    depth_crop = depth_frame[y1:y2, x1:x2]
-                    if depth_crop.size == 0:
-                        continue
-
-                    mean_depth_m = np.mean(depth_crop) / 1000
-                    pixel_width = x2 - x1
-                    pixel_height = y2 - y1
-                    f = 0.002
-                    width_m = pixel_width * mean_depth_m * f
-                    height_m = pixel_height * mean_depth_m * f
-
-                    cv2.putText(rgb_frame,
-                                f"W:{width_m:.2f}m H:{height_m:.2f}m D:{mean_depth_m:.2f}m",
-                                (x1, max(20, y1 - 10)),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
-
-        cv2.imshow("RGB", rgb_frame)
-        if cv2.waitKey(1) == 27:
+    while pipeline.isRunning():
+        key = visualizer.waitKey(1)
+        if key == ord("q"):
+            print("Got q key from the remote connection!")
             break
-
-cv2.destroyAllWindows()
