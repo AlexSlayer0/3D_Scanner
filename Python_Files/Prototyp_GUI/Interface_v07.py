@@ -152,7 +152,7 @@ class FullscreenApp(QMainWindow):
 
         #Erst-Anpassung------------------------------------------------------
         self.language = "de"  # oder "it" / "en" standartmäßig
-        self.Explorer_Structure = r"C:\Users\grane\Felix_Schule\Diplomarbeit\Prototyp_GUI\GUI_Anzeige"
+        self.Explorer_Structure = r"GUI_Anzeige"
 
         self.abmessung = None
         self.gewicht = None
