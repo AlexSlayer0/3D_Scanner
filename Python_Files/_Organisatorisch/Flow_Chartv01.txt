@@ -1,0 +1,34 @@
+https://mermaid.live/edit#pako:eNpVVF1z2jAQ_CsaPfTJpBiCAT-0w3dIIGRC0kxjMh0ZH6Aiyx5ZbpoQ_ntPsnEoL_is3b27vZMPdJ1EQH26EcnreseUJg_DlST46wVLjfELqdW-kX6wopPHaW0queZM8IyDyuWWjHMhsrUCkL00JZkhgFzRl0Kib7mDQx9krt9Bsb3miTwWhwNz-LFcM3nifZAhprlhMSJDLiJQBNSGZRlYwpqlOlfwi8dsC1mVpNDphaGC9c6IPLvBnUq2isUxCbGyCCRCC_DQVjTCNJekX6Rg-UbCLgbpG8BYJVI7ZMblPnPIPUpq_F-EZ12NrMY4uGOKCQHiKVF71CmbqFKNLWziYq6fi9miNkejhcCDRfgb9hqQJKXxsBfGkGX4VGUoqQ2k9pkyE6oZnyQonzy8peQLGeA7IiA7K6skNc2k4JVj4ZV7tjPyxNA38pUsQWaJsryCOXEt9SoYqS2EkiOF4FRw3iSHEFTMtQYhyzyTRoEuo-YpKuIrG04DsyxDhn4QHHpebgycNKYWdY2l9uQ7cCzrP5T_6YlDSgccUnbllIM7a-Dayt0clikgApT8Xu7Yjd2Na_ZBZm6w7N3VHlORsOhsVp-oW-C4PLNGMEv2TJDspEUSsyV_QL2inWfznRWuzY0uuc9hvY9BRGagqcphU6nPCr_mRTS3wW1lNSv7_0r6gFWB5luUqJLcWvji8AQcNwYy8iNBIq552eCiLD3HEs2K4BU6P-gX6493IhjhA8pSh24Vj6ivsUiH4lWLmQnpwfBWVO8ghhX18TGCDcuFXtGVPCItZfI5SeITUyX5dkf9DRMZRnka4bCHnJlrV0FMcjVIcqmp33HrVoP6B_qX-t0Lt9312l2349XbnVar69A36tearcaF6zVa3UvPa7iXzfbRoe82q3vRaXr1rttueZ1G3Wt32g6FiOtEzYsvmP2QHf8BwEiDQg
+
+
+flowchart TD
+    A[Start] --> B["GUI-Initialisierung FullscreenApp starten"]
+    B --> C{Benutzeraktion}
+    C -->|Scan starten| D["Kamerabilder erfassen    capture_images"]
+    C -->|Abbrechen| Z1[Programm beenden]
+
+    D --> E["4 Bilder aufnehmen:    Front, Links, Rechts, Oben"]
+    E --> F[ParallelWorker starten]
+
+    F --> G1["YOLO-Modell   Objekterkennung Abmessung"]
+    F --> G2["Barcode-Scanner: Typ & Code lesen"]
+    F --> G3["Gewicht erfassen:     Waage / Sensor"]
+
+    G1 --> H[Ergebnisse an GUI uebermitteln]
+    G2 --> H
+    G3 --> H
+
+    H --> I[GUI-Daten aktualisieren]
+    I --> J["Anzeige aktualisieren: Abmessung, Barcode, Gewicht, Bilder"]
+
+    J --> K{Speichern?}
+    K -->|Ja| L1[SAP-Upload starten]
+    K -->|Nein| L2[Lokal speichern oder verwerfen]
+
+    L1 --> M[SAP Rueckmeldung pruefen]
+    L2 --> M
+    M --> N[Ergebnisanzeige / Bestaetigung]
+
+    N --> O{Weiteres Vorgehen}
+    O -->|Neuer Scan| D
+    O -->|Beenden| Z[Ende]
