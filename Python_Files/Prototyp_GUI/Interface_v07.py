@@ -271,7 +271,7 @@ class FullscreenApp(QMainWindow):
         if self.language == "de":
             self.add_page("Startseite", 
                     [("title", "3D-Scanner Interface"), "Interface um den 3D-Scanner zu bedienen", "Bitte lege den Artikel der gescannt werden soll in die Box ein",
-                    [("button", "Scan Starten", self.go_next),("button","Auf USB-Stick laden")]]) 
+                    [("button", "Scan Starten", self.go_next),("button","Lokal speichern")]]) 
             self.add_page("Foto-Auswahl", 
                     [[("ram_image",0), ("ram_image",1)],
                     [("button", "Wiederholen", lambda _, idx=0: self.retry_image(idx)),
