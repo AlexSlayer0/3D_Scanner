@@ -1,0 +1,77 @@
+filename,decision,decoded_type,decoded_value,source,roi_x,roi_y,roi_w,roi_h
+PostBarcode001.jpg,Erkannt,,,FULL,834,1036,<_csv.writer object at 0x000001AFA50E1CC0>,144
+PostBarcode002.jpg,Erkannt,,,FULL,668,745,<_csv.writer object at 0x000001AFA50E1C60>,209
+PostBarcode003.jpg,Erkannt,,,FULL,265,763,<_csv.writer object at 0x000001AFA50E1CC0>,105
+PostBarcode004.jpg,Erkannt,,,FULL,888,356,<_csv.writer object at 0x000001AFA50E1C60>,158
+PostBarcode005.jpg,Erkannt,,,FULL,826,311,<_csv.writer object at 0x000001AFA50E1CC0>,262
+PostBarcode006.jpg,Erkannt,CODE128,RO216221328TH,FULL,855,233,<_csv.writer object at 0x000001AFA50E1C60>,265
+PostBarcode007.jpg,Erkannt,CODE128,RR325018694TH,ROI,268,626,<_csv.writer object at 0x000001AFA50E1CC0>,274
+PostBarcode008.jpg,Erkannt,,,FULL,779,316,<_csv.writer object at 0x000001AFA50E1D80>,231
+PostBarcode009.jpg,Erkannt,,,FULL,296,637,<_csv.writer object at 0x000001AFA50E1DE0>,208
+PostBarcode010.jpg,Erkannt,,,FULL,452,614,<_csv.writer object at 0x000001AFA50E1D80>,250
+PostBarcode011.jpg,Erkannt,,,FULL,898,219,<_csv.writer object at 0x000001AFA50E1DE0>,276
+PostBarcode012.jpg,Erkannt,CODE128,OB029497860TH,ROI,928,184,<_csv.writer object at 0x000001AFA50E1D80>,276
+PostBarcode013.jpg,Erkannt,,,FULL,703,389,<_csv.writer object at 0x000001AFA50E1C60>,267
+PostBarcode014.jpg,Erkannt,CODE128,RI111682206TH,ROI,180,588,<_csv.writer object at 0x000001AFA50E1DE0>,250
+PostBarcode015.jpg,Erkannt,,,FULL,204,510,<_csv.writer object at 0x000001AFA50E1CC0>,220
+PostBarcode016.jpg,Erkannt,,,FULL,338,703,<_csv.writer object at 0x000001AFA50E1C60>,222
+PostBarcode017.jpg,Erkannt,,,FULL,346,585,<_csv.writer object at 0x000001AFA50E1CC0>,196
+PostBarcode018.jpg,Erkannt,CODE128,RR325018368TH,ROI,279,583,<_csv.writer object at 0x000001AFA50E1C60>,266
+PostBarcode019.jpg,Erkannt,,,FULL,79,769,<_csv.writer object at 0x000001AFA50E1D80>,241
+PostBarcode020.jpg,Erkannt,CODE128,RI111650000TH,FULL,884,185,<_csv.writer object at 0x000001AFA50E1CC0>,235
+PostBarcode021.jpg,Erkannt,,,FULL,758,301,<_csv.writer object at 0x000001AFA50E1DE0>,221
+PostBarcode022.jpg,Erkannt,CODE128,OB029497825TH,ROI,864,237,<_csv.writer object at 0x000001AFA50E1D80>,223
+PostBarcode023.jpg,Nicht erkannt,,,FULL,229,666,<_csv.writer object at 0x000001AFA50E1C60>,248
+PostBarcode024.jpg,Nicht erkannt,,,FULL,872,278,<_csv.writer object at 0x000001AFA50E1DE0>,214
+PostBarcode025.jpg,Nicht erkannt,,,FULL,222,529,<_csv.writer object at 0x000001AFA50E1C60>,243
+PostBarcode026.jpg,Nicht erkannt,,,FULL,238,564,<_csv.writer object at 0x000001AFA50E1DE0>,276
+PostBarcode027.jpg,Nicht erkannt,,,FULL,96,607,<_csv.writer object at 0x000001AFA50E1C60>,325
+PostBarcode028.jpg,Nicht erkannt,,,FULL,332,561,<_csv.writer object at 0x000001AFA50E1DE0>,247
+PostBarcode029.jpg,Nicht erkannt,,,FULL,897,216,<_csv.writer object at 0x000001AFA50E1C60>,229
+PostBarcode030.jpg,Nicht erkannt,,,FULL,922,192,<_csv.writer object at 0x000001AFA50E1DE0>,231
+PostBarcode031.jpg,Nicht erkannt,CODE128,OB029497873TH,ROI,975,243,<_csv.writer object at 0x000001AFA50E1C60>,218
+PostBarcode032.jpg,Nicht erkannt,,,FULL,882,189,<_csv.writer object at 0x000001AFA50E1CC0>,236
+PostBarcode033.jpg,Nicht erkannt,,,FULL,831,189,<_csv.writer object at 0x000001AFA50E1DE0>,243
+PostBarcode034.jpg,Nicht erkannt,,,FULL,535,554,<_csv.writer object at 0x000001AFA50E1CC0>,122
+PostBarcode035.jpg,Nicht erkannt,,,FULL,478,542,<_csv.writer object at 0x000001AFA50E1DE0>,122
+PostBarcode036.jpg,Nicht erkannt,CODE128,OB029497771TH,FULL,224,135,<_csv.writer object at 0x000001AFA50E1CC0>,434
+PostBarcode001.jpg,Erkannt,,,kein Ergebnis,834,1036,69,143
+PostBarcode002.jpg,Erkannt,,,kein Ergebnis,668,759,110,194
+PostBarcode003.jpg,Erkannt,,,kein Ergebnis,265,767,192,46
+PostBarcode004.jpg,Erkannt,,,kein Ergebnis,888,367,255,61
+PostBarcode005.jpg,Erkannt,,,kein Ergebnis,842,335,396,117
+PostBarcode006.jpg,Erkannt,CODE128,RO216221328TH,FULL (direct),855,233,449,149
+PostBarcode007.jpg,Erkannt,CODE128,RR325018694TH,REFINED (direct),268,636,450,263
+PostBarcode008.jpg,Erkannt,,,kein Ergebnis,779,316,409,123
+PostBarcode009.jpg,Erkannt,,,kein Ergebnis,296,637,353,195
+PostBarcode010.jpg,Erkannt,,,kein Ergebnis,453,614,391,152
+PostBarcode011.jpg,Erkannt,,,kein Ergebnis,907,237,417,138
+PostBarcode012.jpg,Erkannt,CODE128,OB029497860TH,REFINED (direct),949,204,418,141
+PostBarcode013.jpg,Erkannt,,,kein Ergebnis,703,415,453,232
+PostBarcode014.jpg,Erkannt,CODE128,RI111682206TH,REFINED (direct),180,616,463,85
+PostBarcode015.jpg,Erkannt,,,kein Ergebnis,214,533,388,79
+PostBarcode016.jpg,Erkannt,,,kein Ergebnis,353,719,373,89
+PostBarcode017.jpg,Erkannt,,,kein Ergebnis,346,605,318,78
+PostBarcode018.jpg,Erkannt,CODE128,RR325018368TH,REFINED (direct),309,619,451,102
+PostBarcode019.jpg,Erkannt,,,kein Ergebnis,79,769,398,202
+PostBarcode020.jpg,Nicht erkannt,CODE128,RI111650000TH,REFINED (rot90),884,199,399,219
+PostBarcode021.jpg,Erkannt,,,kein Ergebnis,758,301,382,220
+PostBarcode022.jpg,Erkannt,CODE128,OB029497825TH,REFINED (direct),864,258,378,201
+PostBarcode023.jpg,Erkannt,,,kein Ergebnis,229,666,421,162
+PostBarcode024.jpg,Erkannt,,,kein Ergebnis,872,299,376,186
+PostBarcode025.jpg,Erkannt,,,kein Ergebnis,234,553,390,89
+PostBarcode026.jpg,Erkannt,,,kein Ergebnis,254,586,455,123
+PostBarcode027.jpg,Erkannt,,,kein Ergebnis,117,643,508,136
+PostBarcode028.jpg,Erkannt,,,kein Ergebnis,339,583,389,108
+PostBarcode029.jpg,Erkannt,,,kein Ergebnis,897,238,356,199
+PostBarcode030.jpg,Erkannt,,,kein Ergebnis,932,220,363,84
+PostBarcode031.jpg,Erkannt,CODE128,OB029497873TH,REFINED (direct),986,267,374,81
+PostBarcode032.jpg,Erkannt,,,kein Ergebnis,890,208,365,110
+PostBarcode033.jpg,Erkannt,,,kein Ergebnis,831,224,360,86
+PostBarcode001.jpg,Nicht erkannt,,,kein Ergebnis,834,1036,69,143
+PostBarcode002.jpg,Nicht erkannt,,,kein Ergebnis,668,759,110,194
+PostBarcode003.jpg,Nicht erkannt,,,kein Ergebnis,265,767,192,46
+PostBarcode004.jpg,Nicht erkannt,,,kein Ergebnis,888,367,255,61
+PostBarcode005.jpg,Nicht erkannt,,,kein Ergebnis,842,335,396,117
+PostBarcode006.jpg,Nicht erkannt,CODE128,RO216221328TH,FULL (direct),855,233,449,149
+PostBarcode007.jpg,Nicht erkannt,CODE128,RR325018694TH,REFINED (direct),268,636,450,263
