@@ -16,12 +16,147 @@ import threading
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit,
     QPushButton, QLabel, QFrame, QSizePolicy, QStackedWidget, QScrollArea, 
-    QToolButton, QMessageBox, QDialog
+    QToolButton, QMessageBox, QDialog, QGridLayout
 )
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
 
-
+class TranslationManager:
+    def __init__(self):
+        self.translations = {
+            "de": {
+                "start": {
+                    "title": "3D-Scanner Interface",
+                    "subtitle": "Interface um den 3D-Scanner zu bedienen",
+                    "instruction1": "Bitte lege den Artikel der gescannt werden soll in die Box ein",
+                    "instruction2": "Stellen Sie sicher, dass der Artikel vollständig im Sichtfeld aller Kameras liegt",
+                    "instruction3": "Maximale Größe: 50×50×50 cm",
+                    "instruction4": "Maximales Gewicht: 20 kg",
+                    "scan_btn": "Scan Starten",
+                    "save_btn": "Lokal speichern",
+                    "status_title": "System Status",
+                    "camera_status": "Kamera System",
+                    "light_status": "Beleuchtung", 
+                    "measure_status": "Mess-System",
+                    "scale_status": "Waage",
+                    "storage_status": "Speicher",
+                    "ready": "Bereit",
+                    "active": "Aktiv",
+                    "calibrated": "Kalibriert",
+                    "connected": "Verbunden",
+                    "available": "Verfügbar",
+                    "refresh_btn": "Status aktualisieren"
+                },
+                "photo": {
+                    "title": "Foto-Auswahl",
+                    "retry_btn": "Wiederholen",
+                    "discard_btn": "Verwerfen"
+                },
+                "overview": {
+                    "title": "Kamera-Übersicht",
+                    "dimensions": "Abmessungen:",
+                    "weight": "Gewicht:",
+                    "mm": "mm",
+                    "kg": "kg"
+                },
+                "storage": {
+                    "title": "Speicher Option",
+                    "barcode_label": "Ausgewerteter Barcode:",
+                    "barcode_type": "Barcode-Typ:",
+                    "sap_btn": "SAP-Eintrag",
+                    "save_btn": "Lokal speichern"
+                }
+            },
+            "en": {
+                "start": {
+                    "title": "3D Scanner Interface",
+                    "subtitle": "Interface to operate the 3D scanner",
+                    "instruction1": "Please place the item to be scanned in the box",
+                    "instruction2": "Make sure the item is completely in the field of view of all cameras", 
+                    "instruction3": "Maximum size: 50×50×50 cm",
+                    "instruction4": "Maximum weight: 20 kg",
+                    "scan_btn": "Start Scan",
+                    "save_btn": "Save Locally",
+                    "status_title": "System Status",
+                    "camera_status": "Camera System",
+                    "light_status": "Lighting",
+                    "measure_status": "Measurement System",
+                    "scale_status": "Scale", 
+                    "storage_status": "Storage",
+                    "ready": "Ready",
+                    "active": "Active",
+                    "calibrated": "Calibrated",
+                    "connected": "Connected",
+                    "available": "Available",
+                    "refresh_btn": "Refresh Status"
+                },
+                "photo": {
+                    "title": "Photo Selection",
+                    "retry_btn": "Retake",
+                    "discard_btn": "Discard"
+                },
+                "overview": {
+                    "title": "Camera Overview", 
+                    "dimensions": "Dimensions:",
+                    "weight": "Weight:",
+                    "mm": "mm",
+                    "kg": "kg"
+                },
+                "storage": {
+                    "title": "Storage Options",
+                    "barcode_label": "Barcode:",
+                    "barcode_type": "Barcode Type:",
+                    "sap_btn": "SAP Entry",
+                    "save_btn": "Save Locally"
+                }
+            },
+            "it": {
+                "start": {
+                    "title": "Interfaccia Scanner 3D",
+                    "subtitle": "Interfaccia per gestire lo scanner 3D",
+                    "instruction1": "Si prega di posizionare l'articolo nella scatola",
+                    "instruction2": "Assicurarsi che l'articolo sia completamente nel campo visivo di tutte le telecamere",
+                    "instruction3": "Dimensione massima: 50×50×50 cm",
+                    "instruction4": "Peso massimo: 20 kg",
+                    "scan_btn": "Avvia Scan", 
+                    "save_btn": "Salva localmente",
+                    "status_title": "Stato del Sistema",
+                    "camera_status": "Sistema Fotocamera",
+                    "light_status": "Illuminazione",
+                    "measure_status": "Sistema di Misura",
+                    "scale_status": "Bilancia",
+                    "storage_status": "Memoria",
+                    "ready": "Pronto",
+                    "active": "Attivo", 
+                    "calibrated": "Calibrato",
+                    "connected": "Connesso",
+                    "available": "Disponibile",
+                    "refresh_btn": "Aggiorna Stato"
+                },
+                "photo": {
+                    "title": "Selezione Foto",
+                    "retry_btn": "Ripeti",
+                    "discard_btn": "Scarta"
+                },
+                "overview": {
+                    "title": "Panoramica Fotocamera",
+                    "dimensions": "Dimensioni:",
+                    "weight": "Peso:",
+                    "mm": "mm", 
+                    "kg": "kg"
+                },
+                "storage": {
+                    "title": "Opzioni di Memorizzazione",
+                    "barcode_label": "Barcode:",
+                    "barcode_type": "Tipo di barcode:",
+                    "sap_btn": "SAP Entry",
+                    "save_btn": "Salva localmente"
+                }
+            }
+        }
+    
+    def get_text(self, language, page, key):
+        return self.translations.get(language, {}).get(page, {}).get(key, f"[{key}]")
 
 class CameraManager:
     def __init__(self, debug_single_camera=False):
@@ -93,7 +228,6 @@ class CameraManager:
                 images.append(img)
         
         return images
-
 
 class ParallelWorker(QThread):
     output_received = pyqtSignal(str, object)  # (task_name, result)
@@ -182,9 +316,8 @@ class ParallelWorker(QThread):
 
         def run_weight():
             import Gewichts_Messung
-            w = Gewichts_Messung.get_weight()  # sollte z.B. 5 zurückgeben
+            w = Gewichts_Messung.get_weight()
             self.output_received.emit('weight', w)
-
 
         # --- Threads starten ---
         threads = []
@@ -197,7 +330,6 @@ class ParallelWorker(QThread):
 
         self.finished.emit()
 
-
 class FullscreenApp(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -206,6 +338,7 @@ class FullscreenApp(QMainWindow):
 
         #Erst-Anpassung------------------------------------------------------
         self.camera = CameraManager(debug_single_camera=True)  # True = 1 Kamera, False = 4 Kameras
+        self.translator = TranslationManager()
 
         self.language = "de"  # oder "it" / "en" standartmäßig
         self.Explorer_Structure = r"GUI_Anzeige"
@@ -254,26 +387,12 @@ class FullscreenApp(QMainWindow):
         QShortcut(QKeySequence("Left"), self, activated=self.go_back)
         QShortcut(QKeySequence("Right"), self, activated=self.go_next)
 
-
         self.load_pages()
         self.update_buttons()
 
     def set_language(self, language):
         self.language = language
-        current_index = self.stack.currentIndex()
-
-        while self.stack.count() > 0:
-            widget = self.stack.widget(0)
-            self.stack.removeWidget(widget)
-            widget.deleteLater()
-
         self.load_pages()
-
-        if current_index < self.stack.count():
-            self.stack.setCurrentIndex(current_index)
-        else:
-            self.stack.setCurrentIndex(self.stack.count() - 1)
-
         self.update_buttons()
 
     def create_flag_button(self, flag_file, language_code):
@@ -306,7 +425,7 @@ class FullscreenApp(QMainWindow):
     def retry_image(self, idx):
         print(f"🔄 Wiederhole Bild {idx+1}")
         self.scan_start = True
-        new_img = self.camera.take_picture(idx)  # Hier camera verwenden
+        new_img = self.camera.take_picture(idx)
         if new_img is not None:
             self.images[idx] = new_img
             pixmap = self.convert_to_pixmap(new_img)
@@ -321,90 +440,147 @@ class FullscreenApp(QMainWindow):
         gray_pixmap.fill(Qt.GlobalColor.lightGray)
         label.setPixmap(gray_pixmap)
 
-    def load_pages(self):
-        if self.abmessung == None:
-            self.abmessung = "Undefiniert"
-        if self.gewicht == None:
-            self.gewicht = "Undefiniert"
-        if self.barcode == None:
-            self.barcode = "Undefiniert"
-            self.barcode_type = "Undefiniert"
-            
-        if self.language == "de":
-            self.add_page("3D-Scanner Interface", 
-                    [("title", "Interface um den 3D-Scanner zu bedienen"), 
-                    "Bitte lege den Artikel der gescannt werden soll in die Box ein",
-                    "Stellen Sie sicher, dass der Artikel vollständig im Sichtfeld aller Kameras liegt",
-                    "Maximale Größe: 50x50x50                            Maximales Gewicht: 20kg",
-                    [("button", "Scan Starten", self.go_next),("button","Lokal speichern")]])
-            self.add_page("Foto-Auswahl", 
-                    [[("ram_image",0), ("ram_image",1)],
-                    [("button", "Wiederholen", lambda _, idx=0: self.retry_image(idx)),
-                    ("button", "Wiederholen", lambda _, idx=1: self.retry_image(idx))],
-                    [("button", "Verwerfen", lambda _, idx=0: self.discard_image(idx)),
-                    ("button", "Verwerfen", lambda _, idx=1: self.discard_image(idx))],
+    def create_start_page(self):
+        page = QWidget()
+        main_layout = QHBoxLayout(page)
+        main_layout.setSpacing(30)
+        main_layout.setContentsMargins(40, 40, 40, 40)
 
-                    [("ram_image",2),("ram_image",3)],
-                    [("button", "Wiederholen", lambda _, idx=2: self.retry_image(idx)),
-                    ("button", "Wiederholen", lambda _, idx=3: self.retry_image(idx))],
-                    [("button", "Verwerfen", lambda _, idx=2: self.discard_image(idx)),
-                    ("button", "Verwerfen", lambda _, idx=3: self.discard_image(idx))]])
-                
-            self.add_page("Kamera-Übersicht", 
-                    [[("ram_image_final", 0), ("ram_image_final", 1)], [("ram_image_final", 2), ("ram_image_final", 3)], 
-                    f"Abmessungen: {self.abmessung}mm", f"Gewicht: {self.gewicht}kg"])
-            self.add_page("Speicher Option", 
-                    [("image", "barcode"), ("input", "Ausgewerteter Barcode", f"{self.barcode}"),("input", "Barcode-Typ:", f"{self.barcode_type}"), 
-                    [("button", "SAP-Eintrag"), ("button","Lokal speichern")]])
+        # Linke Spalte (2/3)
+        left_column = self.create_start_left_column()
+        main_layout.addWidget(left_column, stretch=2)
 
-        elif self.language == "it":
-            self.add_page("Pagina Iniziale",
-                    [("title", "3D-Scanner Interface"), "Interfaccia per gestire lo scanner 3D", "Si prega di posizionare l'articolo nella scatola",
-                    [("button","Avvia Scan", self.go_next),("button","Carica su USB")]])
-            self.add_page("Selezione Foto", 
-                    [[("ram_image", 0), ("ram_image", 1)],
-                    [("button", "Ripeti", lambda _, idx=0: self.retry_image(idx)),
-                    ("button", "Ripeti", lambda _, idx=1: self.retry_image(idx))],
-                    [("button", "Scarta", lambda _, idx=0: self.discard_image(idx)),
-                    ("button", "Scarta", lambda _, idx=1: self.discard_image(idx))],
+        # Rechte Spalte (1/3) - Status
+        right_column = self.create_start_right_column()
+        main_layout.addWidget(right_column, stretch=1)
 
-                    [("ram_image", 2), ("ram_image", 3)],
-                    [("button", "Ripeti", lambda _, idx=2: self.retry_image(idx)),
-                    ("button", "Ripeti", lambda _, idx=3: self.retry_image(idx))],
-                    [("button", "Scarta", lambda _, idx=2: self.discard_image(idx)),
-                    ("button", "Scarta", lambda _, idx=3: self.discard_image(idx))]])
-            
-            self.add_page("Panoramica Fotocamera",
-                    [[("ram_image_final", 0), ("ram_image_final", 1)], [("ram_image_final", 2), ("ram_image_final", 3)], 
-                    f"Dimensioni: {self.abmessung}mm", f"Peso: {self.gewicht}kg"])
-            self.add_page("Opzioni di Memorizzazione",
-                    [("image", "barcode"), ("input", "Barcode:", f"{self.barcode}"),("input", "Tipo di barcode:", f"{self.barcode_type}"),
-                    [("button", "SAP Entry"), ("button","Salva localmente")]])
+        return page
 
-        else:  # englisch
-            self.add_page("Home",
-                    [("title", "3D Scanner Interface"), "Interface to operate the 3D scanner", "Please place the item in the box",
-                    [("button", "Start Scan",self.go_next), ("button", "Load to USB")]])
-            self.add_page("Photo Selection", 
-                    [[("ram_image", 0), ("ram_image", 1)],
-                    [("button", "Retake", lambda _, idx=0: self.retry_image(idx)),
-                    ("button", "Retake", lambda _, idx=1: self.retry_image(idx))],
-                    [("button", "Discard", lambda _, idx=0: self.discard_image(idx)),
-                    ("button", "Discard", lambda _, idx=1: self.discard_image(idx))],
+    def create_start_left_column(self):
+        left_column = QWidget()
+        left_layout = QVBoxLayout(left_column)
+        left_layout.setSpacing(20)
+        
+        # Titel
+        title_label = QLabel(self.translator.get_text(self.language, "start", "title"))
+        title_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        title_label.setStyleSheet("font-size: 32px; font-weight: bold; color: #ffffff; margin-bottom: 20px;")
+        left_layout.addWidget(title_label)
 
-                    [("ram_image", 2), ("ram_image", 3)],
-                    [("button", "Retake", lambda _, idx=2: self.retry_image(idx)),
-                    ("button", "Retake", lambda _, idx=3: self.retry_image(idx))],
-                    [("button", "Discard", lambda _, idx=2: self.discard_image(idx)),
-                    ("button", "Discard", lambda _, idx=3: self.discard_image(idx))]])
-            
-            self.add_page("Camera Overview",
-                    [[("ram_image_final", 0), ("ram_image_final", 1)], [("ram_image_final", 2), ("ram_image_final", 3)],
-                    f"Dimensions: {self.abmessung}mm", f"Weight: {self.gewicht} kg"])
-            self.add_page("Storage Options",
-                    [("image", "barcode"), ("input", "Barcode:", f"{self.barcode}"),("input", "Barcode Type:", f"{self.barcode_type}"), 
-                    [("button", "SAP Entry"), ("button", "Save Locally")]])
+        # Texte
+        texts = [
+            self.translator.get_text(self.language, "start", "subtitle"),
+            self.translator.get_text(self.language, "start", "instruction1"),
+            self.translator.get_text(self.language, "start", "instruction2"),
+            self.translator.get_text(self.language, "start", "instruction3"),
+            self.translator.get_text(self.language, "start", "instruction4")
+        ]
+        
+        for text in texts:
+            label = QLabel(text)
+            label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            label.setWordWrap(True)
+            label.setStyleSheet("color: #bdc3c7; font-size: 16px; padding: 12px 0; line-height: 1.5;")
+            left_layout.addWidget(label)
 
+        # Buttons
+        button_layout = QHBoxLayout()
+        scan_btn = QPushButton(self.translator.get_text(self.language, "start", "scan_btn"))
+        save_btn = QPushButton(self.translator.get_text(self.language, "start", "save_btn"))
+        
+        for btn in [scan_btn, save_btn]:
+            btn.setStyleSheet("""
+                QPushButton {
+                    font-size: 16px;
+                    font-weight: 600;
+                    padding: 14px 30px;
+                    border: none;
+                    border-radius: 6px;
+                    background: #495057;
+                    color: #ffffff;
+                    min-width: 140px;
+                }
+                QPushButton:hover {
+                    background: #6c757d;
+                }
+                QPushButton:pressed {
+                    background: #343a40;
+                }
+            """)
+            btn.setFixedHeight(50)
+            button_layout.addWidget(btn)
+
+        scan_btn.clicked.connect(self.go_next)
+        left_layout.addLayout(button_layout)
+        left_layout.addStretch()
+
+        return left_column
+
+    def create_start_right_column(self):
+        right_column = QWidget()
+        right_column.setFixedWidth(300)
+        right_layout = QVBoxLayout(right_column)
+        right_layout.setSpacing(15)
+
+        # Status-Überschrift
+        status_title = QLabel(self.translator.get_text(self.language, "start", "status_title"))
+        status_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        status_title.setStyleSheet("font-size: 20px; font-weight: 600; color: #3498db; padding: 10px 0; border-bottom: 2px solid #34495e;")
+        right_layout.addWidget(status_title)
+
+        # Status-Items
+        status_items = [
+            ("✅", self.translator.get_text(self.language, "start", "camera_status"), self.translator.get_text(self.language, "start", "ready")),
+            ("⚡", self.translator.get_text(self.language, "start", "light_status"), self.translator.get_text(self.language, "start", "active")),
+            ("📏", self.translator.get_text(self.language, "start", "measure_status"), self.translator.get_text(self.language, "start", "calibrated")),
+            ("⚖️", self.translator.get_text(self.language, "start", "scale_status"), self.translator.get_text(self.language, "start", "connected")),
+            ("💾", self.translator.get_text(self.language, "start", "storage_status"), self.translator.get_text(self.language, "start", "available"))
+        ]
+
+        for icon, name, status in status_items:
+            status_widget = self.create_status_item(icon, name, status)
+            right_layout.addWidget(status_widget)
+
+        refresh_btn = QPushButton("⟳ " + self.translator.get_text(self.language, "start", "refresh_btn"))
+        refresh_btn.setStyleSheet("""
+            QPushButton {
+                font-size: 12px; 
+                padding: 8px; 
+                background: #34495e; 
+                color: #7f8c8d; 
+                border: 1px solid #2c3e50; 
+                border-radius: 4px;
+            }
+            QPushButton:hover {
+                background: #3d566e;
+            }
+        """)
+        refresh_btn.setFixedHeight(35)
+        right_layout.addWidget(refresh_btn)
+        right_layout.addStretch()
+
+        return right_column
+
+    def create_status_item(self, icon, name, status):
+        status_widget = QWidget()
+        status_layout = QHBoxLayout(status_widget)
+        status_layout.setContentsMargins(10, 5, 10, 5)
+        
+        icon_label = QLabel(icon)
+        icon_label.setStyleSheet("font-size: 18px;")
+        
+        name_label = QLabel(name)
+        name_label.setStyleSheet("color: #ecf0f1; font-size: 14px; font-weight: 500;")
+        
+        status_label = QLabel(status)
+        status_label.setStyleSheet("color: #2ecc71; font-size: 13px; font-weight: 400;")
+        
+        status_layout.addWidget(icon_label)
+        status_layout.addWidget(name_label)
+        status_layout.addStretch()
+        status_layout.addWidget(status_label)
+        
+        return status_widget
 
     def make_card(self, text):
         label = QLabel(text)
@@ -454,7 +630,7 @@ class FullscreenApp(QMainWindow):
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(label)
 
-        # Eingabefeld -> dehnt sich automatisch auf volle Breite
+        # Eingabefeld
         field = QLineEdit()
         field.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         field.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -472,13 +648,16 @@ class FullscreenApp(QMainWindow):
         
         widget_type = item[0]
         widget_creators = {
-            "button": self._create_button_widget,           "image": self._create_image_widget, 
-            "ram_image": self._create_ram_image_widget,     "ram_image_final": self._create_ram_image_final_widget,
-            "title": self._create_title_widget,             "input": self._create_input_widget
+            "button": self._create_button_widget,
+            "image": self._create_image_widget, 
+            "ram_image": self._create_ram_image_widget,
+            "ram_image_final": self._create_ram_image_final_widget,
+            "title": self._create_title_widget,
+            "input": self._create_input_widget
         }
         creator = widget_creators.get(widget_type)
         if creator:
-            return creator(*item[1:])  # Übergibt restliche Parameter
+            return creator(*item[1:])
         return self.make_card(str(item))
 
     def _create_button_widget(self, text, callback=None):
@@ -507,7 +686,7 @@ class FullscreenApp(QMainWindow):
         
         return btn
 
-    def _create_image_widget(self, base_name):      # statisches Bild
+    def _create_image_widget(self, base_name):
         label = QLabel()
         path = None
         for ext in [".png", ".jpg", ".jpeg", ".bmp"]:
@@ -529,7 +708,7 @@ class FullscreenApp(QMainWindow):
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         return label
 
-    def _create_ram_image_widget(self, idx):        # Foto-Auswahl
+    def _create_ram_image_widget(self, idx):
         label = QLabel()
         self.image_labels[idx] = label
         if self.images[idx] is not None:
@@ -538,7 +717,7 @@ class FullscreenApp(QMainWindow):
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         return label
 
-    def _create_ram_image_final_widget(self, idx):  # Übersicht
+    def _create_ram_image_final_widget(self, idx):
         label = QLabel()
         self.final_image_labels[idx] = label
         if self.final_images[idx] is not None:
@@ -546,13 +725,13 @@ class FullscreenApp(QMainWindow):
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         return label
 
-    def _create_title_widget(self, text):           # Erstellt einen Titel
+    def _create_title_widget(self, text):
         label = QLabel(text)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         label.setStyleSheet("font-size: 28px; font-weight: bold; color: #dedede;")
         return label
 
-    def _create_input_widget(self, label_text, placeholder="", preset_text=""):     # Erstellt ein Eingabefeld
+    def _create_input_widget(self, label_text, placeholder="", preset_text=""):
         return self.make_card_with_input(label_text, preset_text, placeholder)
 
     def add_page(self, title, labels):
@@ -570,7 +749,7 @@ class FullscreenApp(QMainWindow):
         title_label = QLabel(title)
         title_label.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
         title_label.setStyleSheet("font-size: 32px; font-weight: bold; color: #2c3ea0;")
-        title_layout.addWidget(title_label, stretch=1)  # stretch=1 -> füllt linken Platz
+        title_layout.addWidget(title_label, stretch=1)
 
         btn_de = self.create_flag_button("de.png", "de")
         btn_it = self.create_flag_button("it.png", "it")
@@ -589,14 +768,14 @@ class FullscreenApp(QMainWindow):
         layout.setContentsMargins(10, 10, 10, 10)
 
         for item in labels:
-            if isinstance(item, list):  # Reihe mit mehreren Elementen
+            if isinstance(item, list):
                 row_layout = QHBoxLayout()
                 row_layout.setSpacing(12)
                 for sub in item:
                     widget = self._make_widget(sub)
                     row_layout.addWidget(widget)
                 layout.addLayout(row_layout)
-            else:  # Einzelnes Element
+            else:
                 widget = self._make_widget(item)
                 layout.addWidget(widget)
 
@@ -605,6 +784,101 @@ class FullscreenApp(QMainWindow):
         page_layout.addWidget(scroll)
 
         self.stack.addWidget(page)
+
+    def load_pages(self):
+        if self.abmessung == None:
+            self.abmessung = "Undefiniert"
+        if self.gewicht == None:
+            self.gewicht = "Undefiniert"
+        if self.barcode == None:
+            self.barcode = "Undefiniert"
+            self.barcode_type = "Undefiniert"
+        
+        # Alte Seiten entfernen
+        while self.stack.count() > 0:
+            widget = self.stack.widget(0)
+            self.stack.removeWidget(widget)
+            widget.deleteLater()
+
+        # Startseite mit speziellem Layout
+        start_page = self.create_start_page()
+        self.stack.addWidget(start_page)
+
+        # Weitere Seiten mit generischem System
+        if self.language == "de":
+            self.add_page(self.translator.get_text(self.language, "photo", "title"), 
+                    [[("ram_image",0), ("ram_image",1)],
+                    [("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=0: self.retry_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=1: self.retry_image(idx))],
+                    [("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=0: self.discard_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=1: self.discard_image(idx))],
+
+                    [("ram_image",2),("ram_image",3)],
+                    [("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=2: self.retry_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=3: self.retry_image(idx))],
+                    [("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=2: self.discard_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=3: self.discard_image(idx))]])
+                
+            self.add_page(self.translator.get_text(self.language, "overview", "title"), 
+                    [[("ram_image_final", 0), ("ram_image_final", 1)], [("ram_image_final", 2), ("ram_image_final", 3)], 
+                    f"{self.translator.get_text(self.language, 'overview', 'dimensions')} {self.abmessung}{self.translator.get_text(self.language, 'overview', 'mm')}", 
+                    f"{self.translator.get_text(self.language, 'overview', 'weight')} {self.gewicht}{self.translator.get_text(self.language, 'overview', 'kg')}"])
+            self.add_page(self.translator.get_text(self.language, "storage", "title"), 
+                    [("image", "barcode"), 
+                    ("input", self.translator.get_text(self.language, "storage", "barcode_label"), f"{self.barcode}"),
+                    ("input", self.translator.get_text(self.language, "storage", "barcode_type"), f"{self.barcode_type}"), 
+                    [("button", self.translator.get_text(self.language, "storage", "sap_btn")), 
+                     ("button", self.translator.get_text(self.language, "storage", "save_btn"))]])
+
+        elif self.language == "it":
+            self.add_page(self.translator.get_text(self.language, "photo", "title"), 
+                    [[("ram_image", 0), ("ram_image", 1)],
+                    [("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=0: self.retry_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=1: self.retry_image(idx))],
+                    [("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=0: self.discard_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=1: self.discard_image(idx))],
+
+                    [("ram_image", 2), ("ram_image", 3)],
+                    [("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=2: self.retry_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=3: self.retry_image(idx))],
+                    [("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=2: self.discard_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=3: self.discard_image(idx))]])
+            
+            self.add_page(self.translator.get_text(self.language, "overview", "title"),
+                    [[("ram_image_final", 0), ("ram_image_final", 1)], [("ram_image_final", 2), ("ram_image_final", 3)], 
+                    f"{self.translator.get_text(self.language, 'overview', 'dimensions')} {self.abmessung}{self.translator.get_text(self.language, 'overview', 'mm')}", 
+                    f"{self.translator.get_text(self.language, 'overview', 'weight')} {self.gewicht}{self.translator.get_text(self.language, 'overview', 'kg')}"])
+            self.add_page(self.translator.get_text(self.language, "storage", "title"),
+                    [("image", "barcode"), 
+                    ("input", self.translator.get_text(self.language, "storage", "barcode_label"), f"{self.barcode}"),
+                    ("input", self.translator.get_text(self.language, "storage", "barcode_type"), f"{self.barcode_type}"),
+                    [("button", self.translator.get_text(self.language, "storage", "sap_btn")), 
+                     ("button", self.translator.get_text(self.language, "storage", "save_btn"))]])
+
+        else:  # englisch
+            self.add_page(self.translator.get_text(self.language, "photo", "title"), 
+                    [[("ram_image", 0), ("ram_image", 1)],
+                    [("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=0: self.retry_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=1: self.retry_image(idx))],
+                    [("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=0: self.discard_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=1: self.discard_image(idx))],
+
+                    [("ram_image", 2), ("ram_image", 3)],
+                    [("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=2: self.retry_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "retry_btn"), lambda _, idx=3: self.retry_image(idx))],
+                    [("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=2: self.discard_image(idx)),
+                    ("button", self.translator.get_text(self.language, "photo", "discard_btn"), lambda _, idx=3: self.discard_image(idx))]])
+            
+            self.add_page(self.translator.get_text(self.language, "overview", "title"),
+                    [[("ram_image_final", 0), ("ram_image_final", 1)], [("ram_image_final", 2), ("ram_image_final", 3)],
+                    f"{self.translator.get_text(self.language, 'overview', 'dimensions')} {self.abmessung}{self.translator.get_text(self.language, 'overview', 'mm')}", 
+                    f"{self.translator.get_text(self.language, 'overview', 'weight')} {self.gewicht}{self.translator.get_text(self.language, 'overview', 'kg')}"])
+            self.add_page(self.translator.get_text(self.language, "storage", "title"),
+                    [("image", "barcode"), 
+                    ("input", self.translator.get_text(self.language, "storage", "barcode_label"), f"{self.barcode}"),
+                    ("input", self.translator.get_text(self.language, "storage", "barcode_type"), f"{self.barcode_type}"), 
+                    [("button", self.translator.get_text(self.language, "storage", "sap_btn")), 
+                     ("button", self.translator.get_text(self.language, "storage", "save_btn"))]])
 
     def go_back(self):
         idx = self.stack.currentIndex()
@@ -618,7 +892,7 @@ class FullscreenApp(QMainWindow):
                 QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
 
             if reply == QMessageBox.StandardButton.Cancel:
-                return  # Abbrechen, keine Änderung
+                return
     
         if idx > 0:
             self.stack.setCurrentIndex(idx - 1)
@@ -649,7 +923,7 @@ class FullscreenApp(QMainWindow):
             self.loading_dialog = QDialog(self)
             self.loading_dialog.setWindowTitle("Ladevorgang der Daten")
             self.loading_dialog.setModal(True)
-            self.loading_dialog.setFixedSize(350, 400)  # Etwas größer
+            self.loading_dialog.setFixedSize(350, 400)
 
             layout = QVBoxLayout(self.loading_dialog)
             movie = QMovie(os.path.join(self.Explorer_Structure, "loading.gif"))
@@ -659,7 +933,6 @@ class FullscreenApp(QMainWindow):
             movie.start()
             layout.addWidget(gif_label)
 
-            # Status-Text
             status_label = QLabel("Daten werden verarbeitet...")
             status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             status_label.setStyleSheet("font-size: 16px; margin: 20px;")
@@ -694,7 +967,7 @@ class FullscreenApp(QMainWindow):
             def cancel_loading():
                 if self.worker.isRunning():
                     self.worker.terminate()
-                    self.worker.wait()  # Warten bis Thread beendet ist
+                    self.worker.wait()
                 self.loading_dialog.reject()
                 self.stack.setCurrentIndex(1)
                 self.update_buttons()
@@ -704,9 +977,7 @@ class FullscreenApp(QMainWindow):
                     "Der Scan wurde abgebrochen."
                 )
 
-            # Direkte Verbindung des Buttons
             cancel_btn.clicked.connect(cancel_loading)
-
             self.loading_dialog.exec()
 
         else:
@@ -720,44 +991,38 @@ class FullscreenApp(QMainWindow):
         if current_index == 0:
             self.back_btn.hide()
             self.next_btn.hide()
-
         elif current_index == total_pages - 1:
             self.next_btn.hide()
-
         else:
             self.back_btn.show()
             self.next_btn.show()
     
     def start_worker(self):
-        self.worker = ParallelWorker(self.images)  # Übergabe der 4 Bilder
+        self.worker = ParallelWorker(self.images)
         self.worker.output_received.connect(self.handle_output)
         self.worker.finished.connect(lambda: print("Alle Tasks fertig"))
         self.worker.start()
 
-
     def handle_output(self, script_name, data):
-        # --- Debug Header ---
         print(f"\n========== Debug [{script_name}] ==========")
 
         if script_name == "Abmessung":
             if isinstance(data, list) and len(data) >= 3:
-                self.abmessungen = data  # Rohwerte pro Bild bleiben erhalten
+                self.abmessungen = data
 
                 try:
-                    # Berechnung Länge x Breite x Höhe:
-                    # Bild 0: Länge, Bild 1: Breite, Bild 2: Höhe
-                    length = int(data[0].split(" x ")[0])  # Länge aus Bild 0
-                    width  = int(data[1].split(" x ")[0])  # Breite aus Bild 1
-                    height = int(data[2].split(" x ")[1])  # Höhe aus Bild 2
+                    length = int(data[0].split(" x ")[0])
+                    width  = int(data[1].split(" x ")[0])
+                    height = int(data[2].split(" x ")[1])
 
-                    self.abmessung_gesamt = f"{length} x {width} x {height} mm"
+                    self.abmessung_gesamt = f"{length} x {width} x {height}"
                 except Exception as e:
                     print(f"Fehler beim Berechnen der Gesamt-Abmessung: {e}")
                     self.abmessung_gesamt = "Undefiniert"
 
                 print(f"🔹 Gesamt-Abmessung: {self.abmessung_gesamt}")
                 self.abmessung = self.abmessung_gesamt
-                # Debug: Originalwerte der Bilder
+
                 for idx, dim in enumerate(data):
                     print(f"Bild {idx}: Original = {dim}")
 
@@ -767,7 +1032,6 @@ class FullscreenApp(QMainWindow):
                 print(f"Fehler bei Abmessung: {data}")
 
         elif script_name == "yolo_frames":
-            # Annotierte Frames (optional für GUI)
             self.annotierte_frames = data
             for idx, frame in enumerate(data):
                 if frame is not None:
@@ -776,7 +1040,6 @@ class FullscreenApp(QMainWindow):
                     print(f"Bild {idx}: Kein Frame vorhanden")
 
         elif script_name == "barcode":
-            # data = {"index": idx, "found": bool, "value": str, "type": str}
             idx = data.get("index", -1)
             found = data.get("found", False)
             value = data.get("value", None)
@@ -790,11 +1053,10 @@ class FullscreenApp(QMainWindow):
             else:
                 print(f"❌ Kein Barcode in Bild {idx}")
 
-            #Muss geändert werden wenn zwei verschiedene barcodes erkannt werden
             self.barcode_type = b_type if found else "Undefiniert"
             self.barcode = value if found else "Undefiniert"
 
-        elif script_name == "weight": # Gewicht
+        elif script_name == "weight":
             self.gewicht = data
             print(f"Gewicht: {data}")
 
@@ -803,7 +1065,6 @@ class FullscreenApp(QMainWindow):
 
         print("========== Ende Debug ==========\n")
 
-        # --- Prüfen, ob alle Tasks fertig sind ---
         abmessung_ready = hasattr(self, "abmessung_gesamt") and self.abmessung_gesamt != "Undefiniert"
         barcode_ready = hasattr(self, "barcode") and any(self.barcode)
         gewicht_ready = hasattr(self, "gewicht") and self.gewicht not in ["Undefiniert", None]
@@ -815,15 +1076,8 @@ class FullscreenApp(QMainWindow):
                 else:
                     self.final_images[i] = None
 
-            # GUI aktualisieren: alle alten Seiten entfernen
-            while self.stack.count() > 0:
-                widget = self.stack.widget(0)
-                self.stack.removeWidget(widget)
-                widget.deleteLater()
-
-            # Neue Seiten laden
             self.load_pages()
-            self.stack.setCurrentIndex(2)  # Index der Kamera-Übersicht
+            self.stack.setCurrentIndex(2)
             self.update_buttons()
 
     def keyPressEvent(self, event):
@@ -831,7 +1085,6 @@ class FullscreenApp(QMainWindow):
             self.go_back()
         elif event.key() == Qt.Key.Key_Right:
             self.go_next()
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
