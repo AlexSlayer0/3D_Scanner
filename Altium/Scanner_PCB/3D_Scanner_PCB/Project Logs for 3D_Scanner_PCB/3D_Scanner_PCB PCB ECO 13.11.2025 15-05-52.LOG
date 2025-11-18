@@ -1,0 +1,47 @@
+Added Component: Designator=Hub(691213510002)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691213510002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=J?(691216710003)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691216710003/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691216710003"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691216710003/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Q?(TO254P1054X469X1930-3)
+Add component (AddParameter): Name = "Availability"; Value = "Not in stock"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/IRLZ44N/Infineon/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Infineon / IR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "IRLZ44N"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "TO-220-3 Infineon / IR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/IRLZ44N/Infineon/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Q?(TO254P1054X469X1930-3)
+Add component (AddParameter): Name = "Availability"; Value = "Not in stock"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/IRLZ44N/Infineon/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Infineon / IR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "IRLZ44N"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "TO-220-3 Infineon / IR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/IRLZ44N/Infineon/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=+5V Pin=Versorgung-1
+Added Net: Name=+5V
+Added Pin To Net: NetName=+12V Pin=Hub-1
+Added Pin To Net: NetName=+12V Pin=Versorgung-2
+Added Net: Name=+12V
+Added Pin To Net: NetName=GND Pin=Hub-2
+Added Pin To Net: NetName=GND Pin=Versorgung-3
+Added Net: Name=GND
+Added Member To Class: ClassName=PCB_Schematic Member=Component Hub 691213510002
+Added Member To Class: ClassName=PCB_Schematic Member=Component J? 691216710003
+Added Member To Class: ClassName=PCB_Schematic Member=Component Q? IRLZ44N
+Added Member To Class: ClassName=PCB_Schematic Member=Component Q? IRLZ44N
+Added Rule: Name=Schematic Supply Nets
+Added Rule: Name=Schematic Supply Nets_1
+Added Rule: Name=Schematic Supply Nets_2
