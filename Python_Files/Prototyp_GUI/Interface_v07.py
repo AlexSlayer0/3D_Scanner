@@ -10,6 +10,8 @@ GUI-Design verbessern           (optional)
 import sys
 import cv2
 import os
+import time
+import numpy as np
 import threading
 
 from PyQt6.QtWidgets import (
@@ -21,24 +23,78 @@ from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
 
 
-def capture_single(idx):
-    cap = cv2.VideoCapture(idx, cv2.CAP_DSHOW)
-    if not cap.isOpened():
-        print(f"❌ Kamera {idx} nicht verfügbar!")
-        return None
-    ret, frame = cap.read()
-    cap.release()
-    if ret:
-        return frame
-    print(f"⚠️ Kein Bild von der Kamera {idx} erhalten!")
-    return None
 
-def capture_images(cam_indices=(0, 1, 2)):
-    images = []
-    for idx in cam_indices:
-        img = capture_single(idx)
-        images.append(img)  # egal ob Bild oder None
-    return images
+class CameraManager:
+    def __init__(self, debug_single_camera=False):
+        self.debug_single_camera = debug_single_camera
+        self.available_cameras = self._find_cameras()
+    
+    def _find_cameras(self):
+        available = []
+        for i in range(4):
+            cap = cv2.VideoCapture(i, cv2.CAP_DSHOW)
+            if cap.isOpened():
+                available.append(i)
+                cap.release()
+        return available
+    
+    def _enable_flash(self):
+        # BLITZ-IMPLEMENTIERUNG HIER EINFÜGEN
+        # GPIO, serielle Schnittstelle oder kamerainterner Blitz
+        pass
+    
+    def _disable_flash(self):
+        pass
+    
+    def _make_placeholder(self):
+        img = np.zeros((480, 640, 3), dtype=np.uint8)
+        cv2.putText(img, "BILD NICHT AUFGENOMMEN", 
+                   (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 
+                   (255, 255, 255), 2)
+        return img
+    
+    def take_picture(self, camera_id):
+        if camera_id not in self.available_cameras:
+            return self._make_placeholder()
+        
+        try:
+            cap = cv2.VideoCapture(camera_id, cv2.CAP_DSHOW)
+            if not cap.isOpened():
+                return self._make_placeholder()
+            
+            # Blitz hier aktivieren wenn gewünscht
+            # self._enable_flash()
+            
+            ret, frame = cap.read()
+            cap.release()
+            
+            # Blitz hier deaktivieren
+            # self._disable_flash()
+            
+            return frame if ret else self._make_placeholder()
+            
+        except Exception:
+            return self._make_placeholder()
+    
+    def take_all_pictures(self):
+        images = []
+        
+        if self.debug_single_camera:
+            # Debug: Eine Kamera für alle Bilder
+            for i in range(4):
+                img = self.take_picture(0)
+                images.append(img)
+                time.sleep(0.3)
+        else:
+            # Normal: Jede Kamera macht ein Bild
+            for i in range(4):
+                if i < len(self.available_cameras):
+                    img = self.take_picture(i)
+                else:
+                    img = self._make_placeholder()
+                images.append(img)
+        
+        return images
 
 
 class ParallelWorker(QThread):
@@ -151,6 +207,8 @@ class FullscreenApp(QMainWindow):
         self.showFullScreen()
 
         #Erst-Anpassung------------------------------------------------------
+        self.camera = CameraManager(debug_single_camera=True)  # True = 1 Kamera, False = 4 Kameras
+
         self.language = "de"  # oder "it" / "en" standartmäßig
         self.Explorer_Structure = r"GUI_Anzeige"
 
@@ -233,6 +291,13 @@ class FullscreenApp(QMainWindow):
         return btn
                 
     def convert_to_pixmap(self, frame, width=300, height=300):
+        # Prüfe ob es ein Platzhalter-Bild ist (schwarzes Bild)
+        if frame is None or (isinstance(frame, np.ndarray) and np.all(frame == 0)):
+            # Erstelle einen grauen Platzhalter
+            gray_pixmap = QPixmap(width, height)
+            gray_pixmap.fill(Qt.GlobalColor.lightGray)
+            return gray_pixmap
+        
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb.shape
         bytes_per_line = ch * w
@@ -243,12 +308,11 @@ class FullscreenApp(QMainWindow):
     def retry_image(self, idx):
         print(f"🔄 Wiederhole Bild {idx+1}")
         self.scan_start = True
-        new_img = capture_single(idx)
+        new_img = self.camera.take_picture(idx)  # Hier camera verwenden
         if new_img is not None:
             self.images[idx] = new_img
             pixmap = self.convert_to_pixmap(new_img)
             self.image_labels[idx].setPixmap(pixmap)
-
 
     def discard_image(self, idx):
         print(f"❌ Verworfen Bild {idx+1}")
@@ -555,11 +619,11 @@ class FullscreenApp(QMainWindow):
             if not hasattr(self, "images"):
                 self.images = [None] * 4
 
-            for i, label in enumerate(self.image_labels):
-                img = capture_single(i)
-                if img is not None:
-                    self.images[i] = img
-                    label.setPixmap(self.convert_to_pixmap(img))
+            all_images = self.camera.take_all_pictures()
+            for i, img in enumerate(all_images):
+                self.images[i] = img
+                if self.image_labels[i] is not None:
+                    self.image_labels[i].setPixmap(self.convert_to_pixmap(img))
 
             self.stack.setCurrentIndex(idx + 1)
             self.update_buttons()
