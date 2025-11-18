@@ -10,7 +10,6 @@ GUI-Design verbessern           (optional)
 import sys
 import cv2
 import os
-import time
 import numpy as np
 import threading
 
@@ -84,7 +83,6 @@ class CameraManager:
             for i in range(4):
                 img = self.take_picture(0)
                 images.append(img)
-                time.sleep(0.3)
         else:
             # Normal: Jede Kamera macht ein Bild
             for i in range(4):
@@ -333,9 +331,12 @@ class FullscreenApp(QMainWindow):
             self.barcode_type = "Undefiniert"
             
         if self.language == "de":
-            self.add_page("Startseite", 
-                    [("title", "3D-Scanner Interface"), "Interface um den 3D-Scanner zu bedienen", "Bitte lege den Artikel der gescannt werden soll in die Box ein",
-                    [("button", "Scan Starten", self.go_next),("button","Lokal speichern")]]) 
+            self.add_page("3D-Scanner Interface", 
+                    [("title", "Interface um den 3D-Scanner zu bedienen"), 
+                    "Bitte lege den Artikel der gescannt werden soll in die Box ein",
+                    "Stellen Sie sicher, dass der Artikel vollständig im Sichtfeld aller Kameras liegt",
+                    "Maximale Größe: 50x50x50                            Maximales Gewicht: 20kg",
+                    [("button", "Scan Starten", self.go_next),("button","Lokal speichern")]])
             self.add_page("Foto-Auswahl", 
                     [[("ram_image",0), ("ram_image",1)],
                     [("button", "Wiederholen", lambda _, idx=0: self.retry_image(idx)),
@@ -406,25 +407,22 @@ class FullscreenApp(QMainWindow):
 
 
     def make_card(self, text):
-        frame = QFrame()
-        frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        frame.setMinimumHeight(80)
-        frame.setStyleSheet("""
-            QFrame {
-                background-color: #dedede;
-                border-radius: 12px;
-                border: 1px solid #bbb;
-                padding: 12px;
-            } QLabel {
-                font-size: 20px;
-                color: #2c3e50; /* explizite Schriftfarbe */
-            }""")
-        layout = QVBoxLayout(frame)
         label = QLabel(text)
-        label.setWordWrap(True)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(label)
-        return frame
+        label.setStyleSheet("""
+            QLabel {
+                color: #dedede;
+                font-size: 17px;
+                font-weight: 400;
+                padding: 18px 30px;
+                margin: 10px 0;
+                background: transparent;
+                border-bottom: 1px solid #34495e;
+                line-height: 1.5;
+            }
+        """)
+        label.setWordWrap(True)
+        return label
 
     def make_card_with_input(self, label_text="", preset_text="", placeholder=""):
         frame = QFrame()
@@ -466,78 +464,96 @@ class FullscreenApp(QMainWindow):
             field.setPlaceholderText(placeholder)
 
         layout.addWidget(field)
-
         return frame
 
     def _make_widget(self, item):
-        if isinstance(item, tuple):
-            if item[0] == "button":
-                text = item[1]
-                btn = QPushButton(text)
-                btn.setStyleSheet("font-size: 20px; padding: 10px;")
-                
-                # Prüfen, ob eine Funktion übergeben wurde
-                if len(item) > 2 and callable(item[2]):
-                    btn.clicked.connect(item[2])
-                else:
-                    btn.clicked.connect(lambda _, t=text: print(f"Button {t} gedrückt"))
-                
-                return btn
-
-            elif item[0] == "image":
-                label = QLabel()
-                base_name = item[1]
-                path = None
-                for ext in [".png", ".jpg", ".jpeg", ".bmp"]:
-                    test_path = os.path.join(self.Explorer_Structure, base_name + ext)
-                    if os.path.exists(test_path):
-                        path = test_path
-                        break
-                if path:
-                    pixmap = QPixmap(path)
-                    if not pixmap.isNull():
-                        pixmap = pixmap.scaledToWidth(250, Qt.TransformationMode.SmoothTransformation)
-                        label.setPixmap(pixmap)
-                    else:
-                        label.setText(f"Bild konnte nicht geladen werden:\n{path}")
-                else:
-                    label.setText(f"Kein Bild gefunden für '{base_name}'")
-
-                label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                return label
-            
-            elif item[0] == "ram_image":
-                idx = item[1]
-                label = QLabel()
-                self.image_labels[idx] = label
-                if self.images[idx] is not None:
-                    pixmap = self.convert_to_pixmap(self.images[idx])
-                    label.setPixmap(pixmap)
-                label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                return label
-            
-            elif item[0] == "ram_image_final":
-                idx = item[1]
-                label = QLabel()
-                self.final_image_labels[idx] = label  # Referenz speichern
-                if self.final_images[idx] is not None:
-                    label.setPixmap(self.convert_to_pixmap(self.final_images[idx]))
-                label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                return label
-
-            elif item[0] == "title":
-                label = QLabel(item[1])
-                label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                label.setStyleSheet("font-size: 28px; font-weight: bold; color: #dedede;")
-                return label
-            
-            elif item[0] == "input":
-                label_text = item[1] if len(item) > 1 else ""
-                placeholder = item[2] if len(item) > 2 else ""
-                preset_text = item[3] if len(item) > 3 else ""
-                return self.make_card_with_input(label_text, preset_text, placeholder)
-
+        if not isinstance(item, tuple):
+            return self.make_card(str(item))
+        
+        widget_type = item[0]
+        widget_creators = {
+            "button": self._create_button_widget,           "image": self._create_image_widget, 
+            "ram_image": self._create_ram_image_widget,     "ram_image_final": self._create_ram_image_final_widget,
+            "title": self._create_title_widget,             "input": self._create_input_widget
+        }
+        creator = widget_creators.get(widget_type)
+        if creator:
+            return creator(*item[1:])  # Übergibt restliche Parameter
         return self.make_card(str(item))
+
+    def _create_button_widget(self, text, callback=None):
+        btn = QPushButton(text)
+        btn.setStyleSheet("""
+            QPushButton {
+                font-size: 16px;
+                font-weight: 600;
+                padding: 14px 30px;
+                border: none;
+                border-radius: 6px;
+                background: #495057;
+                color: #ffffff;
+                min-width: 140px;
+            } QPushButton:hover {
+                background: #6c757d;
+            } QPushButton:pressed {
+                background: #343a40;
+            }
+        """)
+        
+        if callback and callable(callback):
+            btn.clicked.connect(callback)
+        else:
+            btn.clicked.connect(lambda: print(f"Button '{text}' gedrückt"))
+        
+        return btn
+
+    def _create_image_widget(self, base_name):      # statisches Bild
+        label = QLabel()
+        path = None
+        for ext in [".png", ".jpg", ".jpeg", ".bmp"]:
+            test_path = os.path.join(self.Explorer_Structure, base_name + ext)
+            if os.path.exists(test_path):
+                path = test_path
+                break
+        
+        if path:
+            pixmap = QPixmap(path)
+            if not pixmap.isNull():
+                pixmap = pixmap.scaledToWidth(250, Qt.TransformationMode.SmoothTransformation)
+                label.setPixmap(pixmap)
+            else:
+                label.setText(f"Bild konnte nicht geladen werden:\n{path}")
+        else:
+            label.setText(f"Kein Bild gefunden für '{base_name}'")
+
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        return label
+
+    def _create_ram_image_widget(self, idx):        # Foto-Auswahl
+        label = QLabel()
+        self.image_labels[idx] = label
+        if self.images[idx] is not None:
+            pixmap = self.convert_to_pixmap(self.images[idx])
+            label.setPixmap(pixmap)
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        return label
+
+    def _create_ram_image_final_widget(self, idx):  # Übersicht
+        label = QLabel()
+        self.final_image_labels[idx] = label
+        if self.final_images[idx] is not None:
+            label.setPixmap(self.convert_to_pixmap(self.final_images[idx]))
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        return label
+
+    def _create_title_widget(self, text):           # Erstellt einen Titel
+        label = QLabel(text)
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        label.setStyleSheet("font-size: 28px; font-weight: bold; color: #dedede;")
+        return label
+
+    def _create_input_widget(self, label_text, placeholder="", preset_text=""):     # Erstellt ein Eingabefeld
+        return self.make_card_with_input(label_text, preset_text, placeholder)
 
     def add_page(self, title, labels):
         page = QWidget()
