@@ -2,9 +2,9 @@
 Objekt-Detection muss verbessert werden
 Lade-Dialog schöner gestalten
 Fehlerbehandlung bei Kamerazugriff
-SAP-Integration         (Platzhalter-Button)
-USB-Stick Integration   (Platzhalter-Button)
-GUI-Design verbessern   (optional)
+SAP-Integration                 (Platzhalter-Button/optional)
+Lokal speichern Integration     (Platzhalter-Button)
+GUI-Design verbessern           (optional)
 ================================"""
 
 import sys
@@ -15,7 +15,7 @@ import threading
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit,
     QPushButton, QLabel, QFrame, QSizePolicy, QStackedWidget, QScrollArea, 
-    QToolButton, QMessageBox, QDialog, 
+    QToolButton, QMessageBox, QDialog
 )
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
@@ -569,7 +569,7 @@ class FullscreenApp(QMainWindow):
             self.loading_dialog = QDialog(self)
             self.loading_dialog.setWindowTitle("Ladevorgang der Daten")
             self.loading_dialog.setModal(True)
-            self.loading_dialog.setFixedSize(300, 300)
+            self.loading_dialog.setFixedSize(350, 400)  # Etwas größer
 
             layout = QVBoxLayout(self.loading_dialog)
             movie = QMovie(os.path.join(self.Explorer_Structure, "loading.gif"))
@@ -579,8 +579,21 @@ class FullscreenApp(QMainWindow):
             movie.start()
             layout.addWidget(gif_label)
 
+            # Status-Text
+            status_label = QLabel("Daten werden verarbeitet...")
+            status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            status_label.setStyleSheet("font-size: 16px; margin: 20px;")
+            layout.addWidget(status_label)
+
             cancel_btn = QPushButton("Abbrechen")
-            layout.addWidget(cancel_btn)
+            cancel_btn.setFixedSize(120, 40)
+            cancel_btn.setStyleSheet("""
+                QPushButton {
+                    font-size: 14px;
+                    padding: 8px;
+                }
+            """)
+            layout.addWidget(cancel_btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
             self.start_worker()
 
@@ -601,8 +614,8 @@ class FullscreenApp(QMainWindow):
             def cancel_loading():
                 if self.worker.isRunning():
                     self.worker.terminate()
+                    self.worker.wait()  # Warten bis Thread beendet ist
                 self.loading_dialog.reject()
-                self._counter = 0
                 self.stack.setCurrentIndex(1)
                 self.update_buttons()
                 QMessageBox.warning(
@@ -611,13 +624,15 @@ class FullscreenApp(QMainWindow):
                     "Der Scan wurde abgebrochen."
                 )
 
+            # Direkte Verbindung des Buttons
             cancel_btn.clicked.connect(cancel_loading)
+
             self.loading_dialog.exec()
 
         else:
             self.stack.setCurrentIndex(idx + 1)
             self.update_buttons()
-
+            
     def update_buttons(self):
         current_index = self.stack.currentIndex()
         total_pages = self.stack.count()
