@@ -756,3 +756,5 @@ AttributeError: bn
 2026-01-04 14:25:08,118 - __main__ - INFO - Alle Tasks fertig
 2026-01-04 14:25:11,479 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
 2026-01-04 14:25:18,676 - __main__ - INFO - Füge neues Barcode-Feld hinzu
+2026-01-08 21:02:29,285 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-01-08 21:02:31,125 - __main__ - INFO - Verfügbare Kameras gefunden: [0]

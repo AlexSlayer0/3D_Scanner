@@ -3,141 +3,275 @@
 import cv2
 import depthai as dai
 import numpy as np
-from pathlib import Path
 
-color = (255, 255, 255)
+class VirtualPlane:
+    def __init__(self, distance_mm=1000):
+        self.distance = distance_mm  # Abstand der virtuellen Ebene in mm
+        self.tolerance = 25  # Toleranzbereich in mm
+        self.plane_color = (0, 255, 0)  # Grün für die Ebene
+        self.object_color = (255, 0, 0)  # Blau für das Objekt
+    
+    def project_points_to_plane(self, points_3d):
+        """Projiziert 3D-Punkte auf die virtuelle Ebene"""
+        projected = []
+        for point in points_3d:
+            if abs(point.z - self.distance) < self.tolerance:
+                projected.append(point)
+        return projected
+    
+    def calculate_object_dimensions(self, points_on_plane):
+        """Berechnet Abmessungen des Objekts auf der Ebene"""
+        if len(points_on_plane) < 2:
+            return 0, 0, 0
+        
+        # Extrahiere X, Y, Z Werte
+        x_vals = [p.x for p in points_on_plane]
+        y_vals = [p.y for p in points_on_plane]
+        z_vals = [p.z for p in points_on_plane]
+        
+        # Berechne Abmessungen
+        width = max(x_vals) - min(x_vals) if x_vals else 0
+        height = max(y_vals) - min(y_vals) if y_vals else 0
+        depth = max(z_vals) - min(z_vals) if z_vals else 0
+        
+        return width, height, depth
 
-# Create pipeline
+# Erweiterte Pipeline mit Grid-Detection
 pipeline = dai.Pipeline()
-# Config
-topLeft = dai.Point2f(0.4, 0.4)
-bottomRight = dai.Point2f(0.6, 0.6)
 
-# Define sources and outputs
-monoLeft = pipeline.create(dai.node.Camera).build(dai.CameraBoardSocket.CAM_B)
-monoRight = pipeline.create(dai.node.Camera).build(dai.CameraBoardSocket.CAM_C)
+# Kameras konfigurieren
+monoLeft = pipeline.create(dai.node.MonoCamera)
+monoRight = pipeline.create(dai.node.MonoCamera)
 stereo = pipeline.create(dai.node.StereoDepth)
-spatialLocationCalculator = pipeline.create(dai.node.SpatialLocationCalculator)
+spatialCalc = pipeline.create(dai.node.SpatialLocationCalculator)
 
-# Linking
-monoLeftOut = monoLeft.requestOutput((640, 400))
-monoRightOut = monoRight.requestOutput((640, 400))
-monoLeftOut.link(stereo.left)
-monoRightOut.link(stereo.right)
+# Konfiguration
+monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+monoLeft.setCamera("left")
+monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+monoRight.setCamera("right")
 
-stereo.setRectification(True)
+# StereoDepth konfigurieren
+stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.HIGH_DENSITY)
+stereo.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_7x7)
+stereo.setLeftRightCheck(True)
 stereo.setExtendedDisparity(True)
+stereo.setSubpixel(True)
 
-stepSize = 0.05
-
+# Spatial Calculator konfigurieren
 config = dai.SpatialLocationCalculatorConfigData()
-config.depthThresholds.lowerThreshold = 10
+config.depthThresholds.lowerThreshold = 100
 config.depthThresholds.upperThreshold = 10000
-calculationAlgorithm = dai.SpatialLocationCalculatorAlgorithm.MEDIAN
-config.roi = dai.Rect(topLeft, bottomRight)
+config.calculationAlgorithm = dai.SpatialLocationCalculatorAlgorithm.MEDIAN
 
-spatialLocationCalculator.inputConfig.setWaitForMessage(False)
-spatialLocationCalculator.initialConfig.addROI(config)
+# Grid-basierte ROIs für detaillierte Messung
+grid_size = 5  # 5x5 Grid
+roi_size = 0.04  # 4% des Bildes pro ROI
+roi_configs = []
 
+for i in range(grid_size):
+    for j in range(grid_size):
+        roi_config = dai.SpatialLocationCalculatorConfigData()
+        roi_config.depthThresholds.lowerThreshold = 100
+        roi_config.depthThresholds.upperThreshold = 10000
+        roi_config.calculationAlgorithm = dai.SpatialLocationCalculatorAlgorithm.MEDIAN
+        
+        # ROI-Position im Grid berechnen
+        x_min = i * (1.0/grid_size)
+        y_min = j * (1.0/grid_size)
+        x_max = x_min + roi_size
+        y_max = y_min + roi_size
+        
+        roi_config.roi = dai.Rect(dai.Point2f(x_min, y_min), 
+                                   dai.Point2f(x_max, y_max))
+        roi_configs.append(roi_config)
 
-xoutSpatialQueue = spatialLocationCalculator.out.createOutputQueue()
-outputDepthQueue = spatialLocationCalculator.passthroughDepth.createOutputQueue()
+# ROIs zur Konfiguration hinzufügen
+spatialCalcConfig = dai.SpatialLocationCalculatorConfig()
+for cfg in roi_configs:
+    spatialCalcConfig.addROI(cfg)
 
-stereo.depth.link(spatialLocationCalculator.inputDepth)
+spatialCalc.inputConfig.setWaitForMessage(False)
+spatialCalc.initialConfig = spatialCalcConfig
 
+# Verlinkungen
+monoLeft.out.link(stereo.left)
+monoRight.out.link(stereo.right)
+stereo.depth.link(spatialCalc.inputDepth)
 
-inputConfigQueue = spatialLocationCalculator.inputConfig.createInputQueue()
+# Output Queues
+xoutSpatial = pipeline.create(dai.node.XLinkOut)
+xoutSpatial.setStreamName("spatial")
+spatialCalc.out.link(xoutSpatial.input)
 
-with pipeline:
-    pipeline.start()
-    while pipeline.isRunning():
-        spatialData = xoutSpatialQueue.get().getSpatialLocations()
+xoutDepth = pipeline.create(dai.node.XLinkOut)
+xoutDepth.setStreamName("depth")
+stereo.depth.link(xoutDepth.input)
 
-        #print("Use WASD keys to move ROI!")
-        outputDepthIMage : dai.ImgFrame = outputDepthQueue.get()
+# Virtuelle Ebene
+virtual_plane = VirtualPlane(distance_mm=800)  # 800mm entfernte Ebene
 
-        frameDepth = outputDepthIMage.getCvFrame()
-        frameDepth = outputDepthIMage.getFrame()
-        #print("Median depth value: ", np.median(frameDepth))
-
-        depthFrameColor = cv2.normalize(frameDepth, None, 255, 0, cv2.NORM_INF, cv2.CV_8UC1)
+# Device starten
+with dai.Device(pipeline) as device:
+    # Queues
+    spatialQueue = device.getOutputQueue(name="spatial", maxSize=4, blocking=False)
+    depthQueue = device.getOutputQueue(name="depth", maxSize=4, blocking=False)
+    
+    # Config Queue für dynamische Änderungen
+    configQueue = device.getInputQueue("spatialCalcConfig")
+    
+    print("Virtual Plane Measurement Active")
+    print("Press:")
+    print("  'p' +/- : Adjust plane distance")
+    print("  't' +/- : Adjust tolerance")
+    print("  'a' : Auto-detect object")
+    print("  'm' : Manual ROI mode")
+    print("  'q' : Quit")
+    
+    auto_mode = True
+    show_grid = True
+    
+    while True:
+        # Daten abrufen
+        inDepth = depthQueue.get()
+        depthFrame = inDepth.getFrame()
+        
+        spatialData = spatialQueue.get().getSpatialLocations()
+        
+        # Tiefenbild für Visualisierung vorbereiten
+        depthFrameColor = cv2.normalize(depthFrame, None, 255, 0, cv2.NORM_INF, cv2.CV_8UC1)
         depthFrameColor = cv2.equalizeHist(depthFrameColor)
-        depthFrameColor = cv2.applyColorMap(depthFrameColor, cv2.COLORMAP_HOT)
-        for depthData in spatialData:
-            roi = depthData.config.roi
-            roi = roi.denormalize(width=depthFrameColor.shape[1], height=depthFrameColor.shape[0])
-            xmin = int(roi.topLeft().x)
-            ymin = int(roi.topLeft().y)
-            xmax = int(roi.bottomRight().x)
-            ymax = int(roi.bottomRight().y)
-
-            depthMin = depthData.depthMin
-            depthMax = depthData.depthMax
-
-            fontType = cv2.FONT_HERSHEY_TRIPLEX
-            cv2.rectangle(depthFrameColor, (xmin, ymin), (xmax, ymax), color, cv2.FONT_HERSHEY_SCRIPT_SIMPLEX)
-            cv2.putText(depthFrameColor, f"X: {int(depthData.spatialCoordinates.x)} mm", (xmin + 10, ymin + 20), fontType, 0.5, color)
-            cv2.putText(depthFrameColor, f"Y: {int(depthData.spatialCoordinates.y)} mm", (xmin + 10, ymin + 35), fontType, 0.5, color)
-            cv2.putText(depthFrameColor, f"Z: {int(depthData.spatialCoordinates.z)} mm", (xmin + 10, ymin + 50), fontType, 0.5, color)
-        # Show the frame
-        cv2.imshow("depth", depthFrameColor)
-
-        key = cv2.waitKey(1)
+        depthFrameColor = cv2.applyColorMap(depthFrameColor, cv2.COLORMAP_JET)
+        
+        # Punkte auf der virtuellen Ebene sammeln
+        points_on_plane = []
+        
+        # Grid anzeigen und Daten sammeln
+        if show_grid:
+            for idx, depthData in enumerate(spatialData):
+                roi = depthData.config.roi
+                roi = roi.denormalize(width=depthFrameColor.shape[1], 
+                                     height=depthFrameColor.shape[0])
+                
+                xmin = int(roi.topLeft().x)
+                ymin = int(roi.topLeft().y)
+                xmax = int(roi.bottomRight().x)
+                ymax = int(roi.bottomRight().y)
+                
+                # Prüfe ob Punkt auf virtueller Ebene liegt
+                if abs(depthData.spatialCoordinates.z - virtual_plane.distance) < virtual_plane.tolerance:
+                    points_on_plane.append(depthData.spatialCoordinates)
+                    # Grünes Rechteck für Punkte auf der Ebene
+                    cv2.rectangle(depthFrameColor, (xmin, ymin), (xmax, ymax), 
+                                virtual_plane.plane_color, 1)
+                else:
+                    # Blaues Rechteck für Objektpunkte
+                    cv2.rectangle(depthFrameColor, (xmin, ymin), (xmax, ymax), 
+                                (255, 0, 0), 1)
+        
+        # Objekt auf der Ebene analysieren
+        if points_on_plane and auto_mode:
+            # Abmessungen berechnen
+            width, height, depth = virtual_plane.calculate_object_dimensions(points_on_plane)
+            
+            if width > 0 and height > 0:
+                # Bounding Box um alle Punkte auf der Ebene
+                x_coords = [p.x for p in points_on_plane]
+                y_coords = [p.y for p in points_on_plane]
+                
+                min_x = min(x_coords)
+                max_x = max(x_coords)
+                min_y = min(y_coords)
+                max_y = max(y_coords)
+                
+                # Skaliere Pixelkoordinaten (annähernd)
+                scale_factor = 0.5  # Anpassen basierend auf Kalibrierung
+                x1 = int(depthFrameColor.shape[1]/2 + min_x * scale_factor)
+                x2 = int(depthFrameColor.shape[1]/2 + max_x * scale_factor)
+                y1 = int(depthFrameColor.shape[0]/2 - min_y * scale_factor)
+                y2 = int(depthFrameColor.shape[0]/2 - max_y * scale_factor)
+                
+                # Zeige Objekt-Bounding Box
+                cv2.rectangle(depthFrameColor, (x1, y1), (x2, y2), 
+                            virtual_plane.object_color, 2)
+                
+                # Messwerte anzeigen
+                info_text = [
+                    f"Object Dimensions:",
+                    f"Width: {width:.1f} mm",
+                    f"Height: {height:.1f} mm",
+                    f"Depth: {depth:.1f} mm",
+                    f"Plane Distance: {virtual_plane.distance} mm",
+                    f"Points on plane: {len(points_on_plane)}"
+                ]
+                
+                y_offset = 30
+                for text in info_text:
+                    cv2.putText(depthFrameColor, text, (10, y_offset),
+                              cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+                    y_offset += 20
+        
+        # Virtuelle Ebene als Linie visualisieren
+        cv2.line(depthFrameColor, 
+                (0, depthFrameColor.shape[0]//2),
+                (depthFrameColor.shape[1], depthFrameColor.shape[0]//2),
+                virtual_plane.plane_color, 1)
+        
+        cv2.putText(depthFrameColor, f"Virtual Plane: {virtual_plane.distance}mm",
+                   (10, depthFrameColor.shape[0] - 10),
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, virtual_plane.plane_color, 1)
+        
+        # Bild anzeigen
+        cv2.imshow("Virtual Plane Measurement", depthFrameColor)
+        
+        # Tastensteuerung
+        key = cv2.waitKey(1) & 0xFF
+        
         if key == ord('q'):
-            pipeline.stop()
             break
-
-        stepSize = 0.05
-
-        newConfig = False
-
-        if key == ord('q'):
-            break
-        elif key == ord('w'):
-            if topLeft.y - stepSize >= 0:
-                topLeft.y -= stepSize
-                bottomRight.y -= stepSize
-                newConfig = True
+        elif key == ord('p'):
+            # Plane Distance anpassen
+            adjust = cv2.waitKey(0) & 0xFF
+            if adjust == ord('+'):
+                virtual_plane.distance += 50
+            elif adjust == ord('-'):
+                virtual_plane.distance -= 50
+            print(f"Plane distance: {virtual_plane.distance}mm")
+        elif key == ord('t'):
+            # Toleranz anpassen
+            adjust = cv2.waitKey(0) & 0xFF
+            if adjust == ord('+'):
+                virtual_plane.tolerance += 10
+            elif adjust == ord('-'):
+                virtual_plane.tolerance = max(10, virtual_plane.tolerance - 10)
+            print(f"Tolerance: {virtual_plane.tolerance}mm")
         elif key == ord('a'):
-            if topLeft.x - stepSize >= 0:
-                topLeft.x -= stepSize
-                bottomRight.x -= stepSize
-                newConfig = True
-        elif key == ord('s'):
-            if bottomRight.y + stepSize <= 1:
-                topLeft.y += stepSize
-                bottomRight.y += stepSize
-                newConfig = True
-        elif key == ord('d'):
-            if bottomRight.x + stepSize <= 1:
-                topLeft.x += stepSize
-                bottomRight.x += stepSize
-                newConfig = True
-        elif key == ord('1'):
-            calculationAlgorithm = dai.SpatialLocationCalculatorAlgorithm.MEAN
-            print('Switching calculation algorithm to MEAN!')
-            newConfig = True
-        elif key == ord('2'):
-            calculationAlgorithm = dai.SpatialLocationCalculatorAlgorithm.MIN
-            print('Switching calculation algorithm to MIN!')
-            newConfig = True
-        elif key == ord('3'):
-            calculationAlgorithm = dai.SpatialLocationCalculatorAlgorithm.MAX
-            print('Switching calculation algorithm to MAX!')
-            newConfig = True
-        elif key == ord('4'):
-            calculationAlgorithm = dai.SpatialLocationCalculatorAlgorithm.MODE
-            print('Switching calculation algorithm to MODE!')
-            newConfig = True
-        elif key == ord('5'):
-            calculationAlgorithm = dai.SpatialLocationCalculatorAlgorithm.MEDIAN
-            print('Switching calculation algorithm to MEDIAN!')
-            newConfig = True
+            auto_mode = True
+            print("Auto-detect mode ON")
+        elif key == ord('m'):
+            auto_mode = False
+            print("Manual mode ON")
+        elif key == ord('g'):
+            show_grid = not show_grid
+            print(f"Grid display: {show_grid}")
 
-        if newConfig:
-            config.roi = dai.Rect(topLeft, bottomRight)
-            config.calculationAlgorithm = calculationAlgorithm
-            cfg = dai.SpatialLocationCalculatorConfig()
-            cfg.addROI(config)
-            inputConfigQueue.send(cfg)
-            newConfig = False
+cv2.destroyAllWindows()
+
+
+
+
+
+
+'''
+Tastensteuerung:
+
+p dann +/-: Ebenenabstand anpassen
+t dann +/-: Toleranz anpassen
+a: Automatische Objekterkennung
+m: Manueller Modus
+g: Grid ein-/ausblenden
+q: Beenden
+
+
+'''
+
