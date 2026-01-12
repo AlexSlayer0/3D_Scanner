@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+#pip3 install depthai opencv-python numpy
+#pip install depthai numpy
+
 
 import cv2
 import depthai as dai
@@ -12,7 +15,6 @@ KAMERA_AUFLOESUNG = (640, 400)
 
 # Bekannte parallele Referenzfläche unter der Kamera
 KAMERA_ABSTAND_REFERENZ_MM = 500
-
 MESSBEREICH_BREITE_MM = 500
 MESSBEREICH_HOEHE_MM = 500
 
@@ -23,9 +25,9 @@ ROI_MITTE_Y = 0.5
 
 OBJEKT_ABSTAND_DELTA_MM = 10  # Objekt muss mind. 10mm über Referenz liegen
 
-FARBE_MESSBEREICH = (0, 255, 0)
-FARBE_OBJEKT = (255, 0, 0)
-FARBE_TEXT = (255, 255, 255)
+FARBE_MESSBEREICH   = (0, 255, 0)
+FARBE_OBJEKT        = (255, 0, 0)
+FARBE_TEXT          = (255, 255, 255)
 
 STABIL_FRAMES = 5
 
