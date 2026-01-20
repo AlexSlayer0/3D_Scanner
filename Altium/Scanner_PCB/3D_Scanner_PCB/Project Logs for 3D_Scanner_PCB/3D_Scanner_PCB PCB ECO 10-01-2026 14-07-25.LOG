@@ -1,0 +1,4 @@
+Added Pin To Net: NetName=TX Pin=ESP2-1
+Added Pin To Net: NetName=RX Pin=ESP2-2
+Added Pin To Net: NetName=GND Pin=ESP2-7
+Added Pin To Net: NetName=+5V Pin=ESP2-8

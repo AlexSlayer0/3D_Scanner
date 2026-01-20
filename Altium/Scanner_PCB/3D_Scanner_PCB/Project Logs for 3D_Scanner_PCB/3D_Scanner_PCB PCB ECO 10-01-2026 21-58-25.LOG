@@ -1,0 +1,12 @@
+Removed Pin From Net: NetName=SDA1 Pin=I2CMUX-19
+Removed Pin From Net: NetName=SCL1 Pin=I2CMUX-20
+Removed Pin From Net: NetName=SDA2 Pin=I2CMUX-21
+Removed Pin From Net: NetName=SCL2 Pin=I2CMUX-22
+Removed Pin From Net: NetName=SDA3 Pin=I2CMUX-23
+Removed Pin From Net: NetName=SCL3 Pin=I2CMUX-24
+Added Pin To Net: NetName=SDA1 Pin=I2CMUX-9
+Added Pin To Net: NetName=SCL1 Pin=I2CMUX-10
+Added Pin To Net: NetName=SDA2 Pin=I2CMUX-11
+Added Pin To Net: NetName=SCL2 Pin=I2CMUX-12
+Added Pin To Net: NetName=SDA3 Pin=I2CMUX-13
+Added Pin To Net: NetName=SCL3 Pin=I2CMUX-14

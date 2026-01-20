@@ -1,0 +1,35 @@
+Removed Pin From Net: NetName=+5V Pin=ESP2-8
+Added Component: Designator=R_GPIO(R_0207/RM4)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "07-Sep-2019"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "21-Feb-2011"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "330R"; VariantName = "[No Variations]"
+Added Component: Designator=R_PU(R_0207/RM4)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "07-Sep-2019"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "21-Feb-2011"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "330R"; VariantName = "[No Variations]"
+Added Component: Designator=Taster(691213510002)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691213510002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=3V3 Pin=R_PU-1
+Added Pin To Net: NetName=3V3 Pin=RPI1-1
+Added Net: Name=3V3
+Added Pin To Net: NetName=GPIO_BTN Pin=R_GPIO-1
+Added Pin To Net: NetName=GPIO_BTN Pin=RPI1-18
+Added Net: Name=GPIO_BTN
+Added Pin To Net: NetName=NetR_GPIO_2 Pin=R_GPIO-2
+Added Pin To Net: NetName=NetR_GPIO_2 Pin=Taster-1
+Added Net: Name=NetR_GPIO_2
+Added Pin To Net: NetName=NetR_PU_2 Pin=R_PU-2
+Added Pin To Net: NetName=NetR_PU_2 Pin=Taster-2
+Added Net: Name=NetR_PU_2
+Added Member To Class: ClassName=PCB_Schematic Member=Component R_GPIO 330R
+Added Member To Class: ClassName=PCB_Schematic Member=Component R_PU 330R
+Added Member To Class: ClassName=PCB_Schematic Member=Component Taster 691213510002
+Added Rule: Name=Schematic Supply Nets_3
+Added Rule: Name=Schematic Supply Nets_4

@@ -1,0 +1,22 @@
+Removed Pin From Net: NetName=SDA1 Pin=I2CMUX-9
+Removed Pin From Net: NetName=SCL1 Pin=I2CMUX-10
+Removed Pin From Net: NetName=SDA2 Pin=I2CMUX-11
+Removed Pin From Net: NetName=SCL2 Pin=I2CMUX-12
+Removed Pin From Net: NetName=SDA3 Pin=I2CMUX-13
+Removed Pin From Net: NetName=SCL3 Pin=I2CMUX-14
+Removed Pin From Net: NetName=PWM1 Pin=R_RGB1-2
+Removed Pin From Net: NetName=PWM0 Pin=R_RGB2-2
+Change Component Designator: OldDesignator=LED1 NewDesignator=LED_Strip
+Change Component Designator: OldDesignator=LED2 NewDesignator=LED_Ringe
+Add Pin To Net: Unknown Pin: Pin ESP2-9
+Add Pin To Net: Unknown Pin: Pin ESP2-10
+Add Pin To Net: Unknown Pin: Pin ESP2-14
+Add Pin To Net: Unknown Pin: Pin ESP2-15
+Added Pin To Net: NetName=SDA1 Pin=I2CMUX-13
+Added Pin To Net: NetName=SCL1 Pin=I2CMUX-14
+Added Pin To Net: NetName=SDA2 Pin=I2CMUX-15
+Added Pin To Net: NetName=SCL2 Pin=I2CMUX-16
+Added Pin To Net: NetName=SDA3 Pin=I2CMUX-17
+Added Pin To Net: NetName=SCL3 Pin=I2CMUX-18
+Added Pin To Net: NetName=PWM0 Pin=R_RGB1-2
+Added Pin To Net: NetName=PWM1 Pin=R_RGB2-2

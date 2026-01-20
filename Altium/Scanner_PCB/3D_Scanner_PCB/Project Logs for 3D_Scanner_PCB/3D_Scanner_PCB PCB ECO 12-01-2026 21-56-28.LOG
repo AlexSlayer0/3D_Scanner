@@ -1,0 +1,6 @@
+Change Component Comment : Designator=R_PU Old Comment=330R New Comment=10K
+Change component parameters: Designator = "R_PU" ("R_PU"); Footprint = "R_0207/RM4"; UniqueID = "\XSELBEBU" ("\XSELBEBU")
+Change component parameters (AddParameter): Name = "LatestRevisionDate"; Value = "07-Sep-2019"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Published"; Value = "21-Feb-2011"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10K"; VariantName = "[No Variations]"

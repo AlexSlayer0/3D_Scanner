@@ -1,0 +1,64 @@
+Removed Pin From Net: NetName=GND Pin=ADC3-3
+Removed Pin From Net: NetName=NetADC3_6 Pin=DRD3_1-1
+Removed Member From Class: ClassName=PCB_Schematic Member=DRD3_1
+Removed Member From Class: ClassName=PCB_Schematic Member=Schirm3
+Change Footprint: Footprint Not Found SAMTEC-HMTSW-101-24-X-S-290
+Change Footprint: Footprint Not Found SAMTEC-HMTSW-101-24-X-S-290
+Change Footprint: Footprint Not Found SAMTEC-HMTSW-101-24-X-S-290
+Change Footprint: Footprint Not Found SAMTEC-HMTSW-101-24-X-S-290
+Change Footprint: Footprint Not Found SAMTEC-HMTSW-101-24-X-S-290
+Change Component Comment : Designator=DRDY1_1 Old Comment=691236610001 New Comment=
+Change Component Comment : Designator=DRDY1_2 Old Comment=691236610001 New Comment=
+Change Component Comment : Designator=DRDY2_1 Old Comment=691236610001 New Comment=
+Change Component Comment : Designator=DRDY2_2 Old Comment=691236610001 New Comment=
+Change Component Comment : Designator=DRDY3_2 Old Comment=691236610001 New Comment=
+Change Component Designator: OldDesignator=ESP8266 NewDesignator=ESP1
+Change Component Designator: OldDesignator=J? NewDesignator=ESP2
+Change Component Designator: OldDesignator=Schirm2 NewDesignator=Schirm1
+Change Component Designator: OldDesignator=Schirm3 NewDesignator=Schirm2
+Change component parameters: Designator = "DRDY1_1" ("DRDY1_1"); Footprint = "691236610001"; UniqueID = "\CMJSDACO" ("\CMJSDACO")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "SAMTEC-HMTSW-101-24-X-S-290"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "DRDY1_2" ("DRDY1_2"); Footprint = "691236610001"; UniqueID = "\CFNFENJO" ("\CFNFENJO")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "SAMTEC-HMTSW-101-24-X-S-290"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "DRDY2_1" ("DRDY2_1"); Footprint = "691236610001"; UniqueID = "\YXZUEHVU" ("\YXZUEHVU")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "SAMTEC-HMTSW-101-24-X-S-290"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "DRDY2_2" ("DRDY2_2"); Footprint = "691236610001"; UniqueID = "\IDJPJRRC" ("\IDJPJRRC")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "SAMTEC-HMTSW-101-24-X-S-290"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "DRDY3_2" ("DRDY3_2"); Footprint = "691236610001"; UniqueID = "\KYVLWVOC" ("\KYVLWVOC")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = ""; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "SAMTEC-HMTSW-101-24-X-S-290"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Add Component: Footprint Not Found SAMTEC-HMTSW-101-24-X-S-290
+Add Pin To Net: Unknown Pin: Pin DRDY3_1-1
+Add Pin To Net: Unknown Pin: Pin ESP2-9
+Add Pin To Net: Unknown Pin: Pin ESP2-10
+Add Pin To Net: Unknown Pin: Pin ESP2-14
+Add Pin To Net: Unknown Pin: Pin ESP2-15
+Added Pin To Net: NetName=GND Pin=Schirm1-1
+Added Pin To Net: NetName=GND Pin=Schirm1-2
+Change Net Name : Old Net Name=NetESP8266_6 New Net Name=NetESP1_6
+Change Net Name : Old Net Name=NetESP8266_7 New Net Name=NetESP1_7
+Add Class Member: Failed to add class member : Component DRDY3_1

@@ -1,0 +1,11 @@
+Removed Member From Class: ClassName=PCB_Schematic Member=DRDY1_1
+Removed Member From Class: ClassName=PCB_Schematic Member=DRDY1_2
+Removed Member From Class: ClassName=PCB_Schematic Member=DRDY2_1
+Removed Member From Class: ClassName=PCB_Schematic Member=DRDY2_2
+Removed Member From Class: ClassName=PCB_Schematic Member=DRDY3_2
+Add Component: Footprint Not Found SAMTEC-HMTSW-101-24-X-S-290
+Add Pin To Net: Unknown Pin: Pin ESP2-9
+Add Pin To Net: Unknown Pin: Pin ESP2-10
+Add Pin To Net: Unknown Pin: Pin ESP2-14
+Add Pin To Net: Unknown Pin: Pin ESP2-15
+Add Class Member: Failed to add class member : Component J? SAMTEC-HMTSW-101-24-X-S-290
