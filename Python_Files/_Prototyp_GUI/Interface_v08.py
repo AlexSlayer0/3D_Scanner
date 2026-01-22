@@ -34,7 +34,7 @@ class AppConfig:
     NUM_CAMERAS: int = 4
     IMAGE_WIDTH: int = 640
     IMAGE_HEIGHT: int = 480
-    DEBUG_SINGLE_CAMERA: bool = True
+    DEBUG_SINGLE_CAMERA: bool = False
     DEFAULT_LANGUAGE: str = "de"
     GUI_RESOURCES_PATH: str = "GUI_Anzeige"
     LOG_LEVEL: str = "INFO"
@@ -131,7 +131,13 @@ class TranslationManager:
                 "detected": ("Erkannt", "Detected", "Rilevato"),
                 "manual": ("Manuell", "Manual", "Manuale"),
                 "for_ean13": ("(EAN13 als Barcode)", "(EAN13 as barcode)", "(EAN13 come codice)"),
-                "for_other": ("(andere als Artikelnummer)", "(other as article number)", "(altro come numero articolo)")
+                "for_other": ("(andere als Artikelnummer)", "(other as article number)", "(altro come numero articolo)"),
+                "no_image_available": ("Kein Bild verfügbar", "No image available", "Nessuna immagine disponibile"),
+                "enter_article_number": ("Artikelnummer hier eingeben...", "Enter article number here...", "Inserisci il numero articolo qui..."),
+                "enter_ean13_barcode": ("EAN13 Barcode hier eingeben...", "Enter EAN13 barcode here...", "Inserisci il codice a barre EAN13 qui..."),
+                "enter_article_number_manually": ("Artikelnummer bitte manuell eingeben", "Please enter article number manually", "Si prega di inserire manualmente il numero articolo"),
+                "enter_ean13_barcode_manually": ("EAN13 Barcode bitte manuell eingeben", "Please enter EAN13 barcode manually", "Si prega di inserire manualmente il codice a barre EAN13")
+
             },
             "messagebox": {
                 "camera_error": ("Kamerafehler", "Camera Error", "Errore Fotocamera"),
@@ -155,7 +161,11 @@ class TranslationManager:
                 "sap_integration_title": ("SAP-Integration", "SAP Integration", "Integrazione SAP"),
                 "sap_integration_message": ("SAP-Integration würde jetzt gestartet werden...", "SAP Integration would now be started...", "L'integrazione SAP verrà ora avviata..."),
                 "save_local_title": ("Lokales Speichern", "Local Save", "Salvataggio Locale"),
-                "save_local_message": ("Daten würden jetzt lokal gespeichert werden...", "Data would now be saved locally...", "I dati verrebbero ora salvati localmente...")
+                "save_local_message": ("Daten würden jetzt lokal gespeichert werden...", "Data would now be saved locally...", "I dati verrebbero ora salvati localmente..."),
+                "scanning_title": ("Scan wird durchgeführt", "Scanning in progress", "Scansione in corso"),
+                "scanning_in_progress": ("Scan wird durchgeführt...", "Scanning in progress...", "Scansione in corso..."),
+                "scanning_cancel_btn": ("Abbrechen", "Cancel", "Annulla")
+
             }
         }
         
@@ -219,7 +229,7 @@ class CameraManager:
     def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
         """Erstellt ein Platzhalterbild für fehlende Kameras"""
         img = np.zeros((CONFIG.IMAGE_HEIGHT, CONFIG.IMAGE_WIDTH, 3), dtype=np.uint8)
-        text = f"Kamera {camera_id} nicht verfügbar" if camera_id >= 0 else "BILD NICHT AUFGENOMMEN"
+        text = f"           No camera {camera_id+1}    ???" if camera_id >= 0 else "BILD NICHT AUFGENOMMEN"
         cv2.putText(img, text, 
                    (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 
                    (255, 255, 255), 2)
@@ -273,6 +283,8 @@ class CameraManager:
                     img = self.take_picture(i)
                 else:
                     img = self._make_placeholder(i)
+                    logger.warning(f"Fehler beim Zugriff auf Kamera {i} - Platzhalterbild erstellt")
+
                 images.append(img)
         
         return images
@@ -300,9 +312,7 @@ class DetectionManager:
         all_dimensions: List[str] = []
         all_frames: List[np.ndarray] = []
         
-        # Direkt importieren und verwenden
         try:
-            # Importiere das Modul neu
             import workers.BoundingBox_Yolo03 as yolo_module
             logger.info("BoundingBox_Yolo03 erfolgreich importiert")
         except ImportError as e:
@@ -314,8 +324,15 @@ class DetectionManager:
             return all_dimensions, all_frames
         
         for idx, frame in enumerate(images):
+            # WICHTIG: Überspringe None-Bilder (verworfene Bilder)
+            if frame is None:
+                logger.info(f"Bild {idx} ist None - überspringe YOLO-Verarbeitung")
+                all_dimensions.append("0 x 0")
+                all_frames.append(None)
+                continue
+                
             logger.info(f"Verarbeite Bild {idx} für YOLO-Erkennung")
-            
+            # ... Rest der Methode bleibt gleich ...        
             if frame is None:
                 logger.warning(f"Bild {idx} ist None")
                 all_dimensions.append("0 x 0")
@@ -374,18 +391,17 @@ class DetectionManager:
     def run_barcode_detection(self, images: List[np.ndarray]) -> List[Dict[str, Any]]:
         """Erkennt alle Barcodes in den Bildern"""
         try:
-            # Importiere die BarcodeDetector Klasse
             from workers.BarCode_v02 import BarcodeDetector
             
-            # Initialisiere Detector
             detector = BarcodeDetector()
             self.all_barcodes = []
             
             image_names = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
             
             for idx, img in enumerate(images):
+                # WICHTIG: Überspringe None-Bilder (verworfene Bilder)
                 if img is None:
-                    logger.warning(f"Bild {idx} ist None - überspringe")
+                    logger.info(f"Bild {idx} ist None - überspringe Barcode-Erkennung")
                     continue
                 
                 img_name = image_names[idx] if idx < len(image_names) else f"Bild_{idx}"
@@ -530,7 +546,7 @@ class FullscreenApp(QMainWindow):
         self.showFullScreen()
 
         # Initialisierung
-        self.camera = CameraManager(debug_single_camera=True)
+        self.camera = CameraManager(CONFIG.DEBUG_SINGLE_CAMERA)
         self.translator = TranslationManager()
         self.language = CONFIG.DEFAULT_LANGUAGE
         self.Explorer_Structure = CONFIG.GUI_RESOURCES_PATH
@@ -977,6 +993,7 @@ class FullscreenApp(QMainWindow):
             pixmap = self.convert_to_pixmap(new_img)
             self.image_labels[idx].setPixmap(pixmap)
 
+
     def discard_image(self, idx: int):
         """Verwirft ein Bild"""
         logger.info(f"Verworfen Bild {idx+1}")
@@ -986,6 +1003,9 @@ class FullscreenApp(QMainWindow):
         gray_pixmap = QPixmap(label.pixmap().size())
         gray_pixmap.fill(Qt.GlobalColor.lightGray)
         label.setPixmap(gray_pixmap)
+        
+        # Setze verworfene Bild auf None, damit es nicht verarbeitet wird
+        self.images[idx] = None
 
     def make_card(self, text: str) -> QLabel:
         """Erstellt eine Textkarte"""
@@ -1519,8 +1539,8 @@ class FullscreenApp(QMainWindow):
         source = barcode.get('source', 'manual')
         
         # Größere Bildabmessungen
-        IMAGE_WIDTH = 500  # Statt 250
-        IMAGE_HEIGHT = 350  # Statt 150
+        IMAGE_WIDTH = 500 
+        IMAGE_HEIGHT = 350  
         
         # Unterschiedliches Styling für Artikelnummer vs EAN13
         if is_article_number:
@@ -1617,7 +1637,7 @@ class FullscreenApp(QMainWindow):
             source_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             image_layout.addWidget(source_label)
         else:
-            placeholder = QLabel("Kein Bild verfügbar")
+            placeholder = QLabel(self.translator.get_text(self.language, "storage", "no_image_available"))
             placeholder.setStyleSheet("""
                 color: #BDC3C7;
                 font-style: italic;
@@ -1648,10 +1668,10 @@ class FullscreenApp(QMainWindow):
         barcode_input.setText(barcode.get('value', ''))
         
         if is_article_number:
-            barcode_input.setPlaceholderText("Artikelnummer hier eingeben...")
+            barcode_input.setPlaceholderText(self.translator.get_text(self.language, "storage", "enter_article_number"))
         else:
-            barcode_input.setPlaceholderText("EAN13 Barcode hier eingeben...")
-        
+            barcode_input.setPlaceholderText(self.translator.get_text(self.language, "storage", "enter_ean13_barcode"))
+
         barcode_input.textChanged.connect(lambda text: self.update_barcode_value(index, text))
         info_layout.addWidget(barcode_input)
         
@@ -1708,10 +1728,10 @@ class FullscreenApp(QMainWindow):
                 status_color = "#2ecc71"  # Grün
         else:
             if is_article_number:
-                status_text = "Artikelnummer bitte manuell eingeben"
+                status_text = self.translator.get_text(self.language, "storage", "enter_article_number_manually")
                 status_color = "#e74c3c"  # Rot
             else:
-                status_text = "EAN13 Barcode bitte manuell eingeben"
+                status_text = self.translator.get_text(self.language, "storage", "enter_ean13_barcode_manually")
                 status_color = "#e74c3c"  # Rot
         
         status_label.setText(status_text)
@@ -1728,6 +1748,27 @@ class FullscreenApp(QMainWindow):
         frame.is_article_number = is_article_number
         
         return frame
+
+    def show_enlarged_image(self, img, barcode_type):
+        """Einfache Version mit deiner convert_to_pixmap Methode"""
+        dialog = QDialog(self)
+        dialog.setWindowTitle(barcode_type)
+        dialog.setFixedSize(800, 600)
+        
+        label = QLabel()
+        
+        if img is not None:
+            pixmap = self.convert_to_pixmap(img, width=780, height=550)
+            label.setPixmap(pixmap)
+        
+        layout = QVBoxLayout(dialog)
+        layout.addWidget(label)
+        
+        ok_btn = QPushButton("OK")
+        ok_btn.clicked.connect(dialog.accept)
+        layout.addWidget(ok_btn)
+        
+        dialog.exec()
 
 
     def update_barcode_value(self, index: int, value: str):
@@ -1940,7 +1981,24 @@ class FullscreenApp(QMainWindow):
         # Von Foto-Auswahl (Index 1) zu Kamera-Übersicht (Index 2)
         elif idx == 1:
             if self.scan_start:
-                self.show_loading_dialog()
+                # FILTERE NUR BEIBEHALTENE BILDER FÜR DEN WORKER
+                filtered_images = []
+                for i, img in enumerate(self.images):
+                    if self.keep[i] and img is not None:
+                        filtered_images.append(img)
+                    else:
+                        # Für verworfene Bilder einen Platzhalter hinzufügen
+                        filtered_images.append(None)
+                
+                # Stelle sicher, dass wir mindestens ein Bild haben
+                if any(img is not None for img in filtered_images):
+                    self.show_loading_dialog(filtered_images)
+                else:
+                    QMessageBox.warning(
+                        self,
+                        self.translator.get_text(self.language, "messagebox", "no_images_title"),
+                        self.translator.get_text(self.language, "messagebox", "no_images_message")
+                    )
             else:
                 QMessageBox.warning(
                     self,
@@ -1950,11 +2008,11 @@ class FullscreenApp(QMainWindow):
         elif idx == 2:
             self.stack.setCurrentIndex(idx + 1)
             self.update_buttons()
-            
-    def show_loading_dialog(self):
+
+    def show_loading_dialog(self, images_to_process):
         """Zeigt den Lade-Dialog mit Fortschrittsbalken"""
         self.loading_dialog = QDialog(self)
-        self.loading_dialog.setWindowTitle("Ladevorgang der Daten")
+        self.loading_dialog.setWindowTitle(self.translator.get_text(self.language, "messagebox", "scanning_title"))
         self.loading_dialog.setModal(True)
         self.loading_dialog.setFixedSize(350, 450)
 
@@ -1969,7 +2027,7 @@ class FullscreenApp(QMainWindow):
         layout.addWidget(gif_label)
 
         # Status-Label
-        status_label = QLabel("Daten werden verarbeitet...")
+        status_label = QLabel(self.translator.get_text(self.language, "messagebox", "scanning_in_progress"))
         status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         status_label.setStyleSheet("font-size: 16px; margin: 20px;")
         layout.addWidget(status_label)
@@ -1994,7 +2052,7 @@ class FullscreenApp(QMainWindow):
         layout.addWidget(self.progress_bar)
 
         # Abbrechen-Button
-        cancel_btn = QPushButton("Abbrechen")
+        cancel_btn = QPushButton(self.translator.get_text(self.language, "messagebox", "scanning_cancel_btn"))
         cancel_btn.setFixedSize(120, 40)
         cancel_btn.setStyleSheet("""
             QPushButton {
@@ -2004,8 +2062,8 @@ class FullscreenApp(QMainWindow):
         """)
         layout.addWidget(cancel_btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Worker starten
-        self.start_worker()
+        # Worker starten mit gefilterten Bildern
+        self.start_worker(images_to_process)
 
         def finish_loading():
             if self.loading_dialog.isVisible():
@@ -2080,9 +2138,10 @@ class FullscreenApp(QMainWindow):
                 self.next_btn.setEnabled(True)
                 self.next_btn.setToolTip("")
     
-    def start_worker(self):
+
+    def start_worker(self, images_to_process):
         """Startet den Worker-Thread für parallele Verarbeitung"""
-        self.worker = ParallelWorker(self.images)
+        self.worker = ParallelWorker(images_to_process)
         self.worker.output_received.connect(self.handle_output)
         self.worker.progress_updated.connect(self.update_progress_bar)
         self.worker.finished.connect(lambda: logger.info("Alle Tasks fertig"))
