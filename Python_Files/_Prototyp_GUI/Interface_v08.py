@@ -1,7 +1,6 @@
 #Interface_v08.py
 """=======TODO-Liste v0.8=======
 Objekt-Detection muss verbessert werden/Mit Bemassung der Distanz von der LIDAR-Kamera      !!!!!!!!!
-Gewicht-Messung muss implementiert werden                                                   !!!!!!!!!
 SAP-Integration                 (Platzhalter-Button/optional)
 Lokal speichern Integration     (Formatierung?)
 
@@ -12,7 +11,7 @@ import csv
 import sys
 import cv2
 import json
-import logging
+import logging  
 import platform
 import numpy as np
 from datetime import datetime 
