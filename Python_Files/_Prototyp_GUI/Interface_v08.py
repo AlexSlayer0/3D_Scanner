@@ -1,7 +1,6 @@
 #Interface_v08.py
 """=======TODO-Liste v0.8=======
 Objekt-Detection muss verbessert werden/Mit Bemassung der Distanz von der LIDAR-Kamera      !!!!!!!!!
-Gewicht-Messung muss implementiert werden                                                   !!!!!!!!!
 SAP-Integration                 (Platzhalter-Button/optional)
 Lokal speichern Integration     (Formatierung?)
 
@@ -424,18 +423,21 @@ class DetectionManager:
             return []
 
 
-
-# ==================== Parallel Worker ====================
 class ParallelWorker(QThread):   
     output_received = pyqtSignal(str, object)  # (task_name, result)
     progress_updated = pyqtSignal(int)  # Fortschritt in %
     finished = pyqtSignal()
 
-    def __init__(self, images: List[np.ndarray]):
+    def __init__(self, images: List[np.ndarray], keep: List[bool]):
         super().__init__()
         self.images = images
+        self.keep = keep
         self.detection_manager = DetectionManager()
         self.progress = 0
+
+        # Filtere nur die nicht verworfenen Bilder
+        self.images_to_process = [img for i, img in enumerate(images) if keep[i]]
+        self.original_indices = [i for i in range(len(images)) if keep[i]]
 
     def _update_progress(self, increment: int):
         """Aktualisiert den Fortschritt"""
@@ -444,6 +446,13 @@ class ParallelWorker(QThread):
 
     def run(self):
         """Führt parallele Verarbeitung mit ThreadPoolExecutor durch"""
+        valid_images = [keep for keep in self.keep if keep is not False]
+    
+        if not valid_images:
+            logger.warning("Keine gültigen Bilder zum Verarbeiten - alle sind Verworfen")
+            self.finished.emit()
+            return
+        
         import concurrent.futures
         
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
@@ -473,18 +482,39 @@ class ParallelWorker(QThread):
         self.finished.emit()
     
     def _run_yolo_task(self):
-        """Führt YOLO-Erkennung durch"""
+        """Führt YOLO-Erkennung durch - NUR auf nicht verworfenen Bildern"""
         try:
-            dimensions, frames = self.detection_manager.run_yolo_detection(self.images)
-            return {"dimensions": dimensions, "frames": frames}
+            # Verwende images_to_process anstatt images
+            dimensions, frames = self.detection_manager.run_yolo_detection(self.images_to_process)
+            
+            # Erstelle leere Listen für alle Bilder (4 Kameras)
+            all_dimensions = ["0 x 0"] * len(self.images)
+            all_frames = [None] * len(self.images)
+            
+            # Fülle die Ergebnisse nur an den originalen Indizes der behaltenen Bilder
+            for i, idx in enumerate(self.original_indices):
+                if i < len(dimensions):
+                    all_dimensions[idx] = dimensions[i]
+                if i < len(frames):
+                    all_frames[idx] = frames[i]
+                    
+            return {"dimensions": all_dimensions, "frames": all_frames}
         except Exception as e:
             logger.error(f"YOLO Task Fehler: {e}")
             return {"dimensions": [], "frames": []}
     
     def _run_barcode_task(self):
-        """Führt Barcode-Erkennung durch"""
+        """Führt Barcode-Erkennung durch - NUR auf nicht verworfenen Bildern"""
         try:
-            barcodes = self.detection_manager.run_barcode_detection(self.images)
+            # Verwende images_to_process anstatt images
+            barcodes = self.detection_manager.run_barcode_detection(self.images_to_process)
+            
+            # Passe die image_indices an die originalen Indizes an
+            for barcode in barcodes:
+                original_idx = barcode.get('image_index', 0)
+                if original_idx < len(self.original_indices):
+                    barcode['image_index'] = self.original_indices[original_idx]
+                    
             return {"barcodes": barcodes}
         except Exception as e:
             logger.error(f"Barcode Task Fehler: {e}")
@@ -1893,6 +1923,8 @@ class FullscreenApp(QMainWindow):
                 QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
                 return
             self.scan_start = False
+            self.keep = [True] * CONFIG.NUM_CAMERAS
+
 
 
         # Spezialfall: Von Kamera-Übersicht (Index 2) zurück zur Foto-Auswahl (Index 1)
@@ -2082,7 +2114,7 @@ class FullscreenApp(QMainWindow):
     
     def start_worker(self):
         """Startet den Worker-Thread für parallele Verarbeitung"""
-        self.worker = ParallelWorker(self.images)
+        self.worker = ParallelWorker(self.images, self.keep)
         self.worker.output_received.connect(self.handle_output)
         self.worker.progress_updated.connect(self.update_progress_bar)
         self.worker.finished.connect(lambda: logger.info("Alle Tasks fertig"))

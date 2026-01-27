@@ -25,7 +25,7 @@ if IS_TEST:
             return True
         def getAverage(self, n):
             # Simuliere einen festen Rohwert für Test
-            return 1000  # beliebiger Rohwert
+            return 500  # beliebiger Rohwert
     adc_channels = [DummyADC() for _ in range(3)]
 else:
     adc_channels = [NAU7802() for _ in range(3)]
@@ -94,6 +94,23 @@ def measure_cell(index):
     print(f"Zelle {index}: {gewicht:.2f} g")
     return gewicht
 
+
+# ==============================
+# Gewichtsmessung aller Zelle
+# ==============================
+def get_weight():
+    """Gibt das Gesamtgewicht aller Zellen zurück"""
+    try:
+        gesamt = 0
+        for i in range(len(adc_channels)):
+            gesamt += measure_cell(i)
+            time.sleep(0.1)  # Kurze Pause zwischen den Messungen
+        print(f"Gesamtgewicht: {gesamt:.2f} g\n")
+        return gesamt
+    except Exception as e:
+        print(f"Fehler bei der Gewichtsmessung: {e}")
+        return "Undefiniert"  # oder einen Fehlerwert zurückgeben
+
 # ==============================
 # Hauptprogramm
 # ==============================
@@ -111,8 +128,5 @@ if __name__ == "__main__":
     
     # Messung starten
     while True:
-        gesamt = 0
-        for i in range(len(adc_channels)):
-            gesamt += measure_cell(i)
-        print(f"Gesamtgewicht: {gesamt:.2f} g\n")
-        time.sleep(0.5)
+        get_weight()
+        time.sleep(2)  # Wartezeit zwischen den Messungen
