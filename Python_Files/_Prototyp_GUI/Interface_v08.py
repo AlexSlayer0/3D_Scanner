@@ -38,6 +38,8 @@ class AppConfig:
     GUI_RESOURCES_PATH: str = "GUI_Anzeige"
     LOG_LEVEL: str = "INFO"
     YOLO_MODEL_PATH: str = "models/YOLOV8s_Barcode_Detection.pt"
+    SCANS_FOLDER: str = "C:\\Users\\grane\\Desktop\\Scans" # Windows
+
     
     @classmethod
     def load_from_file(cls, config_path: str = "config.json"):
@@ -374,7 +376,7 @@ class DetectionManager:
         """Erkennt alle Barcodes in den Bildern"""
         try:
             # Importiere die BarcodeDetector Klasse
-            from workers.BarCode_v02 import BarcodeDetector
+            from workers.BarCode_v03 import BarcodeDetector
             
             # Initialisiere Detector
             detector = BarcodeDetector()
@@ -1325,6 +1327,25 @@ class FullscreenApp(QMainWindow):
         self.stack.setCurrentIndex(current_page)
         self.update_buttons()
 
+    def clear_image_memory(self):
+        """Löscht explizit alle Bildreferenzen und gibt RAM frei"""
+        for i in range(CONFIG.NUM_CAMERAS):
+            # Setze die Referenzen auf None, ohne die Liste zu verändern
+            self.images[i] = None
+            self.final_images[i] = None
+        
+        # Barcode-Bilder löschen
+        for barcode in self.all_barcodes:
+            if "cropped_image" in barcode and barcode["cropped_image"] is not None:
+                barcode["cropped_image"] = None
+        
+        # Garbage Collector manuell aufrufen
+        import gc
+        gc.collect()
+        
+        logger.debug("Bildspeicher explizit freigegeben")
+
+
     def rebeginn_application(self):
         """Startet die Anwendung von der Startseite neu"""
         if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_loss_confirm"), 
@@ -1332,6 +1353,9 @@ class FullscreenApp(QMainWindow):
                 QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
             return
         
+        self.clear_image_memory()
+
+
         self.abmessung = None
         self.gewicht = None
         self.barcode = None
@@ -1801,41 +1825,84 @@ class FullscreenApp(QMainWindow):
             self.stack.setCurrentIndex(3)
 
     def save_all_data_csv(self):
-        """Speichert alle Daten in CSV mit Trennung von EAN und Artikelnummern"""
+        """Speichert Daten in Tages-CSV (append) und Bilder in Foto-Ordner"""
         try:
-            # Ordner für Bilder erstellen
-            scan_folder = f"Scan_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-            os.makedirs(scan_folder, exist_ok=True)
+            # 1. Basisordner aus Konfiguration verwenden
+            base_scans_folder = CONFIG.SCANS_FOLDER
+            if not base_scans_folder:  # Fallback falls leer
+                base_scans_folder = "Scans"
             
-            # ISO-Bild speichern
-            iso_bild_pfad = ""
-            if self.images and len(self.images) > 0 and self.images[0] is not None:
-                iso_bild_datei = "iso_bild.jpg"
-                iso_bild_pfad = os.path.join(scan_folder, iso_bild_datei)
-                if len(self.images[0].shape) == 3 and self.images[0].shape[2] == 3:
-                    bgr_img = cv2.cvtColor(self.images[0], cv2.COLOR_RGB2BGR)
-                else:
-                    bgr_img = self.images[0]
-                cv2.imwrite(iso_bild_pfad, bgr_img)
+            if not os.path.exists(base_scans_folder):
+                os.makedirs(base_scans_folder)
+                logger.info(f"Basisordner erstellt: {base_scans_folder}")
             
-            # CSV-Datei erstellen
-            csv_datei = os.path.join(scan_folder, "scanner_daten.csv")
+            # 2. Heutiges Datum als Ordner
+            date_str = datetime.now().strftime('%Y-%m-%d')
+            date_folder = os.path.join(base_scans_folder, date_str)
+            if not os.path.exists(date_folder):
+                os.makedirs(date_folder)
             
-            with open(csv_datei, 'w', newline='', encoding='utf-8') as csvfile:
+            # 3. "Fotos"-Ordner im Tagesordner erstellen
+            fotos_folder = os.path.join(date_folder, "Fotos")
+            if not os.path.exists(fotos_folder):
+                os.makedirs(fotos_folder)
+            
+            # 4. Scan-spezifischen Unterordner für Bilder
+            scan_timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            scan_bilder_folder = os.path.join(fotos_folder, f"Scan_{scan_timestamp}")
+            os.makedirs(scan_bilder_folder, exist_ok=True)
+            
+            # 5. CSV-Datei im Tagesordner (gleiche Datei für alle Scans des Tages)
+            csv_datei = os.path.join(date_folder, f"scans_{date_str}.csv")
+            
+            # 6. Prüfen ob CSV bereits existiert (dann append Mode)
+            file_exists = os.path.exists(csv_datei)
+            
+            with open(csv_datei, 'a', newline='', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile, delimiter=';')
                 
-                # NEUE Kopfzeile mit separaten Spalten für EAN und Artikelnummer
-                writer.writerow([
-                    "Interne_Materialnummer",
-                    "Gewicht [kg]",
-                    "Abmessungen L [mm]",
-                    "Abmessungen B [mm]", 
-                    "Abmessungen H [mm]",
-                    "EAN-Code",
-                    "Iso_Bild"
-                ])
+                # 7. Nur Kopfzeile schreiben wenn Datei neu ist
+                if not file_exists:
+                    writer.writerow([
+                        "Scan_ID",
+                        "Materialnummer",
+                        "Gewicht_kg",
+                        "Laenge_mm",
+                        "Breite_mm",
+                        "Hoehe_mm",
+                        "EAN",
+                        "ISO_Bild_Pfad",
+                    ])
+                    logger.info(f"Neue CSV-Datei erstellt: {csv_datei}")
                 
-                # Abmessungen parsen
+                # 8. Alle Bilder speichern und Pfade merken
+                image_names = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
+                bild_pfade = {}
+                
+                for idx, img in enumerate(self.images):
+                    if img is not None and idx < len(image_names):
+                        img_name = image_names[idx]
+                        bild_datei = f"{img_name}.jpg"
+                        bild_pfad = os.path.join(scan_bilder_folder, bild_datei)
+                        
+                        # Bild speichern
+                        if len(img.shape) == 3 and img.shape[2] == 3:
+                            bgr_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                        else:
+                            bgr_img = img
+                        
+                        cv2.imwrite(bild_pfad, bgr_img)
+                        bild_pfade[img_name] = bild_pfad
+                        logger.info(f"{img_name} gespeichert: {bild_pfad}")
+                
+                # 9. Relative Pfade für CSV (relativ zur CSV-Datei)
+                def get_relative_path(full_path):
+                    if not full_path:
+                        return ""
+                    # Berechne relativen Pfad von CSV zu Bild
+                    return os.path.relpath(full_path, date_folder)
+                
+                # 10. Abmessungen parsen
                 laenge = breite = hoehe = 0
                 if self.abmessung and self.abmessung != "Undefiniert":
                     try:
@@ -1847,7 +1914,7 @@ class FullscreenApp(QMainWindow):
                     except:
                         pass
                 
-                # Gewicht parsen
+                # 11. Gewicht parsen
                 gewicht = 0
                 if self.gewicht and self.gewicht != "Undefiniert":
                     try:
@@ -1856,7 +1923,7 @@ class FullscreenApp(QMainWindow):
                     except:
                         pass
                 
-                # Trenne EAN13 und Artikelnummern
+                # 12. Barcodes trennen
                 ean_codes = []
                 article_numbers = []
                 
@@ -1871,44 +1938,66 @@ class FullscreenApp(QMainWindow):
                         else:
                             ean_codes.append(value)
                 
-                # Für jede Kombination eine Zeile erstellen
-                # Wenn keine Barcodes, eine leere Zeile
+                
+                # 13. Für jede Kombination eine Zeile in die CSV schreiben (APPEND)
                 if not ean_codes and not article_numbers:
                     writer.writerow([
-                        "",  # Interne_Materialnummer
-                        f"{gewicht:.3f}".replace(".", ","),
-                        f"{laenge:.0f}".replace(".", ","),
-                        f"{breite:.0f}".replace(".", ","),
-                        f"{hoehe:.0f}".replace(".", ","),
-                        "",  # EAN-Code
-                        iso_bild_pfad if iso_bild_pfad else ""
+                        scan_timestamp,  # Scan_ID
+                        "",  # Interne Materialnummer
+                        f"{gewicht:.3f}".replace(".", ","),  # Gewicht in kg
+                        f"{laenge:.0f}",  # Länge
+                        f"{breite:.0f}",  # Breite
+                        f"{hoehe:.0f}",  # Höhe
+                        "",  # EAN
+                        get_relative_path(bild_pfade.get("iso_Bild", "")) # ISO Bild
                     ])
+                    logger.info(f"Leerer Scan zu CSV hinzugefügt: {scan_timestamp}")
                 else:
-                    # Kombiniere alle Möglichkeiten
-                    for ean in (ean_codes if ean_codes else [""]):
-                        for article in (article_numbers if article_numbers else [""]):
+                    for article in (article_numbers if article_numbers else [""]):
+                        for ean in (ean_codes if ean_codes else [""]):                            
                             writer.writerow([
-                                article,
-                                f"{gewicht:.3f}".replace(".", ","),
-                                f"{laenge:.0f}".replace(".", ","),
-                                f"{breite:.0f}".replace(".", ","),
-                                f"{hoehe:.0f}".replace(".", ","),
-                                ean,
-                                iso_bild_pfad if iso_bild_pfad else ""
+                                scan_timestamp,  # Scan_ID
+                                article,  # Interne Materialnummer
+                                f"{gewicht:.3f}".replace(".", ","),  # Gewicht in kg
+                                f"{laenge:.0f}",  # Länge
+                                f"{breite:.0f}",  # Breite
+                                f"{hoehe:.0f}",  # Höhe
+                                ean,  # EAN
+                                get_relative_path(bild_pfade.get("iso_Bild", ""))
                             ])
+                    logger.info(f"{len(article_numbers)}x{len(ean_codes)} Datensätze zu CSV hinzugefügt")
+            
+            # 14. Erfolgsmeldung
+            lines_added = max(1, len(article_numbers) * max(1, len(ean_codes)))
+            
+            success_msg = f"""Scan erfolgreich gespeichert!
+    📊 Statistik:
+    • {lines_added} neue Zeile(n) in CSV
+    • {len(ean_codes)} EAN-Code(s)
+    • {len(article_numbers)} Artikelnummer(n)
+    • {len(bild_pfade)} Bild(er) gespeichert
+
+    📈 CSV-Status: {os.path.getsize(csv_datei):,} Bytes
+    ({'Datei neu erstellt' if not file_exists else 'An bestehende Datei angehängt'})
+    """
+            
+            QMessageBox.information(self, "Scan gespeichert", success_msg)
+            logger.info(f"Scan {scan_timestamp} zu {csv_datei} hinzugefügt")
+            
+            # 15. Optional: CSV-Datei öffnen (nur bei erstem Scan des Tages)
+            try:
+                if not file_exists and platform.system() == "Windows":
+                    os.startfile(csv_datei)  # CSV im Excel öffnen
+            except:
+                pass
                 
-            # Erfolgsmeldung
-            QMessageBox.information(self, "CSV erstellt", f"Daten gespeichert in: {scan_folder}\n\n")
-            
-            logger.info(f"Daten gespeichert: {len(ean_codes)} EANs, {len(article_numbers)} Artikelnummern")
-            
         except Exception as e:
             QMessageBox.critical(
                 self,
                 "Speicherfehler",
                 f"Fehler beim Speichern:\n{str(e)}"
             )
-            logger.error(f"Fehler in save_all_data_csv: {e}")
+            logger.error(f"Fehler in save_all_data_csv: {e}", exc_info=True)
 
 
     def go_back(self):

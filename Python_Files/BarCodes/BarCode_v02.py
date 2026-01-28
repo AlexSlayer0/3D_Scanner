@@ -6,7 +6,7 @@ from ultralytics import YOLO
 from pyzbar.pyzbar import decode
 
 # --- Umschalter: True = Kamera, False = Bilderordner ---
-USE_CAMERA = True  
+USE_CAMERA = False
 
 # --- Pfad nur nötig, wenn Kamera deaktiviert ---
 INPUT_DIR = Path("GUI_Anzeige")
