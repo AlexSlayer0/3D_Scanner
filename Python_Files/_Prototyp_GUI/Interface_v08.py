@@ -6,13 +6,15 @@ Lokal speichern Integration     (Formatierung?)
 
 ================================"""
 
-import os
-import csv
+import os # Für Dateipfade und Betriebssysteminteraktionen
+import csv # Für CSV-Verarbeitung (SAP-Integration)
 import sys
-import cv2
+import time # Für Verzögerungen
+import cv2 # Für Kamerazugriff und Bildverarbeitung
 import json
-import logging
-import platform
+import shutil  # Für Speicherplatzprüfung
+import logging  # Für Logging
+import platform # Für Betriebssystemerkennung
 import numpy as np
 from datetime import datetime 
 from dataclasses import dataclass
@@ -21,7 +23,7 @@ from typing import List, Tuple, Dict, Optional, Any
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit,
     QPushButton, QLabel, QFrame, QSizePolicy, QStackedWidget, QScrollArea, 
-    QToolButton, QMessageBox, QDialog, QProgressBar, QComboBox
+    QToolButton, QMessageBox, QDialog, QProgressBar, QComboBox, QInputDialog
 )
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
@@ -38,7 +40,8 @@ class AppConfig:
     GUI_RESOURCES_PATH: str = "GUI_Anzeige"
     LOG_LEVEL: str = "INFO"
     YOLO_MODEL_PATH: str = "models/YOLOV8s_Barcode_Detection.pt"
-    SCANS_FOLDER: str = "C:\\Users\\grane\\Desktop\\Scans" # Windows
+    #SCANS_FOLDER: str = "C:\\Users\\grane\\Desktop\\Scans" # Windows
+    SCANS_FOLDER: str = "/home/pi/3D_Scanner/Scans"  # Linux
 
     
     @classmethod
@@ -98,10 +101,9 @@ class TranslationManager:
                 "calibrated": ("Kalibriert", "Calibrated", "Calibrato"),
                 "connected": ("Verbunden", "Connected", "Connesso"),
                 "available": ("Verfügbar", "Available", "Disponibile"),
-                "refresh_btn": ("Status aktualisieren", "Refresh Status", "Aggiorna Stato"),
+                "quit_btn": ("Programm beenden", "Quit Program", "Esci dal Programma"),
                 "check_camera": ("Kamera prüfen", "Check Camera", "Controlla Fotocamera"),
                 "check_light": ("Beleuchtung prüfen", "Check Lighting", "Controlla Illuminazione"),
-                "check_measure": ("Mess-System prüfen", "Check Measurement", "Controlla Sistema Misura"),
                 "calibrate_scale": ("Waage kalibrieren", "Calibrate Scale", "Calibra Bilancia"),
                 "check_storage": ("Speicher prüfen", "Check Storage", "Controlla Memoria")
             },
@@ -149,14 +151,32 @@ class TranslationManager:
                 "no_images_message": ("Bitte nehmen Sie zuerst Bilder auf, bevor Sie fortfahren.", "Please take pictures first before continuing.", "Per favore scatta prima le foto prima di continuare."),
                 "no_barcodes_title": ("Keine Barcodes", "No Barcodes", "Nessun Codice a Barre"),
                 "no_barcodes_message": ("Es wurden keine Barcodes zum Speichern gefunden.", "No barcodes were found to save.", "Non è stato trovato alcun codice a barre da salvare."),
+                
                 "save_error_title": ("Speicherfehler", "Save Error", "Errore di Salvataggio"),
                 "save_error_message": ("Fehler beim Speichern der Daten.", "Error saving data.", "Errore durante il salvataggio dei dati."),
                 "save_success_title": ("Erfolgreich gespeichert", "Save Successful", "Salvataggio Riuscito"),
                 "save_success_message": ("{count} Barcode(s) wurden lokal gespeichert.", "{count} barcode(s) have been saved locally.", "{count} codice(i) a barre sono stati salvati localmente."),
+                
                 "sap_integration_title": ("SAP-Integration", "SAP Integration", "Integrazione SAP"),
                 "sap_integration_message": ("SAP-Integration würde jetzt gestartet werden...", "SAP Integration would now be started...", "L'integrazione SAP verrà ora avviata..."),
-                "save_local_title": ("Lokales Speichern", "Local Save", "Salvataggio Locale"),
-                "save_local_message": ("Daten würden jetzt lokal gespeichert werden...", "Data would now be saved locally...", "I dati verrebbero ora salvati localmente...")
+                
+                "scale_calibration_title": ("Waagen-Kalibrierung", "Scale Calibration", "Calibrazione Bilancia"),
+                "scale_calibration_input": ("Referenzgewicht eingeben (kg):", "Enter reference weight (kg):", "Inserisci peso di riferimento (kg):"),
+                "scale_calibration_default": ("1.000", "1.000", "1.000"),
+                "scale_calibration_starting": ("Kalibrierung wird gestartet...", "Starting calibration...", "Avvio calibrazione..."),
+                "scale_calibration_live": ("Rohdaten-Live-Anzeige", "Live Raw Data Display", "Visualizzazione Dati in Tempo Reale"),
+                "scale_calibration_raw": ("Rohwert:", "Raw Value:", "Valore Grezzo:"),
+                "scale_calibration_progress": ("Kalibrierungsfortschritt:", "Calibration Progress:", "Progresso Calibrazione:"),
+                "scale_calibration_complete": ("Kalibrierung erfolgreich!", "Calibration successful!", "Calibrazione completata!"),
+                "scale_calibration_error": ("Kalibrierungsfehler:", "Calibration error:", "Errore di calibrazione:"),
+
+                "storage_info_title": ("Speicherplatz-Information", "Storage Information", "Informazioni Spazio"),
+                "storage_total": ("Gesamter Speicher:", "Total Storage:", "Spazio Totale:"),
+                "storage_used": ("Belegt:", "Used:", "Utilizzato:"),
+                "storage_free": ("Frei:", "Free:", "Libero:"),
+                "storage_config_folder": ("📁 Konfigurierter Scans-Ordner:", "📁 Configured Scans Folder:", "📁 Cartella Scans Configurata:"),
+                "storage_error_title": ("Fehler", "Error", "Errore"),
+                "storage_error_message": ("Speicherprüfung fehlgeschlagen:", "Storage check failed:", "Verifica spazio fallita:")
             }
         }
         
@@ -918,7 +938,6 @@ class FullscreenApp(QMainWindow):
         status_buttons = [
             (self.translator.get_text(self.language, "start", "check_camera"), self.check_camera),
             (self.translator.get_text(self.language, "start", "check_light"), self.check_light),
-            (self.translator.get_text(self.language, "start", "check_measure"), self.check_measure),
             (self.translator.get_text(self.language, "start", "calibrate_scale"), self.calibrate_scale),
             (self.translator.get_text(self.language, "start", "check_storage"), self.check_storage)
         ]
@@ -929,9 +948,9 @@ class FullscreenApp(QMainWindow):
 
         right_layout.addStretch()
 
-        # Refresh Button
-        refresh_btn = QPushButton(self.translator.get_text(self.language, "start", "refresh_btn"))
-        refresh_btn.setStyleSheet("""
+        # Quit Button
+        quit_btn = QPushButton(self.translator.get_text(self.language, "start", "quit_btn"))
+        quit_btn.setStyleSheet("""
             QPushButton {
                 font-size: 14px; 
                 padding: 12px; 
@@ -945,8 +964,9 @@ class FullscreenApp(QMainWindow):
                 color: #ecf0f1;
             }
         """)
-        refresh_btn.setFixedHeight(45)
-        right_layout.addWidget(refresh_btn)
+        quit_btn.setFixedHeight(45)
+        quit_btn.clicked.connect(self.close_application)
+        right_layout.addWidget(quit_btn)
 
         return right_column
 
@@ -976,6 +996,20 @@ class FullscreenApp(QMainWindow):
         if callback:
             button.clicked.connect(callback)
         return button
+
+    def close_application(self):
+        """Schließt die Anwendung mit Bestätigungsdialog"""
+        logger.info("Programm wird beendet")
+        
+        # Worker-Ressourcen sauber freigeben        
+        if hasattr(self, 'worker') and hasattr(self.worker, 'isRunning'):
+            if self.worker.isRunning():
+                self.worker.terminate()
+                self.worker.wait(1000)
+        
+        # Anwendung schließen
+        QApplication.quit()
+
 
     def sap_integration_placeholder(self):
         """Platzhalter für SAP-Integration"""
@@ -2277,7 +2311,6 @@ class FullscreenApp(QMainWindow):
             if not hasattr(self, 'all_barcodes'):
                 self.all_barcodes = []
             else:
-                # Lösche alte Barcodes, bevor neue hinzugefügt werden
                 self.all_barcodes.clear()
             
             # Überprüfe den Typ von data
@@ -2399,17 +2432,106 @@ class FullscreenApp(QMainWindow):
         QMessageBox.information(self, "Beleuchtungs-Prüfung", "Beleuchtung wird geprüft...")
         logger.info("Beleuchtungs-Prüfung gestartet")
 
-    def check_measure(self):
-        QMessageBox.information(self, "Mess-System-Prüfung", "Mess-System wird geprüft...")
-        logger.info("Mess-System-Prüfung gestartet")
-
     def calibrate_scale(self):
-        QMessageBox.information(self, "Waagen-Kalibrierung", "Waage wird kalibriert...")
-        logger.info("Waagen-Kalibrierung gestartet")
+        """ Führt eine Referenzkalibrierung für 3 Wägezellen durch. """
+        from workers.Gewichts_Messung import calibrate_cell
+
+        try:
+            # 1) Referenzgewicht abfragen
+            reference_weight, ok = QInputDialog.getDouble(
+                self,
+                "Referenzkalibrierung",
+                "Referenzgewicht in kg eingeben:",
+                decimals=3,
+                min=0.1
+            )
+
+            if not ok:
+                return
+
+            # 2) Dialog für Kalibrierung
+            dialog = QDialog(self)
+            dialog.setWindowTitle("Referenzkalibrierung - Rohdaten")
+            dialog.setModal(True)
+
+            layout = QVBoxLayout(dialog)
+
+            info_label = QLabel(
+                "Lege das Referenzgewicht auf die jeweilige Wägezelle\n"
+                "und drücke den passenden Button."
+            )
+            layout.addWidget(info_label)
+
+            # Rohdatenanzeige
+            self.raw_value_label = QLabel("Faktor: ---")
+            self.raw_value_label.setStyleSheet("font-size: 14pt; font-weight: bold;")
+            layout.addWidget(self.raw_value_label)
+
+            # 3) Buttons für jede Zelle
+            btn_cell_1 = QPushButton("Zelle 1 kalibrieren")
+            btn_cell_2 = QPushButton("Zelle 2 kalibrieren")
+            btn_cell_3 = QPushButton("Zelle 3 kalibrieren")
+
+            layout.addWidget(btn_cell_1)
+            layout.addWidget(btn_cell_2)
+            layout.addWidget(btn_cell_3)
+
+            # Abbrechen
+            btn_close = QPushButton("Schließen")
+            layout.addWidget(btn_close)
+
+        
+
+            # 4) Button-Logik
+            faktor = btn_cell_1.clicked.connect(lambda: calibrate_cell(0, reference_weight))
+            btn_cell_2.clicked.connect(lambda: calibrate_cell(1, reference_weight))
+            btn_cell_3.clicked.connect(lambda: calibrate_cell(2, reference_weight))
+
+            btn_close.clicked.connect(dialog.close)
+
+            dialog.exec()
+
+        except Exception as e:
+            QMessageBox.critical(
+                self,
+                "Kalibrierungsfehler",
+                f"Fehler bei der Referenzkalibrierung:\n{str(e)}"
+            )
+
 
     def check_storage(self):
-        QMessageBox.information(self, "Speicher-Prüfung", "Speicher wird geprüft...")
-        logger.info("Speicher-Prüfung gestartet")
+        """Prüft und zeigt den verfügbaren Speicherplatz - kompakte Version"""
+        try:
+            # Laufwerk bestimmen
+            storage_path = "C:\\" if platform.system() == "Windows" else "/"
+            
+            # Speicherinformationen
+            total, used, free = shutil.disk_usage(storage_path)
+            percent_used = (used / total) * 100
+            
+            # Übersetzungen abrufen
+            texts = self.translator.translations["messagebox"]
+            lang_idx = self.translator.language_map.get(self.language, 0)
+            
+            # Nachricht zusammenbauen
+            message = f"""
+    {texts['storage_total'][lang_idx]}  {total/1024**3:.2f} GB
+    {texts['storage_used'][lang_idx]}   {used/1024**3:.2f} GB ({percent_used:.1f}%)
+    {texts['storage_free'][lang_idx]}   {free/1024**3:.2f} GB
+
+    {texts['storage_config_folder'][lang_idx]} {CONFIG.SCANS_FOLDER}"""
+            
+            # Anzeigen
+            QMessageBox.information(self, texts['storage_info_title'][lang_idx], message)
+            logger.info(f"Speicherprüfung: {free/1024**3:.2f} GB frei")
+            
+        except Exception as e:
+            texts = self.translator.translations["messagebox"]
+            lang_idx = self.translator.language_map.get(self.language, 0)
+            QMessageBox.warning(self, texts['storage_error_title'][lang_idx], 
+                            f"{texts['storage_error_message'][lang_idx]}\n{str(e)}")
+            
+
 
     def keyPressEvent(self, event):
         """Behandelt Tastatureingaben"""
