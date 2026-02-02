@@ -743,3 +743,182 @@ PermissionError: [Errno 13] Permission denied: '/home/pi'
 2026-02-02 20:03:57,962 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
 2026-02-02 20:04:01,584 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
 2026-02-02 20:04:07,742 - __main__ - INFO - Programm wird beendet
+2026-02-02 20:48:01,687 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 20:48:02,131 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2]
+2026-02-02 20:48:07,708 - __main__ - INFO - Kamera gefunden an Index 0 (640x480)
+2026-02-02 20:48:08,188 - __main__ - INFO - Kamera gefunden an Index 2 (640x480)
+2026-02-02 20:48:08,668 - __main__ - INFO - Kamera gefunden an Index 4 (640x480)
+2026-02-02 20:48:08,670 - __main__ - INFO - Verfügbare Kameras: [0, 2, 4]
+2026-02-02 20:49:20,568 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 20:49:21,015 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2]
+2026-02-02 20:49:23,480 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 20:49:23,480 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 20:49:26,753 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-02 20:49:26,753 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-02 20:49:29,989 - __main__ - INFO - Wiederhole Bild 2
+2026-02-02 20:49:29,989 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-02 20:49:31,599 - __main__ - INFO - Wiederhole Bild 3
+2026-02-02 20:49:32,161 - __main__ - INFO - Bild erfolgreich von Kamera 2 aufgenommen
+2026-02-02 20:49:33,599 - __main__ - INFO - Wiederhole Bild 4
+2026-02-02 20:49:33,599 - __main__ - WARNING - Kamera 3 nicht verfügbar
+2026-02-02 20:49:35,604 - __main__ - INFO - Wiederhole Bild 3
+2026-02-02 20:49:36,161 - __main__ - INFO - Bild erfolgreich von Kamera 2 aufgenommen
+2026-02-02 20:49:37,195 - __main__ - INFO - Wiederhole Bild 2
+2026-02-02 20:49:37,195 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-02 20:49:45,191 - __main__ - INFO - Wiederhole Bild 2
+2026-02-02 20:49:45,191 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-02 20:49:47,296 - __main__ - INFO - Wiederhole Bild 1
+2026-02-02 20:49:47,842 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-02 20:49:54,247 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 20:49:56,461 - __main__ - INFO - Programm wird beendet
+2026-02-02 20:51:43,143 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 20:51:43,702 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 20:51:44,182 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 20:51:44,661 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 20:51:44,682 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 20:51:47,781 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 20:51:47,781 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 20:51:51,049 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-02 20:51:51,050 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-02 20:51:51,529 - __main__ - INFO - Bild erfolgreich von Kamera 2 aufgenommen
+2026-02-02 20:51:54,957 - __main__ - INFO - Wiederhole Bild 3
+2026-02-02 20:51:55,497 - __main__ - INFO - Bild erfolgreich von Kamera 2 aufgenommen
+2026-02-02 20:51:56,595 - __main__ - INFO - Wiederhole Bild 1
+2026-02-02 20:51:57,098 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-02 20:52:05,736 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 20:52:09,098 - __main__ - INFO - Kamera gefunden an Index 0 (640x480)
+2026-02-02 20:52:09,578 - __main__ - INFO - Kamera gefunden an Index 2 (640x480)
+2026-02-02 20:52:10,058 - __main__ - INFO - Kamera gefunden an Index 4 (640x480)
+2026-02-02 20:52:10,059 - __main__ - INFO - Verfügbare Kameras: [0, 2, 4]
+2026-02-02 20:52:10,059 - __main__ - INFO - OAK verfügbar: False, Index: None
+2026-02-02 20:52:33,430 - __main__ - INFO - Programm wird beendet
+2026-02-02 20:59:20,959 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 20:59:21,489 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 20:59:21,968 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 20:59:22,448 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 20:59:22,468 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 20:59:26,916 - __main__ - INFO - Kamera gefunden an Index 0 (640x480)
+2026-02-02 20:59:27,396 - __main__ - INFO - Kamera gefunden an Index 2 (640x480)
+2026-02-02 20:59:27,876 - __main__ - INFO - Kamera gefunden an Index 4 (640x480)
+2026-02-02 20:59:27,877 - __main__ - INFO - Verfügbare Kameras: [0, 2, 4]
+2026-02-02 20:59:27,877 - __main__ - INFO - OAK verfügbar: False, Index: None
+2026-02-02 20:59:30,033 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 20:59:30,033 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 20:59:34,500 - __main__ - INFO - Bild erfolgreich von Kamera 0 (Index 0) aufgenommen
+2026-02-02 20:59:36,196 - __main__ - INFO - Bild erfolgreich von Kamera 1 (Index 2) aufgenommen
+2026-02-02 20:59:37,892 - __main__ - INFO - Bild erfolgreich von Kamera 2 (Index 4) aufgenommen
+2026-02-02 20:59:40,116 - __main__ - INFO - Wiederhole Bild 4
+2026-02-02 20:59:40,116 - __main__ - WARNING - Kamera 3 (System-Index: -1) nicht verfügbar
+2026-02-02 20:59:40,887 - __main__ - INFO - Wiederhole Bild 3
+2026-02-02 20:59:42,660 - __main__ - INFO - Bild erfolgreich von Kamera 2 (Index 4) aufgenommen
+2026-02-02 20:59:44,018 - __main__ - INFO - Wiederhole Bild 1
+2026-02-02 20:59:45,733 - __main__ - INFO - Bild erfolgreich von Kamera 0 (Index 0) aufgenommen
+2026-02-02 20:59:46,547 - __main__ - INFO - Wiederhole Bild 2
+2026-02-02 20:59:48,261 - __main__ - INFO - Bild erfolgreich von Kamera 1 (Index 2) aufgenommen
+2026-02-02 20:59:48,912 - __main__ - INFO - Wiederhole Bild 3
+2026-02-02 20:59:50,597 - __main__ - INFO - Bild erfolgreich von Kamera 2 (Index 4) aufgenommen
+2026-02-02 20:59:51,971 - __main__ - INFO - Wiederhole Bild 2
+2026-02-02 20:59:53,669 - __main__ - INFO - Bild erfolgreich von Kamera 1 (Index 2) aufgenommen
+2026-02-02 20:59:58,516 - __main__ - INFO - Wiederhole Bild 4
+2026-02-02 20:59:58,517 - __main__ - WARNING - Kamera 3 (System-Index: -1) nicht verfügbar
+2026-02-02 21:00:04,464 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 21:00:07,475 - __main__ - INFO - Programm wird beendet
+2026-02-02 21:03:44,537 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 21:03:45,088 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 21:03:45,599 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 21:03:46,111 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 21:03:46,135 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 21:03:50,945 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 21:03:50,946 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 21:03:55,411 - __main__ - INFO - Bild erfolgreich von Kamera 0 (Index 0) aufgenommen
+2026-02-02 21:03:57,107 - __main__ - INFO - Bild erfolgreich von Kamera 1 (Index 2) aufgenommen
+2026-02-02 21:03:58,803 - __main__ - INFO - Bild erfolgreich von Kamera 2 (Index 4) aufgenommen
+2026-02-02 21:04:01,302 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 21:04:03,170 - __main__ - INFO - Programm wird beendet
+2026-02-02 21:09:48,926 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 21:09:49,461 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 21:09:49,940 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 21:09:50,420 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 21:09:50,440 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 21:09:54,600 - __main__ - INFO - Kamera gefunden an Index 0 (640x480)
+2026-02-02 21:09:55,080 - __main__ - INFO - Kamera gefunden an Index 2 (640x480)
+2026-02-02 21:09:55,560 - __main__ - INFO - Kamera gefunden an Index 4 (640x480)
+2026-02-02 21:09:55,561 - __main__ - INFO - Verfügbare Kameras: [0, 2, 4]
+2026-02-02 21:09:55,561 - __main__ - INFO - OAK verfügbar: False, Index: None
+2026-02-02 21:10:04,723 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 21:10:04,723 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 21:10:09,865 - __main__ - WARNING - Kamera 3 (System-Index: -1) nicht verfügbar
+2026-02-02 21:10:12,656 - __main__ - INFO - Wiederhole Bild 1
+2026-02-02 21:10:16,475 - __main__ - INFO - Wiederhole Bild 3
+2026-02-02 21:10:19,633 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 21:10:21,434 - __main__ - INFO - Programm wird beendet
+2026-02-02 21:11:27,696 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 21:11:28,250 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 21:11:28,762 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 21:11:29,242 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 21:11:29,262 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 21:11:32,561 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 21:11:32,561 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 21:11:37,710 - __main__ - WARNING - Kamera 3 (System-Index: -1) nicht verfügbar
+2026-02-02 21:11:46,998 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 21:11:49,736 - __main__ - INFO - Programm wird beendet
+2026-02-02 21:11:57,907 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 21:11:58,460 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 21:11:58,940 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 21:11:59,420 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 21:11:59,440 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 21:12:05,046 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 21:12:05,046 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 21:12:10,192 - __main__ - WARNING - Kamera 3 (System-Index: -1) nicht verfügbar
+2026-02-02 21:12:19,394 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 21:12:21,640 - __main__ - INFO - Programm wird beendet
+2026-02-02 21:12:36,695 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 21:12:37,246 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 21:12:37,726 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 21:12:38,206 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 21:12:38,226 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 21:12:40,595 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 21:12:40,595 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 21:12:47,282 - __main__ - WARNING - Kamera 3 (System-Index: -1) nicht verfügbar
+2026-02-02 21:12:51,834 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 21:12:54,182 - __main__ - INFO - Programm wird beendet
+2026-02-02 21:13:13,250 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 21:13:13,793 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 21:13:14,272 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 21:13:14,784 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 21:13:14,804 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 21:13:17,618 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 21:13:17,619 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 21:13:24,308 - __main__ - WARNING - Kamera 3 (System-Index: -1) nicht verfügbar
+2026-02-02 21:13:25,828 - __main__ - INFO - Wiederhole Bild 1
+2026-02-02 21:13:28,883 - __main__ - INFO - Wiederhole Bild 1
+2026-02-02 21:13:30,944 - __main__ - INFO - Wiederhole Bild 2
+2026-02-02 21:13:33,153 - __main__ - INFO - Wiederhole Bild 3
+2026-02-02 21:13:39,032 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 21:13:41,159 - __main__ - INFO - Programm wird beendet
+2026-02-02 21:24:01,437 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 21:24:01,990 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 21:24:02,470 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 21:24:02,982 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 21:24:03,001 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 21:24:10,745 - __main__ - INFO - Kamera gefunden an Index 0 (640x480)
+2026-02-02 21:24:11,225 - __main__ - INFO - Kamera gefunden an Index 2 (640x480)
+2026-02-02 21:24:11,705 - __main__ - INFO - Kamera gefunden an Index 4 (640x480)
+2026-02-02 21:24:11,706 - __main__ - INFO - Verfügbare Kameras: [0, 2, 4]
+2026-02-02 21:24:11,707 - __main__ - INFO - OAK verfügbar: False, Index: None
+2026-02-02 21:24:17,845 - __main__ - INFO - Programm wird beendet
+2026-02-02 21:24:42,057 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-02 21:24:42,601 - __main__ - INFO - USB-Kamera gefunden: Index 0 (640x480)
+2026-02-02 21:24:43,080 - __main__ - INFO - USB-Kamera gefunden: Index 2 (640x480)
+2026-02-02 21:24:43,560 - __main__ - INFO - USB-Kamera gefunden: Index 4 (640x480)
+2026-02-02 21:24:43,580 - __main__ - INFO - USB-Kameras: [0, 2, 4], OAK-D2: None, Verfügbar: False
+2026-02-02 21:24:47,038 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-02 21:24:47,038 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-02 21:24:53,724 - __main__ - WARNING - Kamera 3 (System-Index: -1) nicht verfügbar
+2026-02-02 21:24:57,120 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-02 21:25:00,348 - __main__ - INFO - Kamera gefunden an Index 0 (640x480)
+2026-02-02 21:25:00,828 - __main__ - INFO - Kamera gefunden an Index 2 (640x480)
+2026-02-02 21:25:01,308 - __main__ - INFO - Kamera gefunden an Index 4 (640x480)
+2026-02-02 21:25:01,310 - __main__ - INFO - Verfügbare Kameras: [0, 2, 4]
+2026-02-02 21:25:01,310 - __main__ - INFO - OAK verfügbar: False, Index: None
+2026-02-02 21:25:05,138 - __main__ - INFO - Programm wird beendet

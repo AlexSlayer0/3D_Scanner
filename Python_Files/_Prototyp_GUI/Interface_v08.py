@@ -29,6 +29,16 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal, QTimer
 
+
+# OpenCV-Warnungen reduzieren
+os.environ['OPENCV_LOG_LEVEL'] = 'ERROR'
+os.environ['OPENCV_VIDEOIO_DEBUG'] = '0'
+os.environ['OPENCV_VIDEOIO_PRIORITY_LIST'] = 'V4L2'
+
+# In setup_logging fügen Sie hinzu:
+logging.getLogger('cv2').setLevel(logging.ERROR)
+
+
 # ==================== Konfiguration ====================
 @dataclass
 class AppConfig:
@@ -201,39 +211,69 @@ class TranslationManager:
 
 # ==================== Camera Manager ====================
 class CameraManager:
-    """Verwaltet Kamerazugriff und Bildaufnahme"""
-    
     def __init__(self, debug_single_camera: bool = CONFIG.DEBUG_SINGLE_CAMERA):
         self.port = CONFIG.USB0
         self.baudrate = CONFIG.BAURATE
         self.debug_single_camera = debug_single_camera
-        self.available_cameras = self._find_cameras()
-        logger.info(f"Verfügbare Kameras gefunden: {self.available_cameras}")
+        self.available_cameras = []  # Für USB-Kameras (0, 1, 2)
+        self.oak_index = None        # Für OAK-D2
+        self.oak_available = False   # Boolean für Verfügbarkeit
+        self._find_cameras()
+        logger.info(f"USB-Kameras: {self.available_cameras}, OAK-D2: {self.oak_index}, Verfügbar: {self.oak_available}")
     
+    def _find_cameras(self):
+        """Findet Kameras intelligenter"""
+        usb_cameras = []
+        
+        # Suche nach USB-Kameras (indizes 0-9)
+        for i in range(10):
+            try:
+                cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
+                if cap.isOpened():
+                    ret, frame = cap.read()
+                    if ret:
+                        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                        
+                        # Niedrige Auflösung = wahrscheinlich USB-Webcam
+                        if width <= 1280 and height <= 720:
+                            usb_cameras.append(i)
+                            logger.info(f"USB-Kamera gefunden: Index {i} ({width}x{height})")
+                        # Hohe Auflösung = könnte OAK sein
+                        elif self.oak_index is None and (width >= 1280 or height >= 720):
+                            self.oak_index = i
+                            self.oak_available = True
+                            logger.info(f"OAK-D2 gefunden: Index {i} ({width}x{height})")
+                        else:
+                            usb_cameras.append(i)
+                    cap.release()
+            except Exception as e:
+                logger.debug(f"Index {i} nicht verfügbar: {e}")
+        
+        # Sortiere und nehme die ersten 3 USB-Kameras
+        usb_cameras.sort()
+        self.available_cameras = usb_cameras[:3]
+        
+        # Falls OAK nicht gefunden, suche in höheren Indizes
+        if not self.oak_available:
+            for i in range(10, 15):
+                try:
+                    cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
+                    if cap.isOpened():
+                        self.oak_index = i
+                        self.oak_available = True
+                        logger.info(f"OAK-D2 an Index {i} gefunden")
+                        cap.release()
+                        break
+                    cap.release()
+                except:
+                    pass
+                       
     def _get_camera_backend(self) -> int:
         """Bestimmt den passenden Camera Backend für das Betriebssystem"""
         if platform.system() == "Windows":
             return cv2.CAP_DSHOW
         return cv2.CAP_ANY
-    
-    def _find_cameras(self) -> List[int]:
-        """Findet verfügbare Kameras"""
-        available: List[int] = []
-        backend = self._get_camera_backend()
-        
-        for i in range(CONFIG.NUM_CAMERAS):
-            try:
-                cap = cv2.VideoCapture(i, backend)
-                if cap.isOpened():
-                    available.append(i)
-                    cap.release()
-                else:
-                    cap.release()
-            except Exception as e:
-                logger.warning(f"Fehler beim Zugriff auf Kamera {i}: {e}")
-        
-        return available
-
     
     def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
         """Erstellt ein Platzhalterbild für fehlende Kameras"""
@@ -246,49 +286,80 @@ class CameraManager:
     
     def take_picture(self, camera_id: int) -> np.ndarray:
         """Nimmt ein Bild mit der angegebenen Kamera auf"""
-        if camera_id not in self.available_cameras:
-            logger.warning(f"Kamera {camera_id} nicht verfügbar")
+        # Bestimme den Systemindex basierend auf Kamera-ID
+        system_index = None
+
+        # Kamera-ID 0, 1, 2: USB-Kameras
+        if camera_id < 3:
+            if camera_id < len(self.available_cameras):
+                system_index = self.available_cameras[camera_id]
+            else:
+                system_index = -1  # Keine Kamera an dieser Position
+        # Kamera-ID 3: OAK-D2
+        elif camera_id == 3:
+            if self.oak_available:
+                system_index = self.oak_index
+            else:
+                system_index = -1
+    
+        if system_index == -1 or system_index is None:
+            logger.warning(f"Kamera {camera_id} (System-Index: {system_index}) nicht verfügbar")
             return self._make_placeholder(camera_id)
-
-        backend = self._get_camera_backend()
-
+    
+        backend = cv2.CAP_V4L2
+    
         try:
-            cap = cv2.VideoCapture(camera_id, backend)
+            cap = cv2.VideoCapture(system_index, backend)
             if not cap.isOpened():
-                logger.error(f"Kamera {camera_id} konnte nicht geöffnet werden")
+                logger.error(f"Kamera {camera_id} (Index {system_index}) konnte nicht geöffnet werden")
                 cap.release()
                 return self._make_placeholder(camera_id)
-
-            ret, frame = cap.read()
+        
+            # Für OAK-D2 (camera_id == 3) keine Beleuchtung
+            if camera_id < 3:  # Nur für USB-Kameras Beleuchtung
+                try:
+                    ser = serial.Serial(self.port, self.baudrate, timeout=1)
+                    time.sleep(0.5)
+                
+                    def send_command(command):
+                        full_command = command + "\n"
+                        ser.write(full_command.encode('utf-8'))
+                        time.sleep(0.1)
+                
+                    send_command("Change")
+                    send_command("a")  # Alle an
+                    time.sleep(0.8)
+                
+                    ret, frame = cap.read()
+                
+                    send_command("Change")
+                    send_command("0")  # Alle aus
+                    ser.close()
+                    
+                except Exception as e:
+                    logger.warning(f"Beleuchtung fehlgeschlagen: {e}")
+                    ret, frame = cap.read()
+            else:
+                # OAK-D2 ohne Beleuchtung
+                ret, frame = cap.read()
+        
             cap.release()
-
-            if ret:
-                logger.info(f"Bild erfolgreich von Kamera {camera_id} aufgenommen")
+        
+            if ret and frame is not None:
+                #logger.info(f"Bild von Kamera {camera_id} (Index {system_index}) aufgenommen")
                 return frame
             else:
-                logger.error(f"Bildaufnahme von Kamera {camera_id} fehlgeschlagen")
+                #logger.error(f"Bildaufnahme von Kamera {camera_id} fehlgeschlagen")
                 return self._make_placeholder(camera_id)
-
+            
         except Exception as e:
             logger.error(f"Fehler bei Bildaufnahme von Kamera {camera_id}: {e}")
             return self._make_placeholder(camera_id)
-            
         
+         
     def take_all_pictures(self) -> List[np.ndarray]:
         """Nimmt Bilder von allen Kameras auf"""
         images: List[np.ndarray] = []
-        # Flash on
-        ser = serial.Serial(self.port, self.baudrate, timeout=1)
-        time.sleep(2)  # Warten, bis der Serial Port nach dem öffnen bereit ist
-
-        def send_command(command):
-            full_command = command + "\n"
-            ser.write(full_command.encode('utf-8'))
-            time.sleep(0.1)  # Kurze Pause zur Verarbeitung
-
-        send_command("Change")
-        send_command("a")  # alle an
-        time.sleep(0.5)  # Kurze Pause damit alle LED an
 
         if self.debug_single_camera:
             # Debug: Eine Kamera für alle Bilder
@@ -299,17 +370,9 @@ class CameraManager:
         else:
             # Normal: Jede Kamera macht ein Bild
             for i in range(CONFIG.NUM_CAMERAS):
-                if i < len(self.available_cameras):
-                    img = self.take_picture(i)
-                else:
-                    img = self._make_placeholder(i)
+                img = self.take_picture(i)
                 images.append(img)
         
-        # Flash off
-        send_command("Change")
-        send_command("0")  # Alle aus
-
-        ser.close()
         return images
 
 # ==================== Detection Manager ====================
