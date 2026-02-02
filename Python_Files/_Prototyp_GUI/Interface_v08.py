@@ -259,26 +259,7 @@ class CameraManager:
                 cap.release()
                 return self._make_placeholder(camera_id)
 
-            # Flash on
-            ser = serial.Serial(self.port, self.baudrate, timeout=1)
-            time.sleep(2)  # Warten, bis der Serial Port nach dem öffnen bereit ist
-
-            def send_command(command):
-                full_command = command + "\n"
-                ser.write(full_command.encode('utf-8'))
-                time.sleep(0.1)  # Kurze Pause zur Verarbeitung
-
-            send_command("Change")
-            send_command("a")  # alle an
-            time.sleep(0.5)  # Kurze Pause damit alle LED an
-
             ret, frame = cap.read()
-
-            # Flash off
-            send_command("Change")
-            send_command("0")  # Alle aus
-
-            ser.close()
             cap.release()
 
             if ret:
@@ -296,7 +277,19 @@ class CameraManager:
     def take_all_pictures(self) -> List[np.ndarray]:
         """Nimmt Bilder von allen Kameras auf"""
         images: List[np.ndarray] = []
-        
+        # Flash on
+        ser = serial.Serial(self.port, self.baudrate, timeout=1)
+        time.sleep(2)  # Warten, bis der Serial Port nach dem öffnen bereit ist
+
+        def send_command(command):
+            full_command = command + "\n"
+            ser.write(full_command.encode('utf-8'))
+            time.sleep(0.1)  # Kurze Pause zur Verarbeitung
+
+        send_command("Change")
+        send_command("a")  # alle an
+        time.sleep(0.5)  # Kurze Pause damit alle LED an
+
         if self.debug_single_camera:
             # Debug: Eine Kamera für alle Bilder
             logger.debug("Debug-Modus: Verwende eine Kamera für alle Bilder")
@@ -312,6 +305,11 @@ class CameraManager:
                     img = self._make_placeholder(i)
                 images.append(img)
         
+        # Flash off
+        send_command("Change")
+        send_command("0")  # Alle aus
+
+        ser.close()
         return images
 
 # ==================== Detection Manager ====================
@@ -2459,73 +2457,116 @@ class FullscreenApp(QMainWindow):
 
 
     def check_camera(self):
-        """Ultra-kompakte Kamera-Prüfung für Linux"""
+        """Verbesserte Kamera-Prüfung für Linux"""
         
-        # Kurzen Lade-Dialog anzeigen
         dialog = QDialog(self)
         dialog.setWindowTitle("Kamera-Prüfung")
-        dialog.setFixedSize(300, 150)
+        dialog.setFixedSize(400, 200)
         dialog.setModal(True)
         
         layout = QVBoxLayout(dialog)
         layout.setContentsMargins(20, 20, 20, 20)
         
-        # Ladebalken
         progress = QProgressBar()
-        progress.setRange(0, 0)  # Unbestimmter Modus
+        progress.setRange(0, 0)
         layout.addWidget(progress)
         
-        # Status
         status = QLabel("Teste Kameras...")
         status.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(status)
         
         def check_and_close():
-            # Schneller Test
-            usb_count = 0
-            for i in range(4):
+            # Teste eine breite Palette von Indizes
+            all_indices = []
+            usb_indices = []
+            oak_index = None
+            
+            # Teste Indizes 0-9
+            for i in range(10):
                 try:
                     cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
                     if cap.isOpened():
-                        cap.release()
-                        usb_count += 1
-                except:
+                        ret, frame = cap.read()
+                        if ret and frame is not None:
+                            all_indices.append(i)
+                            
+                            # Versuche OAK-D2 anhand der Auflösung zu erkennen
+                            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                            
+                            # OAK-D2 hat typisch 1920x1080 oder höher
+                            if width >= 1280 or height >= 720:
+                                logger.info(f"Mögliche OAK-D2 an Index {i} ({width}x{height})")
+                                if oak_index is None:  # Erste gefundene als OAK
+                                    oak_index = i
+                                else:
+                                    usb_indices.append(i)
+                            else:
+                                usb_indices.append(i)
+                                
+                            cap.release()
+                            logger.info(f"Kamera gefunden an Index {i} ({width}x{height})")
+                except Exception as e:
+                    logger.debug(f"Index {i}: {e}")
                     pass
             
-            # OAK-D2 Check
-            oak = False
-            try:
-                cap = cv2.VideoCapture(10, cv2.CAP_V4L2)
-                if cap.isOpened():
-                    oak = True
-                    cap.release()
-            except:
-                pass
+            # Speziell für OAK-D2 auch höhere Indizes testen
+            if oak_index is None:
+                for i in range(10, 15):
+                    try:
+                        cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
+                        if cap.isOpened():
+                            ret, frame = cap.read()
+                            if ret:
+                                oak_index = i
+                                logger.info(f"OAK-D2 an Index {i} gefunden")
+                                cap.release()
+                                break
+                            cap.release()
+                    except:
+                        pass
             
             dialog.close()
             
             # Ergebnis anzeigen
-            result = f"USB-Kameras: {usb_count}/4\nOAK-D2: {'?' if oak else '?'}\n\n"
+            result = f"Gefundene Kamera-Indizes: {all_indices}\n"
+            result += f"USB-Kameras: {len(usb_indices)} gefunden (Indizes: {usb_indices})\n"
+            result += f"OAK-D2: {'Nicht gefunden' if oak_index is None else f'Gefunden an Index {oak_index}'}"
             
-            if usb_count >= 4 and oak:
-                result += "Alle Kameras OK"
-                icon = QMessageBox.Icon.Information
-            elif usb_count >= 4:
-                result += "OAK-D2 fehlt"
-                icon = QMessageBox.Icon.Warning
+            # Status setzen
+            self.camera.available_cameras = usb_indices[:3]  # Nur die ersten 3 für USB
+            if oak_index is not None:
+                # Für die 4. Kamera (Index 3) die OAK verwenden
+                if len(self.camera.available_cameras) < 3:
+                    # Falls weniger als 3 USB, OAK an letzter Position
+                    self.camera.available_cameras.append(oak_index)
+                else:
+                    # OAK als separate Kamera
+                    self.camera.oak_available = True
+                    self.camera.oak_index = oak_index
+            
+            logger.info(f"Verfügbare Kameras: {self.camera.available_cameras}")
+            logger.info(f"OAK verfügbar: {self.camera.oak_available}, Index: {getattr(self.camera, 'oak_index', None)}")
+            
+            # Messagebox anzeigen
+            msg = QMessageBox(self)
+            msg.setWindowTitle("Kamera-Test Ergebnis")
+            msg.setText(result)
+            
+            # Icon basierend auf Ergebnis
+            if len(usb_indices) >= 3 and oak_index is not None:
+                msg.setIcon(QMessageBox.Icon.Information)
+                msg.setText(result + "\n\n✓ Alle Kameras verfügbar")
+            elif len(usb_indices) >= 3:
+                msg.setIcon(QMessageBox.Icon.Warning)
+                msg.setText(result + "\n\n⚠ Nur USB-Kameras verfügbar, OAK-D2 fehlt")
             else:
-                result += "Nicht genügend Kameras"
-                icon = QMessageBox.Icon.Critical
+                msg.setIcon(QMessageBox.Icon.Critical)
+                msg.setText(result + "\n\n✗ Nicht genügend Kameras")
             
-            QMessageBox(dialog).information(self, "Ergebnis", result)
-            
-            # Status speichern
-            self.camera.available_cameras = list(range(usb_count))
-            self.camera.oak_available = oak
+            msg.exec()
         
-        # Nach kurzer Verzögerung testen
-        QTimer.singleShot(1500, check_and_close)
-        
+        QTimer.singleShot(1000, check_and_close)
         dialog.exec()
             
 
