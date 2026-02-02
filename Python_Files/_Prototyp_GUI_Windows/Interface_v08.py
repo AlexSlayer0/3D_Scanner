@@ -24,7 +24,7 @@ from PyQt6.QtWidgets import (
     QToolButton, QMessageBox, QDialog, QProgressBar, QComboBox
 )
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
-from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
+from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal, QTimer
 
 # ==================== Konfiguration ====================
 @dataclass
@@ -303,7 +303,6 @@ class DetectionManager:
         
         # Direkt importieren und verwenden
         try:
-            # Importiere das Modul neu
             import workers.BoundingBox_Yolo03 as yolo_module
             logger.info("BoundingBox_Yolo03 erfolgreich importiert")
         except ImportError as e:
@@ -1563,8 +1562,8 @@ class FullscreenApp(QMainWindow):
         
         return content
 
-    def create_editable_barcode_widget(self, barcode: Dict, index: int) -> QFrame:
-        """Erstellt ein bearbeitbares Barcode-Widget mit Eingabefeldern"""
+    def create_editable_barcode_widget(self, barcode: Dict, index: int) -> QFrame: #Einfügen
+        """Erstellt ein bearbeitbares Barcode-Widget mit Eingabefeldern und Lösch-Button"""
         frame = QFrame()
         frame.setObjectName(f"barcode_widget_{index}")
         
@@ -1573,8 +1572,8 @@ class FullscreenApp(QMainWindow):
         source = barcode.get('source', 'manual')
         
         # Größere Bildabmessungen
-        IMAGE_WIDTH = 500  # Statt 250
-        IMAGE_HEIGHT = 350  # Statt 150
+        IMAGE_WIDTH = 500
+        IMAGE_HEIGHT = 350
         
         # Unterschiedliches Styling für Artikelnummer vs EAN13
         if is_article_number:
@@ -1622,6 +1621,7 @@ class FullscreenApp(QMainWindow):
         
         # Linke Seite: Barcode-Bild mit Farbcodierung
         image_container = QWidget()
+        image_container.setStyleSheet("position: relative;")
         image_layout = QVBoxLayout(image_container)
         image_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
@@ -1629,11 +1629,17 @@ class FullscreenApp(QMainWindow):
         type_label_text = self.translator.get_text(self.language, "storage", "type_label")
         source_label_text = self.translator.get_text(self.language, "storage", "source_label")
         
+        # Container für Bild mit Overlay-Button
+        image_frame = QFrame()
+        image_frame.setStyleSheet("background: transparent; position: relative;")
+        image_frame_layout = QVBoxLayout(image_frame)
+        image_frame_layout.setContentsMargins(0, 0, 0, 0)
+        
         if "cropped_image" in barcode and barcode["cropped_image"] is not None:
             cropped_img = barcode["cropped_image"]
             
             # Farbige Umrandung basierend auf Typ
-            border_color = (255, 165, 0) if is_article_number else (0, 255, 0)  # Orange für Artikel, Grün für EAN
+            border_color = (255, 165, 0) if is_article_number else (0, 255, 0)
             
             if len(cropped_img.shape) == 3:
                 bordered_img = cv2.copyMakeBorder(cropped_img, 8, 8, 8, 8, 
@@ -1645,18 +1651,17 @@ class FullscreenApp(QMainWindow):
                 bordered_img = cv2.copyMakeBorder(bordered_img, 8, 8, 8, 8,
                                                 cv2.BORDER_CONSTANT, value=border_color)
             
-            # VERGRÖSSERT: Neue Bildgröße
             pixmap = self.convert_to_pixmap(bordered_img, width=IMAGE_WIDTH, height=IMAGE_HEIGHT)
             image_label = QLabel()
             image_label.setPixmap(pixmap)
             image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             
-            # Klick-Event für Vergrößerung hinzufügen
+            # Klick-Event für Vergrößerung
             image_label.mousePressEvent = lambda event, img=cropped_img, barcode_type=("Artikelnummer" if is_article_number else "EAN"): self.show_enlarged_image(img, barcode_type)
             image_label.setCursor(Qt.CursorShape.PointingHandCursor)
             image_label.setToolTip("Klicken zum Vergrößern")
             
-            image_layout.addWidget(image_label)
+            image_frame_layout.addWidget(image_label)
             
             # Bildquelle
             image_names = ["ISO Bild", "Top Bild", "Right Bild", "Behind Bild"]
@@ -1669,7 +1674,7 @@ class FullscreenApp(QMainWindow):
             source_label = QLabel(source_text)
             source_label.setStyleSheet("font-size: 12px; color: #BDC3C7; margin-top: 8px;")
             source_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            image_layout.addWidget(source_label)
+            image_frame_layout.addWidget(source_label)
         else:
             placeholder = QLabel("Kein Bild verfügbar")
             placeholder.setStyleSheet("""
@@ -1678,13 +1683,48 @@ class FullscreenApp(QMainWindow):
                 font-size: 14px;
             """)
             placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            placeholder.setFixedSize(IMAGE_WIDTH, IMAGE_HEIGHT)  # Auch Platzhalter vergrößern
-            image_layout.addWidget(placeholder)
+            placeholder.setFixedSize(IMAGE_WIDTH, IMAGE_HEIGHT)
+            image_frame_layout.addWidget(placeholder)
             
             source_label = QLabel(f"{source_label_text} {self.translator.get_text(self.language, 'storage', 'manual')}")
             source_label.setStyleSheet("font-size: 12px; color: #BDC3C7; margin-top: 8px;")
             source_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            image_layout.addWidget(source_label)
+            image_frame_layout.addWidget(source_label)
+        
+        # Lösch-Button (Mülleimer) oben rechts im Bild
+        delete_btn = QToolButton()
+        delete_btn.setFixedSize(32, 32)
+        
+        # Versuche, ein Mülleimer-Icon zu laden
+        trash_icon_path = os.path.join(self.Explorer_Structure, "trash.png")
+        if os.path.exists(trash_icon_path):
+            delete_btn.setIcon(QIcon(trash_icon_path))
+            delete_btn.setIconSize(QSize(20, 20))
+        else:
+            # Fallback: Text-Button mit "X"
+            delete_btn.setText("✕")
+            delete_btn.setStyleSheet("""
+                QToolButton {
+                    font-size: 16px;
+                    font-weight: bold;
+                    background: rgba(231, 76, 60, 0.9);
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                }
+                QToolButton:hover {
+                    background: rgba(231, 76, 60, 1.0);
+                }
+            """)
+        
+        delete_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        delete_btn.setToolTip("Barcode löschen")
+        delete_btn.clicked.connect(lambda: self.delete_barcode(index))
+        
+        # Positioniere den Button oben rechts im Bild
+        image_frame_layout.addWidget(delete_btn, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
+        
+        image_layout.addWidget(image_frame)
         layout.addWidget(image_container)
         
         # Rechte Seite: Bearbeitbare Informationen
@@ -1715,9 +1755,8 @@ class FullscreenApp(QMainWindow):
         info_layout.addWidget(type_sublabel)
         
         type_combo = QComboBox()
+        type_combo.wheelEvent = lambda event: None
         
-        type_combo.wheelEvent = lambda event: None  # Ignoriere alle Wheel-Events
-
         # Barcode-Typen mit Trennung
         type_combo.addItem("EAN13 - Produkt-Barcode")
         type_combo.addItem("EAN8")
@@ -1747,7 +1786,6 @@ class FullscreenApp(QMainWindow):
         display_type = type_mapping.get(current_type, "Andere - Artikelnummer")
         type_combo.setCurrentText(display_type)
         
-        # Bei Typänderung: is_article_number aktualisieren
         type_combo.currentTextChanged.connect(lambda text: self.update_barcode_type_and_status(index, text))
         info_layout.addWidget(type_combo)
         
@@ -1756,17 +1794,17 @@ class FullscreenApp(QMainWindow):
         if barcode.get('value'):
             if is_article_number:
                 status_text = f"Artikelnummer {self.translator.get_text(self.language, 'storage', source)}"
-                status_color = "#E67E22"  # Orange
+                status_color = "#E67E22"
             else:
                 status_text = f"EAN13 Barcode {self.translator.get_text(self.language, 'storage', source)}"
-                status_color = "#2ecc71"  # Grün
+                status_color = "#2ecc71"
         else:
             if is_article_number:
                 status_text = "Artikelnummer bitte manuell eingeben"
-                status_color = "#e74c3c"  # Rot
+                status_color = "#e74c3c"
             else:
                 status_text = "EAN13 Barcode bitte manuell eingeben"
-                status_color = "#e74c3c"  # Rot
+                status_color = "#e74c3c"
         
         status_label.setText(status_text)
         status_label.setStyleSheet(f"color: {status_color}; font-weight: bold; margin-top: 10px;")
@@ -1783,6 +1821,22 @@ class FullscreenApp(QMainWindow):
         
         return frame
 
+
+    def delete_barcode(self, index: int):
+        """Löscht einen Barcode an der gegebenen Position"""
+        if index < len(self.all_barcodes):
+            # Barcode löschen
+            deleted_barcode = self.all_barcodes.pop(index)
+            logger.info(f"Barcode gelöscht: {deleted_barcode}")
+            
+            # Seite neu laden
+            self.load_pages()
+            
+            # Zur Storage-Page zurückkehren (Index 3)
+            if self.stack.count() > 3:
+                self.stack.setCurrentIndex(3)
+
+    #Einfügen Ende  
 
     def update_barcode_value(self, index: int, value: str):
         """Aktualisiert den Barcode-Wert"""
@@ -2390,10 +2444,78 @@ class FullscreenApp(QMainWindow):
             self.load_pages()
             QApplication.processEvents()  # Erzwinge GUI-Update
 
-    # Platzhalter-Funktionen für die Systemprüfung
+    # Platzhalter-Funktionen für die Systemprüfung #Einfügen
     def check_camera(self):
-        QMessageBox.information(self, "Kamera-Prüfung", "Kamera-System wird geprüft...")
-        logger.info("Kamera-Prüfung gestartet")
+        """Ultra-kompakte Kamera-Prüfung für Linux"""
+        
+        # Kurzen Lade-Dialog anzeigen
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Kamera-Prüfung")
+        dialog.setFixedSize(300, 150)
+        dialog.setModal(True)
+        
+        layout = QVBoxLayout(dialog)
+        layout.setContentsMargins(20, 20, 20, 20)
+        
+        # Ladebalken
+        progress = QProgressBar()
+        progress.setRange(0, 0)  # Unbestimmter Modus
+        layout.addWidget(progress)
+        
+        # Status
+        status = QLabel("Teste Kameras...")
+        status.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(status)
+        
+        def check_and_close():
+            # Schneller Test
+            usb_count = 0
+            for i in range(4):
+                try:
+                    cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
+                    if cap.isOpened():
+                        cap.release()
+                        usb_count += 1
+                except:
+                    pass
+            
+            # OAK-D2 Check
+            oak = False
+            try:
+                cap = cv2.VideoCapture(10, cv2.CAP_V4L2)
+                if cap.isOpened():
+                    oak = True
+                    cap.release()
+            except:
+                pass
+            
+            dialog.close()
+            
+            # Ergebnis anzeigen
+            result = f"USB-Kameras: {usb_count}/3\nOAK-D2: {'✓' if oak else '✗'}\n\n"
+            
+            if usb_count >= 3 and oak:
+                result += "Alle Kameras OK"
+                icon = QMessageBox.Icon.Information
+            elif usb_count >= 3:
+                result += "OAK-D2 fehlt"
+                icon = QMessageBox.Icon.Warning
+            else:
+                result += "Nicht genügend Kameras"
+                icon = QMessageBox.Icon.Critical
+            
+            QMessageBox(dialog).information(self, "Ergebnis", result)
+            
+            # Status speichern
+            self.camera.available_cameras = list(range(usb_count))
+            self.camera.oak_available = oak
+        
+        # Nach kurzer Verzögerung testen
+        QTimer.singleShot(1500, check_and_close)
+        
+        dialog.exec()
+        #Einfügen Ende
+
 
     def check_light(self):
         QMessageBox.information(self, "Beleuchtungs-Prüfung", "Beleuchtung wird geprüft...")
