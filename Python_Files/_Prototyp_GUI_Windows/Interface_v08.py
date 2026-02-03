@@ -11,9 +11,11 @@ import csv
 import sys
 import cv2
 import json
+import time
 import logging
 import platform
 import numpy as np
+import depthai as dai
 from datetime import datetime 
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional, Any
@@ -174,14 +176,15 @@ class TranslationManager:
             return text_tuple[lang_index]
         return f"[{key}]"
 
-# ==================== Camera Manager ====================
+# ==================== Camera Manager ==================== #Einfügen
 class CameraManager:
     """Verwaltet Kamerazugriff und Bildaufnahme"""
     
     def __init__(self, debug_single_camera: bool = CONFIG.DEBUG_SINGLE_CAMERA):
         self.debug_single_camera = debug_single_camera
+        self.oak_available = False
         self.available_cameras = self._find_cameras()
-        logger.info(f"Verfügbare Kameras gefunden: {self.available_cameras}")
+        logger.info(f"Verfügbare Kameras gefunden: {self.available_cameras}, OAK-D2: {self.oak_available}")
     
     def _get_camera_backend(self) -> int:
         """Bestimmt den passenden Camera Backend für das Betriebssystem"""
@@ -194,7 +197,7 @@ class CameraManager:
         available: List[int] = []
         backend = self._get_camera_backend()
         
-        for i in range(CONFIG.NUM_CAMERAS):
+        for i in range(CONFIG.NUM_CAMERAS-1):  # Letzte Kamera ist OAK-D2
             try:
                 cap = cv2.VideoCapture(i, backend)
                 if cap.isOpened():
@@ -205,17 +208,50 @@ class CameraManager:
             except Exception as e:
                 logger.warning(f"Fehler beim Zugriff auf Kamera {i}: {e}")
         
+        # OAK-D2 prüfen
+        self._check_oak_availability()
+        
         return available
     
-    def _enable_flash(self):
-        """Aktiviert den Blitz (Platzhalter)"""
-        # BLITZ-IMPLEMENTIERUNG HIER EINFÜGEN
-        # GPIO, serielle Schnittstelle
-        pass
+    def _check_oak_availability(self):
+        """Prüft ob OAK-D2 verfügbar ist"""
+        try:
+            if len(dai.Device.getAllAvailableDevices()) > 0:
+                self.oak_available = True
+                logger.info("OAK-D2 ist verfügbar")
+            else:
+                logger.warning("Keine OAK-D2 Kamera gefunden")
+        except Exception as e:
+            logger.error(f"Fehler bei OAK-D2 Prüfung: {e}")
+            self.oak_available = False
     
-    def _disable_flash(self):
-        """Deaktiviert den Blitz (Platzhalter)"""
-        pass
+    def _take_oak_picture(self) -> Optional[np.ndarray]:
+        """Nimmt ein Bild mit der OAK-D2 RGB-Kamera auf"""
+        try:
+            pipeline = dai.Pipeline()
+            
+            # RGB-Kamera der OAK-D2 (Position CAM_A)
+            cam_rgb = pipeline.create(dai.node.ColorCamera)
+            cam_rgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
+            cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
+            cam_rgb.setPreviewSize(CONFIG.IMAGE_WIDTH, CONFIG.IMAGE_HEIGHT)
+            
+            # Ausgabestream
+            xout_rgb = pipeline.create(dai.node.XLinkOut)
+            xout_rgb.setStreamName("rgb")
+            cam_rgb.preview.link(xout_rgb.input)
+            
+            # Verbindung herstellen und Bild aufnehmen
+            with dai.Device(pipeline) as device:
+                q_rgb = device.getOutputQueue(name="rgb", maxSize=1, blocking=True)
+                in_rgb = q_rgb.get()  # Blockierend, wartet auf Frame
+                frame = in_rgb.getCvFrame()
+                logger.info("OAK-D2 Bild erfolgreich aufgenommen")
+                return frame
+                
+        except Exception as e:
+            logger.error(f"Fehler bei OAK-D2 Bildaufnahme: {e}")
+            return None
     
     def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
         """Erstellt ein Platzhalterbild für fehlende Kameras"""
@@ -228,6 +264,21 @@ class CameraManager:
     
     def take_picture(self, camera_id: int) -> np.ndarray:
         """Nimmt ein Bild mit der angegebenen Kamera auf"""
+        
+        # Spezialfall: OAK-D2 (letzte Kamera)
+        if camera_id == CONFIG.NUM_CAMERAS - 1:  # Letzte Kamera ist OAK-D2
+            if self.oak_available:
+                oak_img = self._take_oak_picture()
+                if oak_img is not None:
+                    return oak_img
+                else:
+                    logger.warning(f"OAK-D2 Bildaufnahme fehlgeschlagen")
+                    return self._make_placeholder(camera_id)
+            else:
+                logger.warning(f"OAK-D2 nicht verfügbar")
+                return self._make_placeholder(camera_id)
+        
+        # Normale USB-Kameras
         if camera_id not in self.available_cameras:
             logger.warning(f"Kamera {camera_id} nicht verfügbar")
             return self._make_placeholder(camera_id)
@@ -241,9 +292,10 @@ class CameraManager:
                 cap.release()
                 return self._make_placeholder(camera_id)
             
-            self._enable_flash()
+            # Kurze Verzögerung für Kamera-Initialisierung
+            time.sleep(0.1)
+            
             ret, frame = cap.read()
-            self._disable_flash()
             cap.release()
             
             if ret:
@@ -265,18 +317,20 @@ class CameraManager:
             # Debug: Eine Kamera für alle Bilder
             logger.debug("Debug-Modus: Verwende eine Kamera für alle Bilder")
             for i in range(CONFIG.NUM_CAMERAS):
-                img = self.take_picture(0)
+                if i < len(self.available_cameras):
+                    img = self.take_picture(0)  # Erste Kamera für alles
+                else:
+                    img = self._make_placeholder(i)
                 images.append(img)
         else:
             # Normal: Jede Kamera macht ein Bild
             for i in range(CONFIG.NUM_CAMERAS):
-                if i < len(self.available_cameras):
-                    img = self.take_picture(i)
-                else:
-                    img = self._make_placeholder(i)
+                img = self.take_picture(i)
                 images.append(img)
         
         return images
+    
+#Einfügen Ende
 
 # ==================== Detection Manager ====================
 class DetectionManager:
@@ -445,7 +499,7 @@ class ParallelWorker(QThread):
         self.progress += increment
         self.progress_updated.emit(self.progress)
 
-    def run(self):
+    def run(self):  # Einfügen
         """Führt parallele Verarbeitung mit ThreadPoolExecutor durch"""
         valid_images = [keep for keep in self.keep if keep is not False]
     
@@ -456,12 +510,14 @@ class ParallelWorker(QThread):
         
         import concurrent.futures
         
-        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        # Jetzt 4 Workers: YOLO, Barcode, Gewicht, VOLUMEN
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
             # Alle Tasks parallel starten
             futures = {
                 executor.submit(self._run_yolo_task): "yolo",
                 executor.submit(self._run_barcode_task): "barcode",
-                executor.submit(self._run_weight_task): "weight"
+                executor.submit(self._run_weight_task): "weight",
+                executor.submit(self._run_volume_task): "volume"  # NEUER TASK
             }
             
             completed = 0
@@ -481,6 +537,48 @@ class ParallelWorker(QThread):
                 self.progress_updated.emit(progress)
         
         self.finished.emit()
+    
+    def _run_volume_task(self):
+        """Führt Volumenmessung mit OAK-D2 durch"""
+        try:
+            import workers.Tiefenkamera_Messung_02 as volume_module
+            volume_result = volume_module.get_volume()
+            
+            # Formatieren für Anzeige
+            if volume_result.get("success"):
+                dimensions = f"{volume_result['length']:.0f} x {volume_result['width']:.0f} x {volume_result['height']:.0f}"
+                volume_cm3 = volume_result['volume'] / 1000  # mm³ zu cm³
+                
+                return {
+                    "volume": volume_cm3,
+                    "dimensions_3d": dimensions,
+                    "success": True,
+                    "depth_frame": volume_result.get("depth_frame")
+                }
+            else:
+                return {
+                    "volume": 0.0,
+                    "dimensions_3d": "0 x 0 x 0",
+                    "success": False,
+                    "error": volume_result.get("error")
+                }
+                
+        except ImportError as e:
+            logger.error(f"Volumenmodul nicht verfügbar: {e}")
+            return {
+                "volume": 0.0,
+                "dimensions_3d": "0 x 0 x 0",
+                "success": False,
+                "error": "Modul nicht gefunden"
+            }
+        except Exception as e:
+            logger.error(f"Volumen Task Fehler: {e}")
+            return {
+                "volume": 0.0,
+                "dimensions_3d": "0 x 0 x 0",
+                "success": False,
+                "error": str(e)
+            }
     
     def _run_yolo_task(self):
         """Führt YOLO-Erkennung durch - NUR auf nicht verworfenen Bildern"""
@@ -548,6 +646,8 @@ class ParallelWorker(QThread):
         elif task_type == "weight":
             weight = result.get("weight", "Undefiniert")
             self.output_received.emit("weight", weight)
+        elif task_type == "volume":  # NEU
+            self.output_received.emit("volume", result)
 
 
 
@@ -1300,8 +1400,18 @@ class FullscreenApp(QMainWindow):
                 "content": [
                     [("ram_image_final", 0), ("ram_image_final", 1)],
                     [("ram_image_final", 2), ("ram_image_final", 3)],
+                    # 2D-Abmessungen (von YOLO)
                     f"{self.translator.get_text(self.language, 'overview', 'dimensions')} {self.abmessung}{self.translator.get_text(self.language, 'overview', 'mm')}",
-                    f"{self.translator.get_text(self.language, 'overview', 'weight')} {self.gewicht}{self.translator.get_text(self.language, 'overview', 'kg')}"
+                    
+                    # 3D-Abmessungen (von OAK-D2) - NEU
+                    f"3D-Abmessungen: {getattr(self, 'abmessung_3d', 'Nicht gemessen')}{self.translator.get_text(self.language, 'overview', 'mm')}",
+                    
+                    # Volumen - NEU
+                    f"Volumen: {getattr(self, 'volumen', 0):.2f} cm³",
+                    
+                    # Masse (von Waage)
+                    f"{self.translator.get_text(self.language, 'overview', 'weight')} {self.gewicht}{self.translator.get_text(self.language, 'overview', 'kg')}",
+
                 ]
             },
             "storage": {
@@ -1562,7 +1672,7 @@ class FullscreenApp(QMainWindow):
         
         return content
 
-    def create_editable_barcode_widget(self, barcode: Dict, index: int) -> QFrame: #Einfügen
+    def create_editable_barcode_widget(self, barcode: Dict, index: int) -> QFrame:
         """Erstellt ein bearbeitbares Barcode-Widget mit Eingabefeldern und Lösch-Button"""
         frame = QFrame()
         frame.setObjectName(f"barcode_widget_{index}")
@@ -1836,7 +1946,6 @@ class FullscreenApp(QMainWindow):
             if self.stack.count() > 3:
                 self.stack.setCurrentIndex(3)
 
-    #Einfügen Ende  
 
     def update_barcode_value(self, index: int, value: str):
         """Aktualisiert den Barcode-Wert"""
@@ -2373,6 +2482,27 @@ class FullscreenApp(QMainWindow):
             self.gewicht = data
             logger.info(f"Gewicht: {data}")
         
+        elif script_name == "volume":  # NEU
+            if isinstance(data, dict):
+                self.volume_data = data
+                logger.info(f"Volumendaten erhalten: {data}")
+                
+                # Speichere die 3D-Abmessungen
+                if data.get("success"):
+                    self.abmessung_3d = data.get("dimensions_3d", "0 x 0 x 0")
+                    self.volumen = data.get("volume", 0.0)
+                    
+                    # Optional: Tiefenbild anzeigen/speichern
+                    depth_frame = data.get("depth_frame")
+                    if depth_frame is not None:
+                        self.depth_image = depth_frame
+                        
+                    logger.info(f"3D-Abmessungen: {self.abmessung_3d}, Volumen: {self.volumen:.2f} cm³")
+                else:
+                    logger.warning(f"Volumenmessung fehlgeschlagen: {data.get('error')}")
+            else:
+                logger.error(f"Unerwartetes Format für Volumen: {type(data)}")
+
         # Prüfe ob alle Daten vorhanden sind und aktualisiere GUI
         self._check_and_update_gui()
 
@@ -2468,9 +2598,9 @@ class FullscreenApp(QMainWindow):
         layout.addWidget(status)
         
         def check_and_close():
-            # Schneller Test
+            # Test für USB-Kameras
             usb_count = 0
-            for i in range(4):
+            for i in range(CONFIG.NUM_CAMERAS-1): # Letzte Kamera ist OAK-D2
                 try:
                     cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
                     if cap.isOpened():
@@ -2479,20 +2609,22 @@ class FullscreenApp(QMainWindow):
                 except:
                     pass
             
-            # OAK-D2 Check
+            # OAK-D Erkennung mit DepthAI
             oak = False
             try:
-                cap = cv2.VideoCapture(10, cv2.CAP_V4L2)
-                if cap.isOpened():
+                verfügbar = len(dai.Device.getAllAvailableDevices()) > 0
+                if verfügbar:
                     oak = True
-                    cap.release()
-            except:
-                pass
-            
+                    print("OAK-D2 gefunden!")
+                else:
+                    print("Keine OAK-D2 Kamera gefunden!")
+            except Exception as e:
+                print(f"OAK-D Check Fehler: {e}")
+                oak = False
+
             dialog.close()
             
-            # Ergebnis anzeigen
-            result = f"USB-Kameras: {usb_count}/3\nOAK-D2: {'✓' if oak else '✗'}\n\n"
+            result = f"USB-Kameras: {usb_count}/3\nOAK-D2: {'1/1' if oak else '0/1'}\n\n"
             
             if usb_count >= 3 and oak:
                 result += "Alle Kameras OK"
@@ -2505,11 +2637,7 @@ class FullscreenApp(QMainWindow):
                 icon = QMessageBox.Icon.Critical
             
             QMessageBox(dialog).information(self, "Ergebnis", result)
-            
-            # Status speichern
-            self.camera.available_cameras = list(range(usb_count))
-            self.camera.oak_available = oak
-        
+                    
         # Nach kurzer Verzögerung testen
         QTimer.singleShot(1500, check_and_close)
         
