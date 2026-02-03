@@ -232,6 +232,7 @@ class CameraManager:
             
             # RGB-Kamera der OAK-D2 (Position CAM_A)
             cam_rgb = pipeline.create(dai.node.ColorCamera)
+
             cam_rgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
             cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
             cam_rgb.setPreviewSize(CONFIG.IMAGE_WIDTH, CONFIG.IMAGE_HEIGHT)
@@ -541,7 +542,7 @@ class ParallelWorker(QThread):
     def _run_volume_task(self):
         """Führt Volumenmessung mit OAK-D2 durch"""
         try:
-            import workers.Tiefenkamera_Messung_02 as volume_module
+            import workers.Tiefenkamera_Messung_03 as volume_module
             volume_result = volume_module.get_volume()
             
             # Formatieren für Anzeige

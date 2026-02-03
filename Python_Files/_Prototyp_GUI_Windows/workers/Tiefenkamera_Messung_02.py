@@ -4,7 +4,7 @@
 
 
 import cv2
-import depthai as dai
+import depthai as dai # EXTREM WICHTIG VERSION 2.29.0
 import numpy as np
 
 # ===========================================

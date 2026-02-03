@@ -2855,3 +2855,182 @@ AttributeError: bn
 2026-02-03 10:50:47,664 - __main__ - INFO - Erhalte 4 annotierte Frames
 2026-02-03 10:50:47,664 - __main__ - INFO - YOLO-Frames vorhanden - aktualisiere Bilder in GUI
 2026-02-03 10:50:47,851 - __main__ - INFO - Alle Tasks fertig
+2026-02-03 14:54:54,928 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-03 14:54:56,309 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-03 14:54:56,309 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-02-03 14:55:06,419 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-03 14:55:06,419 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-03 14:55:07,142 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-03 14:55:10,164 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-03 14:55:10,527 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-03 14:55:10,528 - __main__ - INFO - Gewicht: 1500.0
+2026-02-03 14:55:10,528 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-03 14:55:11,823 - workers.Tiefenkamera_Messung_03 - ERROR - Pipeline Initialisierung fehlgeschlagen: type object 'depthai.node.PresetMode' has no attribute 'FAST_DENSITY'
+2026-02-03 14:55:11,823 - workers.Tiefenkamera_Messung_03 - ERROR - Kritischer Fehler in get_volume: type object 'depthai.node.PresetMode' has no attribute 'FAST_DENSITY'
+2026-02-03 14:55:11,825 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-03 14:55:11,825 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'dimensions_3d': '0 x 0 x 0', 'success': False, 'error': "type object 'depthai.node.PresetMode' has no attribute 'FAST_DENSITY'"}
+2026-02-03 14:55:11,825 - __main__ - WARNING - Volumenmessung fehlgeschlagen: type object 'depthai.node.PresetMode' has no attribute 'FAST_DENSITY'
+2026-02-03 14:55:11,826 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-03 14:55:14,205 - __main__ - INFO - BoundingBox_Yolo03 erfolgreich importiert
+2026-02-03 14:55:14,206 - __main__ - INFO - Verarbeite Bild 0 für YOLO-Erkennung
+2026-02-03 14:55:14,340 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-03 14:55:14,341 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-03 14:55:15,362 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-03 14:55:15,363 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-03 14:55:16,112 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-03 14:55:16,112 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-03 14:55:16,736 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-03 14:55:16,737 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-03 14:55:16,932 - __main__ - WARNING - Bild 0: Keine Boxen erkannt
+2026-02-03 14:55:16,933 - __main__ - INFO - Verarbeite Bild 1 für YOLO-Erkennung
+2026-02-03 14:55:17,329 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-02-03 14:55:17,330 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-02-03 14:55:18,939 - __main__ - WARNING - Bild 1: Keine Boxen erkannt
+2026-02-03 14:55:18,940 - __main__ - INFO - Verarbeite Bild 2 für YOLO-Erkennung
+2026-02-03 14:55:20,634 - __main__ - WARNING - Bild 2: Keine Boxen erkannt
+2026-02-03 14:55:20,635 - __main__ - INFO - Verarbeite Bild 3 für YOLO-Erkennung
+2026-02-03 14:55:22,379 - __main__ - WARNING - Bild 3: Keine Boxen erkannt
+2026-02-03 14:55:22,379 - __main__ - INFO - YOLO-Erkennung abgeschlossen. Dimensionen: ['0 x 0', '0 x 0', '0 x 0', '0 x 0']
+2026-02-03 14:55:22,380 - __main__ - INFO - Ergebnis von Abmessung erhalten: Typ=<class 'list'>
+2026-02-03 14:55:22,380 - __main__ - INFO - Abmessungen erhalten: ['0 x 0', '0 x 0', '0 x 0', '0 x 0']
+2026-02-03 14:55:22,380 - __main__ - WARNING - Keine gültigen Abmessungen gefunden
+2026-02-03 14:55:22,380 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-03 14:55:22,447 - __main__ - INFO - Ergebnis von yolo_frames erhalten: Typ=<class 'list'>
+2026-02-03 14:55:22,447 - __main__ - INFO - Erhalte 4 annotierte Frames
+2026-02-03 14:55:22,448 - __main__ - INFO - YOLO-Frames vorhanden - aktualisiere Bilder in GUI
+2026-02-03 14:55:22,515 - __main__ - INFO - Alle Tasks fertig
+2026-02-03 14:55:26,398 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-03 14:55:27,371 - __main__ - INFO - go_next: Aktuelle Seite 3, scan_start=False
+2026-02-03 14:55:27,371 - __main__ - INFO - Bereits auf letzter Seite
+2026-02-03 14:55:29,054 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': array([[[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       ...,
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]]], shape=(300, 500, 3), dtype=uint8), 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:31,055 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': array([[[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       ...,
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]],
+
+       [[0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+        ...,
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]]], shape=(300, 500, 3), dtype=uint8), 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:36,569 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:39,173 - __main__ - INFO - Füge neues Barcode-Feld hinzu
+2026-02-03 14:55:41,030 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:41,707 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:43,442 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:44,626 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:44,815 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:44,978 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:45,135 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:45,282 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:45,443 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:45,589 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:45,743 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:45,896 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:46,051 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:46,208 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:46,374 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:46,535 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:46,698 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:46,863 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:47,039 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:47,214 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:47,380 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:47,545 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:47,714 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:47,886 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:48,067 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:48,245 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:48,416 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:48,586 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:48,753 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:48,918 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-03 14:55:49,087 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
+2026-02-03 14:55:49,234 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
