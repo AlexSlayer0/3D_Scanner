@@ -43,12 +43,13 @@ def select_mux(channel):
         bus.write_byte(MUX_ADDR, 1 << channel)
         time.sleep(0.05)
 
-def init_adc(index):
-    """ADC initialisieren"""
-    select_mux(mux_channels[index])
-    if not adc_channels[index].begin():
-        raise RuntimeError(f"ADC {index} nicht erreichbar")
-    print(f"ADC {index} initialisiert")
+def init_adc():
+	"""ADC initialisieren"""
+	for index in range(len(adc_channels)):
+		select_mux(mux_channels[index])
+		if not adc_channels[index].begin():
+			raise RuntimeError(f"ADC {index} nicht erreichbar")
+		#print(f"ADC {index} initialisiert")
 
 
 def tara():
@@ -58,11 +59,10 @@ def tara():
         if IS_TEST:
             zero_offsets[i] = 0  # Dummy-Offset
         else:
-            input(f"Zelle {i} leer lassen und Enter drücken…")
             select_mux(mux_channels[i])
             zero_offsets[i] = adc_channels[i].getAverage(20)
         print(f"Zelle {i}: Zero-Offset = {zero_offsets[i]:.2f}")
-    print("Tara abgeschlossen\n")
+    #print("Tara abgeschlossen\n")
 
 
 def calibrate_cell(index, known_weight_grams):
@@ -113,12 +113,12 @@ def measure_cell(index):
     
     alpha = 0.5  # Glättungsfaktor
     gewicht = roh * faktoren[index] if not IS_TEST else 1000  # 1 kg fix
-    
+
     # Glätten
     gewicht = alpha * gewicht + (1 - alpha) * gewicht_alt_list[index]
     gewicht_alt_list[index] = gewicht
     
-    print(f"Zelle {index}: {gewicht:.2f} g")
+    #print(f"Zelle {index}: {gewicht:.2f} g")
     return gewicht
 
 
@@ -132,7 +132,7 @@ def get_weight():
         for i in range(len(adc_channels)):
             gesamt += measure_cell(i)
             time.sleep(0.1)  # Kurze Pause zwischen den Messungen
-        print(f"Gesamtgewicht: {gesamt:.2f} g\n")
+        #print(f"Gesamtgewicht: {gesamt:.2f} g\n")
         return gesamt
     except Exception as e:
         print(f"Fehler bei der Gewichtsmessung: {e}")
@@ -145,8 +145,7 @@ if __name__ == "__main__":
     print("Starte Messung der 3 Zellen…\n")
     
     # ADCs initialisieren
-    for i in range(len(adc_channels)):
-        init_adc(i)
+    init_adc()
 
     # Tara durchführen
     tara()

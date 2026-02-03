@@ -12,6 +12,7 @@ import sys
 import time # Für Verzögerungen
 import cv2 # Für Kamerazugriff und Bildverarbeitung
 import json
+import serial # Für Beleuchtung
 import shutil  # Für Speicherplatzprüfung
 import logging  # Für Logging
 import platform # Für Betriebssystemerkennung
@@ -26,7 +27,7 @@ from PyQt6.QtWidgets import (
     QToolButton, QMessageBox, QDialog, QProgressBar, QComboBox, QInputDialog
 )
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
-from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal
+from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal, QTimer
 
 # ==================== Konfiguration ====================
 @dataclass
@@ -35,13 +36,17 @@ class AppConfig:
     NUM_CAMERAS: int = 4
     IMAGE_WIDTH: int = 640
     IMAGE_HEIGHT: int = 480
-    DEBUG_SINGLE_CAMERA: bool = True
+    # Bei USB-Verbindung meist /dev/ttyACM0 oder /dev/ttyUSB0
+    USB0: str = "/dev/ttyUSB0" 
+    BAURATE: int = 9600
+    
+    DEBUG_SINGLE_CAMERA: bool = False
     DEFAULT_LANGUAGE: str = "de"
     GUI_RESOURCES_PATH: str = "GUI_Anzeige"
     LOG_LEVEL: str = "INFO"
     YOLO_MODEL_PATH: str = "models/YOLOV8s_Barcode_Detection.pt"
-    #SCANS_FOLDER: str = "C:\\Users\\grane\\Desktop\\Scans" # Windows
-    SCANS_FOLDER: str = "/home/pi/3D_Scanner/Scans"  # Linux
+    #SCANS_FOLDER: str = "C:\\Users\\username\\Desktop\\Scans" # Windows
+    SCANS_FOLDER: str = "/home/leitner/Desktop/Scans"  # Linux
 
     
     @classmethod
@@ -199,6 +204,8 @@ class CameraManager:
     """Verwaltet Kamerazugriff und Bildaufnahme"""
     
     def __init__(self, debug_single_camera: bool = CONFIG.DEBUG_SINGLE_CAMERA):
+        self.port = CONFIG.USB0
+        self.baudrate = CONFIG.BAURATE
         self.debug_single_camera = debug_single_camera
         self.available_cameras = self._find_cameras()
         logger.info(f"Verfügbare Kameras gefunden: {self.available_cameras}")
@@ -226,16 +233,7 @@ class CameraManager:
                 logger.warning(f"Fehler beim Zugriff auf Kamera {i}: {e}")
         
         return available
-    
-    def _enable_flash(self):
-        """Aktiviert den Blitz (Platzhalter)"""
-        # BLITZ-IMPLEMENTIERUNG HIER EINFÜGEN
-        # GPIO, serielle Schnittstelle
-        pass
-    
-    def _disable_flash(self):
-        """Deaktiviert den Blitz (Platzhalter)"""
-        pass
+
     
     def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
         """Erstellt ein Platzhalterbild für fehlende Kameras"""
@@ -251,36 +249,47 @@ class CameraManager:
         if camera_id not in self.available_cameras:
             logger.warning(f"Kamera {camera_id} nicht verfügbar")
             return self._make_placeholder(camera_id)
-        
+
         backend = self._get_camera_backend()
-        
+
         try:
             cap = cv2.VideoCapture(camera_id, backend)
             if not cap.isOpened():
                 logger.error(f"Kamera {camera_id} konnte nicht geöffnet werden")
                 cap.release()
                 return self._make_placeholder(camera_id)
-            
-            self._enable_flash()
+
             ret, frame = cap.read()
-            self._disable_flash()
             cap.release()
-            
+
             if ret:
                 logger.info(f"Bild erfolgreich von Kamera {camera_id} aufgenommen")
                 return frame
             else:
                 logger.error(f"Bildaufnahme von Kamera {camera_id} fehlgeschlagen")
                 return self._make_placeholder(camera_id)
-                
+
         except Exception as e:
             logger.error(f"Fehler bei Bildaufnahme von Kamera {camera_id}: {e}")
             return self._make_placeholder(camera_id)
+            
         
     def take_all_pictures(self) -> List[np.ndarray]:
         """Nimmt Bilder von allen Kameras auf"""
         images: List[np.ndarray] = []
-        
+        # Flash on
+        ser = serial.Serial(self.port, self.baudrate, timeout=1)
+        time.sleep(2)  # Warten, bis der Serial Port nach dem öffnen bereit ist
+
+        def send_command(command):
+            full_command = command + "\n"
+            ser.write(full_command.encode('utf-8'))
+            time.sleep(0.1)  # Kurze Pause zur Verarbeitung
+
+        send_command("Change")
+        send_command("a")  # alle an
+        time.sleep(0.5)  # Kurze Pause damit alle LED an
+
         if self.debug_single_camera:
             # Debug: Eine Kamera für alle Bilder
             logger.debug("Debug-Modus: Verwende eine Kamera für alle Bilder")
@@ -296,6 +305,11 @@ class CameraManager:
                     img = self._make_placeholder(i)
                 images.append(img)
         
+        # Flash off
+        send_command("Change")
+        send_command("0")  # Alle aus
+
+        ser.close()
         return images
 
 # ==================== Detection Manager ====================
@@ -546,14 +560,24 @@ class ParallelWorker(QThread):
         """Führt Gewichtsmessung durch"""
         try:
             import workers.Gewichts_Messung
-            weight = workers.Gewichts_Messung.get_weight()
-            return {"weight": weight}
+            weight_g = workers.Gewichts_Messung.get_weight()
+        
+            # Umrechnung von Gramm zu Kilogramm
+            weight_kg = weight_g / 1000.0
+        
+            # Optional: Negative Werte oder sehr kleine Werte auf 0 setzen
+            if weight_kg < 0.001:  # Weniger als 1 Gramm
+                weight_kg = 0.0
+            
+            return {"weight": f"{weight_kg:.3f}"}  # 3 Dezimalstellen
+        
         except ImportError as e:
             logger.error(f"Gewichtsmodul nicht verfügbar: {e}")
-            return {"weight": "Undefiniert"}
+            return {"weight": "0.000"}
+        
         except Exception as e:
             logger.error(f"Gewicht Task Fehler: {e}")
-            return {"weight": "Undefiniert"}
+            return {"weight": "0.000"}
     
     def _process_result(self, task_type: str, result: dict):
         """Verarbeitet Ergebnisse der Tasks"""
@@ -582,10 +606,17 @@ class FullscreenApp(QMainWindow):
         self.showFullScreen()
 
         # Initialisierung
-        self.camera = CameraManager(debug_single_camera=True)
+        self.camera = CameraManager(debug_single_camera=False)
         self.translator = TranslationManager()
         self.language = CONFIG.DEFAULT_LANGUAGE
         self.Explorer_Structure = CONFIG.GUI_RESOURCES_PATH
+        # Bei USB-Verbindung
+        self.port = CONFIG.USB0
+        self.baudrate = CONFIG.BAURATE
+        
+        import workers.Gewichts_Messung
+        workers.Gewichts_Messung.init_adc()
+        workers.Gewichts_Messung.tara()
 
         # Datenvariablen
         self.abmessung: Optional[str] = None
@@ -1042,6 +1073,7 @@ class FullscreenApp(QMainWindow):
             self.images[idx] = new_img
             pixmap = self.convert_to_pixmap(new_img)
             self.image_labels[idx].setPixmap(pixmap)
+            self.keep[idx] = True
 
     def discard_image(self, idx: int):
         """Verwirft ein Bild"""
@@ -2423,14 +2455,154 @@ class FullscreenApp(QMainWindow):
             self.load_pages()
             QApplication.processEvents()  # Erzwinge GUI-Update
 
-    # Platzhalter-Funktionen für die Systemprüfung
+
     def check_camera(self):
-        QMessageBox.information(self, "Kamera-Prüfung", "Kamera-System wird geprüft...")
-        logger.info("Kamera-Prüfung gestartet")
+        """Verbesserte Kamera-Prüfung für Linux"""
+        
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Kamera-Prüfung")
+        dialog.setFixedSize(400, 200)
+        dialog.setModal(True)
+        
+        layout = QVBoxLayout(dialog)
+        layout.setContentsMargins(20, 20, 20, 20)
+        
+        progress = QProgressBar()
+        progress.setRange(0, 0)
+        layout.addWidget(progress)
+        
+        status = QLabel("Teste Kameras...")
+        status.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(status)
+        
+        def check_and_close():
+            # Teste eine breite Palette von Indizes
+            all_indices = []
+            usb_indices = []
+            oak_index = None
+            
+            # Teste Indizes 0-9
+            for i in range(10):
+                try:
+                    cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
+                    if cap.isOpened():
+                        ret, frame = cap.read()
+                        if ret and frame is not None:
+                            all_indices.append(i)
+                            
+                            # Versuche OAK-D2 anhand der Auflösung zu erkennen
+                            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                            
+                            # OAK-D2 hat typisch 1920x1080 oder höher
+                            if width >= 1280 or height >= 720:
+                                logger.info(f"Mögliche OAK-D2 an Index {i} ({width}x{height})")
+                                if oak_index is None:  # Erste gefundene als OAK
+                                    oak_index = i
+                                else:
+                                    usb_indices.append(i)
+                            else:
+                                usb_indices.append(i)
+                                
+                            cap.release()
+                            logger.info(f"Kamera gefunden an Index {i} ({width}x{height})")
+                except Exception as e:
+                    logger.debug(f"Index {i}: {e}")
+                    pass
+            
+            # Speziell für OAK-D2 auch höhere Indizes testen
+            if oak_index is None:
+                for i in range(10, 15):
+                    try:
+                        cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
+                        if cap.isOpened():
+                            ret, frame = cap.read()
+                            if ret:
+                                oak_index = i
+                                logger.info(f"OAK-D2 an Index {i} gefunden")
+                                cap.release()
+                                break
+                            cap.release()
+                    except:
+                        pass
+            
+            dialog.close()
+            
+            # Ergebnis anzeigen
+            result = f"Gefundene Kamera-Indizes: {all_indices}\n"
+            result += f"USB-Kameras: {len(usb_indices)} gefunden (Indizes: {usb_indices})\n"
+            result += f"OAK-D2: {'Nicht gefunden' if oak_index is None else f'Gefunden an Index {oak_index}'}"
+            
+            # Status setzen
+            self.camera.available_cameras = usb_indices[:3]  # Nur die ersten 3 für USB
+            if oak_index is not None:
+                # Für die 4. Kamera (Index 3) die OAK verwenden
+                if len(self.camera.available_cameras) < 3:
+                    # Falls weniger als 3 USB, OAK an letzter Position
+                    self.camera.available_cameras.append(oak_index)
+                else:
+                    # OAK als separate Kamera
+                    self.camera.oak_available = True
+                    self.camera.oak_index = oak_index
+            
+            logger.info(f"Verfügbare Kameras: {self.camera.available_cameras}")
+            logger.info(f"OAK verfügbar: {self.camera.oak_available}, Index: {getattr(self.camera, 'oak_index', None)}")
+            
+            # Messagebox anzeigen
+            msg = QMessageBox(self)
+            msg.setWindowTitle("Kamera-Test Ergebnis")
+            msg.setText(result)
+            
+            # Icon basierend auf Ergebnis
+            if len(usb_indices) >= 3 and oak_index is not None:
+                msg.setIcon(QMessageBox.Icon.Information)
+                msg.setText(result + "\n\n✓ Alle Kameras verfügbar")
+            elif len(usb_indices) >= 3:
+                msg.setIcon(QMessageBox.Icon.Warning)
+                msg.setText(result + "\n\n⚠ Nur USB-Kameras verfügbar, OAK-D2 fehlt")
+            else:
+                msg.setIcon(QMessageBox.Icon.Critical)
+                msg.setText(result + "\n\n✗ Nicht genügend Kameras")
+            
+            msg.exec()
+        
+        QTimer.singleShot(1000, check_and_close)
+        dialog.exec()
+            
 
     def check_light(self):
-        QMessageBox.information(self, "Beleuchtungs-Prüfung", "Beleuchtung wird geprüft...")
-        logger.info("Beleuchtungs-Prüfung gestartet")
+        try:
+            ser = serial.Serial(self.port, self.baudrate, timeout=1)
+            time.sleep(2)  # Warten, bis der Serial Port nach dem öffnen bereit ist
+
+            def send_command(command):
+                full_command = command + "\n"
+                ser.write(full_command.encode('utf-8'))
+                time.sleep(0.1)  # Kurze Pause zur Verarbeitung
+
+            # Schritt 1: In den Change-Modus wechseln
+            send_command("Change")
+
+            ''' Mögliche Commands:
+        
+            case '1': Blitz(1); break;
+            case '2': Blitz(2); break;
+            case '3': Blitz(3); break;
+            case '4': Strip_On(); break;
+            case 'a': All_ON(); break;
+            case '0': All_OFF(); break;
+            '''
+        
+            send_command("a")
+            time.sleep(1)  # Kurze Pause zur Verarbeitung
+
+            send_command("Change")
+            send_command("0")
+
+            ser.close()
+        except Exception as e:
+            logger.Waning(f"Fehler: {e}")
+        
 
     def calibrate_scale(self):
         """ Führt eine Referenzkalibrierung für 3 Wägezellen durch. """
