@@ -17,6 +17,7 @@ import shutil  # Für Speicherplatzprüfung
 import logging  # Für Logging
 import platform # Für Betriebssystemerkennung
 import numpy as np
+import depthai as dai
 from datetime import datetime 
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional, Any
@@ -54,7 +55,7 @@ class AppConfig:
     DEFAULT_LANGUAGE: str = "de"
     GUI_RESOURCES_PATH: str = "GUI_Anzeige"
     LOG_LEVEL: str = "INFO"
-    YOLO_MODEL_PATH: str = "models/YOLOV8s_Barcode_Detection.pt"
+    #YOLO_MODEL_PATH: str = "models/YOLOV8s_Barcode_Detection.pt"
     #SCANS_FOLDER: str = "C:\\Users\\username\\Desktop\\Scans" # Windows
     SCANS_FOLDER: str = "/home/leitner/Desktop/Scans"  # Linux
 
@@ -211,69 +212,141 @@ class TranslationManager:
 
 # ==================== Camera Manager ====================
 class CameraManager:
-    def __init__(self, debug_single_camera: bool = CONFIG.DEBUG_SINGLE_CAMERA):
-        self.port = CONFIG.USB0
-        self.baudrate = CONFIG.BAURATE
-        self.debug_single_camera = debug_single_camera
-        self.available_cameras = []  # Für USB-Kameras (0, 1, 2)
-        self.oak_index = None        # Für OAK-D2
-        self.oak_available = False   # Boolean für Verfügbarkeit
-        self._find_cameras()
-        logger.info(f"USB-Kameras: {self.available_cameras}, OAK-D2: {self.oak_index}, Verfügbar: {self.oak_available}")
+    """Verwaltet Kamerazugriff und Bildaufnahme"""
     
-    def _find_cameras(self):
-        """Findet Kameras intelligenter"""
-        usb_cameras = []
+    def __init__(self, debug_single_camera: bool = CONFIG.DEBUG_SINGLE_CAMERA):
+        self.debug_single_camera = debug_single_camera
+        self.oak_available = False
+        self.available_cameras = self._find_cameras()
         
-        # Suche nach USB-Kameras (indizes 0-9)
-        for i in range(10):
-            try:
-                cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
-                if cap.isOpened():
-                    ret, frame = cap.read()
-                    if ret:
-                        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                        
-                        # Niedrige Auflösung = wahrscheinlich USB-Webcam
-                        if width <= 1280 and height <= 720:
-                            usb_cameras.append(i)
-                            logger.info(f"USB-Kamera gefunden: Index {i} ({width}x{height})")
-                        # Hohe Auflösung = könnte OAK sein
-                        elif self.oak_index is None and (width >= 1280 or height >= 720):
-                            self.oak_index = i
-                            self.oak_available = True
-                            logger.info(f"OAK-D2 gefunden: Index {i} ({width}x{height})")
-                        else:
-                            usb_cameras.append(i)
-                    cap.release()
-            except Exception as e:
-                logger.debug(f"Index {i} nicht verfügbar: {e}")
-        
-        # Sortiere und nehme die ersten 3 USB-Kameras
-        usb_cameras.sort()
-        self.available_cameras = usb_cameras[:3]
-        
-        # Falls OAK nicht gefunden, suche in höheren Indizes
-        if not self.oak_available:
-            for i in range(10, 15):
+        # Serielle Verbindung für Blitz-Steuerung initialisieren
+        self.serial_port = None
+        logger.info(f"Verfügbare Kameras gefunden: {self.available_cameras}, OAK-D2: {self.oak_available}")
+    
+    def _send_command(self, command: str):
+        """Sendet einen Befehl zur seriellen Schnittstelle"""
+        try:
+            if self.serial_port is None:
+                self.serial_port = serial.Serial(CONFIG.USB0, CONFIG.BAURATE, timeout=1)
+                time.sleep(2)  # Warten bis Serial Port bereit
+            
+            full_command = command + "\n"
+            self.serial_port.write(full_command.encode('utf-8'))
+            time.sleep(0.1)  # Kurze Pause zur Verarbeitung
+            logger.debug(f"Serieller Befehl gesendet: {command}")
+            
+        except Exception as e:
+            logger.warning(f"Fehler bei serieller Kommunikation: {e}")
+            if self.serial_port:
                 try:
-                    cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
-                    if cap.isOpened():
-                        self.oak_index = i
-                        self.oak_available = True
-                        logger.info(f"OAK-D2 an Index {i} gefunden")
-                        cap.release()
-                        break
-                    cap.release()
+                    self.serial_port.close()
                 except:
                     pass
-                       
+                self.serial_port = None
+    
+    def _control_light(self, state: bool):
+        """Steuert die Beleuchtung für OAK-D2 Aufnahmen"""
+        try:
+            if state:
+                logger.info("Licht für Aufnahme einschalten...")
+                self._send_command("Change")
+                time.sleep(0.1)
+                self._send_command("a")  # Alles an
+                time.sleep(0.5)  # Kurze Pause für Licht-Stabilisierung
+            else:
+                logger.info("Licht nach Aufnahme ausschalten...")
+                self._send_command("Change")
+                time.sleep(0.1)
+                self._send_command("0")  # Alles aus
+            
+        except Exception as e:
+            logger.warning(f"Fehler bei Licht-Steuerung: {e}")
+
     def _get_camera_backend(self) -> int:
         """Bestimmt den passenden Camera Backend für das Betriebssystem"""
         if platform.system() == "Windows":
             return cv2.CAP_DSHOW
-        return cv2.CAP_ANY
+        return cv2.CAP_V4L2  # Besser für Linux
+
+    def _find_cameras(self) -> List[int]:
+        """Findet verfügbare Kameras"""
+        available: List[int] = []
+        backend = self._get_camera_backend()
+        
+        for i in range(CONFIG.NUM_CAMERAS-1):  # Letzte Kamera ist OAK-D2
+            try:
+                cap = cv2.VideoCapture(i, backend)
+                if cap.isOpened():
+                    ret, _ = cap.read()
+                    if ret:
+                        available.append(i)
+                    cap.release()
+                else:
+                    cap.release()
+            except Exception as e:
+                logger.warning(f"Fehler beim Zugriff auf Kamera {i}: {e}")
+        
+        # OAK-D2 prüfen
+        self._check_oak_availability()
+        
+        return available
+    
+    def _check_oak_availability(self):
+        """Prüft ob OAK-D2 verfügbar ist"""
+        try:
+            devices = dai.Device.getAllAvailableDevices()
+            if len(devices) > 0:
+                self.oak_available = True
+                logger.info(f"OAK-D2 ist verfügbar: {len(devices)} Gerät(e)")
+            else:
+                logger.warning("Keine OAK-D2 Kamera gefunden")
+        except Exception as e:
+            logger.error(f"Fehler bei OAK-D2 Prüfung: {e}")
+            self.oak_available = False
+
+    def _take_oak_picture(self) -> Optional[np.ndarray]:
+        """Nimmt ein Bild mit der OAK-D2 RGB-Kamera auf - MIT LICHT"""
+        try:
+            # Licht einschalten vor der Aufnahme
+            self._control_light(True)
+            time.sleep(0.3)  # Kurze Pause für Licht-Stabilisierung
+        
+            pipeline = dai.Pipeline()
+        
+            # RGB-Kamera der OAK-D2
+            cam_rgb = pipeline.create(dai.node.ColorCamera)
+            cam_rgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
+            cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
+            cam_rgb.setPreviewSize(CONFIG.IMAGE_WIDTH, CONFIG.IMAGE_HEIGHT)
+        
+            # ENTFERNT: setExposureTime und setIspScale - die sind nicht in der API
+            # Die Standardeinstellungen sollten mit Blitz funktionieren
+        
+            # Ausgabestream
+            xout_rgb = pipeline.create(dai.node.XLinkOut)
+            xout_rgb.setStreamName("rgb")
+            cam_rgb.preview.link(xout_rgb.input)
+        
+            # Verbindung herstellen und Bild aufnehmen
+            with dai.Device(pipeline) as device:
+                q_rgb = device.getOutputQueue(name="rgb", maxSize=1, blocking=True)
+                in_rgb = q_rgb.get()
+                frame = in_rgb.getCvFrame()
+                logger.info("OAK-D2 Bild mit Licht erfolgreich aufgenommen")
+            
+                # Licht ausschalten NACH der Aufnahme
+                self._control_light(False)
+                return frame
+            
+        except Exception as e:
+            logger.error(f"Fehler bei OAK-D2 Bildaufnahme: {e}")
+            # Sicherheitshalber Licht ausschalten auch bei Fehler
+            try:
+                self._control_light(False)
+            except:
+                pass
+            return None
+        
     
     def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
         """Erstellt ein Platzhalterbild für fehlende Kameras"""
@@ -283,191 +356,110 @@ class CameraManager:
                    (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 
                    (255, 255, 255), 2)
         return img
-    
+
     def take_picture(self, camera_id: int) -> np.ndarray:
         """Nimmt ein Bild mit der angegebenen Kamera auf"""
-        # Bestimme den Systemindex basierend auf Kamera-ID
-        system_index = None
-
-        # Kamera-ID 0, 1, 2: USB-Kameras
-        if camera_id < 3:
-            if camera_id < len(self.available_cameras):
-                system_index = self.available_cameras[camera_id]
-            else:
-                system_index = -1  # Keine Kamera an dieser Position
-        # Kamera-ID 3: OAK-D2
-        elif camera_id == 3:
+        
+        # Spezialfall: OAK-D2 (letzte Kamera) - hat eigene Lichtsteuerung
+        if camera_id == CONFIG.NUM_CAMERAS - 1:  # Letzte Kamera ist OAK-D2
             if self.oak_available:
-                system_index = self.oak_index
+                oak_img = self._take_oak_picture()  # Licht wird hier gesteuert
+                if oak_img is not None:
+                    return oak_img
+                else:
+                    logger.warning(f"OAK-D2 Bildaufnahme fehlgeschlagen")
+                    return self._make_placeholder(camera_id)
             else:
-                system_index = -1
-    
-        if system_index == -1 or system_index is None:
-            logger.warning(f"Kamera {camera_id} (System-Index: {system_index}) nicht verfügbar")
-            return self._make_placeholder(camera_id)
-    
-        backend = cv2.CAP_V4L2
-    
-        try:
-            cap = cv2.VideoCapture(system_index, backend)
-            if not cap.isOpened():
-                logger.error(f"Kamera {camera_id} (Index {system_index}) konnte nicht geöffnet werden")
-                cap.release()
+                logger.warning(f"OAK-D2 nicht verfügbar")
                 return self._make_placeholder(camera_id)
         
-            # Für OAK-D2 (camera_id == 3) keine Beleuchtung
-            if camera_id < 3:  # Nur für USB-Kameras Beleuchtung
-                try:
-                    ser = serial.Serial(self.port, self.baudrate, timeout=1)
-                    time.sleep(0.5)
-                
-                    def send_command(command):
-                        full_command = command + "\n"
-                        ser.write(full_command.encode('utf-8'))
-                        time.sleep(0.1)
-                
-                    send_command("Change")
-                    send_command("a")  # Alle an
-                    time.sleep(0.8)
-                
-                    ret, frame = cap.read()
-                
-                    send_command("Change")
-                    send_command("0")  # Alle aus
-                    ser.close()
-                    
-                except Exception as e:
-                    logger.warning(f"Beleuchtung fehlgeschlagen: {e}")
-                    ret, frame = cap.read()
-            else:
-                # OAK-D2 ohne Beleuchtung
-                ret, frame = cap.read()
+        # Normale USB-Kameras - mit Licht
+        if camera_id not in self.available_cameras:
+            logger.warning(f"Kamera {camera_id} nicht verfügbar")
+            return self._make_placeholder(camera_id)
         
-            cap.release()
+        # Licht für USB-Kamera einschalten
+        self._control_light(True)
+        time.sleep(0.3)  # Kurze Pause für Licht-Stabilisierung
         
-            if ret and frame is not None:
-                #logger.info(f"Bild von Kamera {camera_id} (Index {system_index}) aufgenommen")
-                return frame
-            else:
-                #logger.error(f"Bildaufnahme von Kamera {camera_id} fehlgeschlagen")
+        backend = self._get_camera_backend()
+        
+        try:
+            cap = cv2.VideoCapture(camera_id, backend)
+            if not cap.isOpened():
+                logger.error(f"Kamera {camera_id} konnte nicht geöffnet werden")
+                cap.release()
+                self._control_light(False)  # Licht ausschalten bei Fehler
                 return self._make_placeholder(camera_id)
             
+            # Kurze Verzögerung für Kamera-Initialisierung
+            time.sleep(0.2)
+            
+            # Bild mit erhöhter Belichtung für Blitz
+            cap.set(cv2.CAP_PROP_EXPOSURE, 0.1)  # Kurze Belichtung
+            ret, frame = cap.read()
+            cap.release()
+            
+            # Licht nach Aufnahme ausschalten
+            self._control_light(False)
+            
+            if ret:
+                logger.info(f"Bild erfolgreich von Kamera {camera_id} aufgenommen")
+                return frame
+            else:
+                logger.error(f"Bildaufnahme von Kamera {camera_id} fehlgeschlagen")
+                return self._make_placeholder(camera_id)
+                
         except Exception as e:
             logger.error(f"Fehler bei Bildaufnahme von Kamera {camera_id}: {e}")
+            # Sicherheitshalber Licht ausschalten
+            try:
+                self._control_light(False)
+            except:
+                pass
             return self._make_placeholder(camera_id)
-        
-         
+
     def take_all_pictures(self) -> List[np.ndarray]:
         """Nimmt Bilder von allen Kameras auf"""
         images: List[np.ndarray] = []
-
+        
+        # Für alle Kameras wird Licht automatisch in take_picture() gesteuert
         if self.debug_single_camera:
             # Debug: Eine Kamera für alle Bilder
             logger.debug("Debug-Modus: Verwende eine Kamera für alle Bilder")
             for i in range(CONFIG.NUM_CAMERAS):
-                img = self.take_picture(0)
+                if i < len(self.available_cameras):
+                    img = self.take_picture(0)  # Erste Kamera für alles
+                else:
+                    img = self._make_placeholder(i)
                 images.append(img)
         else:
             # Normal: Jede Kamera macht ein Bild
             for i in range(CONFIG.NUM_CAMERAS):
-                img = self.take_picture(i)
+                img = self.take_picture(i)  # Licht wird für jede Kamera separat gesteuert
                 images.append(img)
         
         return images
+    
+    def close(self):
+        """Schließt alle Ressourcen"""
+        if self.serial_port:
+            try:
+                # Sicherstellen dass Licht aus ist
+                self._send_command("Change")
+                self._send_command("0")
+                self.serial_port.close()
+                logger.info("Serielle Verbindung geschlossen")
+            except Exception as e:
+                logger.warning(f"Fehler beim Schließen der seriellen Verbindung: {e}")
+                
+                
 
 # ==================== Detection Manager ====================
 class DetectionManager:
     def __init__(self):
-        self.yolo_model = None
         self.barcode_detector = None  # Wird später initialisiert
         self.all_barcodes: List[Dict[str, Any]] = []
-        
-    def load_yolo_model(self, model_path: str = CONFIG.YOLO_MODEL_PATH):
-        """Lädt das YOLO-Modell (einmalig)"""
-        try:
-            from ultralytics import YOLO
-            self.yolo_model = YOLO(model_path)
-            logger.info(f"YOLO-Modell geladen von {model_path}")
-        except ImportError as e:
-            logger.error(f"YOLO nicht verfügbar: {e}")
-        except Exception as e:
-            logger.error(f"Fehler beim Laden des YOLO-Modells: {e}")
-    
-    def run_yolo_detection(self, images: List[np.ndarray]) -> Tuple[List[str], List[np.ndarray]]:
-        """Führt YOLO-Objekterkennung durch"""
-        all_dimensions: List[str] = []
-        all_frames: List[np.ndarray] = []
-        
-        # Direkt importieren und verwenden
-        try:
-            # Importiere das Modul neu
-            import workers.BoundingBox_Yolo03 as yolo_module
-            logger.info("BoundingBox_Yolo03 erfolgreich importiert")
-        except ImportError as e:
-            logger.error(f"YOLO-Modul nicht gefunden: {e}")
-            # Fallback: Leere Ergebnisse
-            for _ in range(len(images)):
-                all_dimensions.append("0 x 0")
-                all_frames.append(None)
-            return all_dimensions, all_frames
-        
-        for idx, frame in enumerate(images):
-            logger.info(f"Verarbeite Bild {idx} für YOLO-Erkennung")
-            
-            if frame is None:
-                logger.warning(f"Bild {idx} ist None")
-                all_dimensions.append("0 x 0")
-                all_frames.append(None)
-                continue
-
-            try:
-                # Stelle sicher, dass das Bild das richtige Format hat
-                if frame is not None and isinstance(frame, np.ndarray):
-                    logger.debug(f"Bild {idx} - Größe: {frame.shape}, Typ: {frame.dtype}")
-                    
-                    # WICHTIG: Konvertiere BGR zu RGB für YOLO
-                    if len(frame.shape) == 3 and frame.shape[2] == 3:
-                        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    else:
-                        frame_rgb = frame
-                    
-                    # Führe YOLO-Erkennung durch
-                    boxes_info = yolo_module.get_boxes_and_dimensions(frame_rgb)
-                    logger.debug(f"Bild {idx}: {len(boxes_info)} Boxen erkannt")
-
-                    if boxes_info:
-                        dim_str = f"{boxes_info[0]['width']} x {boxes_info[0]['height']}"
-                        logger.info(f"Bild {idx}: YOLO erkannt - {dim_str}")
-                    else:
-                        dim_str = "0 x 0"
-                        logger.warning(f"Bild {idx}: Keine Boxen erkannt")
-
-                    all_dimensions.append(dim_str)
-
-                    # Annotiertes Bild erstellen
-                    try:
-                        # Verwende das Original-BGR-Bild für die Annotation
-                        frame_with_boxes = yolo_module.draw_boxes(frame.copy(), boxes_info)
-                        all_frames.append(frame_with_boxes)
-                        logger.debug(f"Bild {idx}: Annotiertes Frame erstellt")
-                    except Exception as draw_e:
-                        logger.error(f"Fehler beim Zeichnen der Boxen Bild {idx}: {draw_e}")
-                        # Fallback: Originalbild
-                        all_frames.append(frame)
-                        
-                else:
-                    logger.error(f"Bild {idx} hat ungültiges Format: {type(frame)}")
-                    all_dimensions.append("0 x 0")
-                    all_frames.append(None)
-                
-            except Exception as e:
-                logger.error(f"Fehler bei YOLO-Erkennung Bild {idx}: {e}", exc_info=True)
-                all_dimensions.append("0 x 0")
-                all_frames.append(None)
-                
-        logger.info(f"YOLO-Erkennung abgeschlossen. Dimensionen: {all_dimensions}")
-        return all_dimensions, all_frames
-    
 
     def run_barcode_detection(self, images: List[np.ndarray]) -> List[Dict[str, Any]]:
         """Erkennt alle Barcodes in den Bildern"""
@@ -521,7 +513,6 @@ class DetectionManager:
             logger.error(f"Fehler in run_barcode_detection: {e}")
             return []
 
-
 class ParallelWorker(QThread):   
     output_received = pyqtSignal(str, object)  # (task_name, result)
     progress_updated = pyqtSignal(int)  # Fortschritt in %
@@ -543,7 +534,9 @@ class ParallelWorker(QThread):
         self.progress += increment
         self.progress_updated.emit(self.progress)
 
-    def run(self):
+
+
+    def run(self):  # Einfügen
         """Führt parallele Verarbeitung mit ThreadPoolExecutor durch"""
         valid_images = [keep for keep in self.keep if keep is not False]
     
@@ -554,14 +547,14 @@ class ParallelWorker(QThread):
         
         import concurrent.futures
         
+        # 3 Workers 
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-            # Alle Tasks parallel starten
+            # Entfernt: YOLO-Task
             futures = {
-                executor.submit(self._run_yolo_task): "yolo",
                 executor.submit(self._run_barcode_task): "barcode",
-                executor.submit(self._run_weight_task): "weight"
+                executor.submit(self._run_weight_task): "weight",
+                executor.submit(self._run_volume_task): "volume"
             }
-            
             completed = 0
             total = len(futures)
             
@@ -580,28 +573,48 @@ class ParallelWorker(QThread):
         
         self.finished.emit()
     
-    def _run_yolo_task(self):
-        """Führt YOLO-Erkennung durch - NUR auf nicht verworfenen Bildern"""
+    def _run_volume_task(self):
+        """Führt Volumenmessung mit OAK-D2 durch"""
         try:
-            # Verwende images_to_process anstatt images
-            dimensions, frames = self.detection_manager.run_yolo_detection(self.images_to_process)
+            import workers.Tiefenkamera_Messung_03 as volume_module
+            volume_result = volume_module.get_volume()
             
-            # Erstelle leere Listen für alle Bilder (4 Kameras)
-            all_dimensions = ["0 x 0"] * len(self.images)
-            all_frames = [None] * len(self.images)
-            
-            # Fülle die Ergebnisse nur an den originalen Indizes der behaltenen Bilder
-            for i, idx in enumerate(self.original_indices):
-                if i < len(dimensions):
-                    all_dimensions[idx] = dimensions[i]
-                if i < len(frames):
-                    all_frames[idx] = frames[i]
-                    
-            return {"dimensions": all_dimensions, "frames": all_frames}
+            # Formatieren für Anzeige
+            if volume_result.get("success"):
+                dimensions = f"{volume_result['length']:.1f} x {volume_result['width']:.1f} x {volume_result['height']:.1f}"
+                volume_cm3 = volume_result['volume'] / 1000  # mm³ zu cm³
+                
+                return {
+                    "volume": volume_cm3,
+                    "abmessung": dimensions,
+                    "success": True,
+                    "depth_frame": volume_result.get("depth_frame")
+                }
+            else:
+                return {
+                    "volume": 0.0,
+                    "abmessung": "0 x 0 x 0",
+                    "success": False,
+                    "error": volume_result.get("error")
+                }
+                
+        except ImportError as e:
+            logger.error(f"Volumenmodul nicht verfügbar: {e}")
+            return {
+                "volume": 0.0,
+                "abmessung": "0 x 0 x 0",
+                "success": False,
+                "error": "Modul nicht gefunden"
+            }
         except Exception as e:
-            logger.error(f"YOLO Task Fehler: {e}")
-            return {"dimensions": [], "frames": []}
-    
+            logger.error(f"Volumen Task Fehler: {e}")
+            return {
+                "volume": 0.0,
+                "abmessung": "0 x 0 x 0",
+                "success": False,
+                "error": str(e)
+            }
+   
     def _run_barcode_task(self):
         """Führt Barcode-Erkennung durch - NUR auf nicht verworfenen Bildern"""
         try:
@@ -623,39 +636,31 @@ class ParallelWorker(QThread):
         """Führt Gewichtsmessung durch"""
         try:
             import workers.Gewichts_Messung
-            weight_g = workers.Gewichts_Messung.get_weight()
-        
-            # Umrechnung von Gramm zu Kilogramm
-            weight_kg = weight_g / 1000.0
-        
-            # Optional: Negative Werte oder sehr kleine Werte auf 0 setzen
-            if weight_kg < 0.001:  # Weniger als 1 Gramm
-                weight_kg = 0.0
-            
-            return {"weight": f"{weight_kg:.3f}"}  # 3 Dezimalstellen
-        
+            weight = workers.Gewichts_Messung.get_weight()
+            if weight is not None:
+                weight = round(weight, 3)
+            return {"weight": weight}
+
         except ImportError as e:
             logger.error(f"Gewichtsmodul nicht verfügbar: {e}")
-            return {"weight": "0.000"}
-        
+            return {"weight": "Undefiniert"}
         except Exception as e:
             logger.error(f"Gewicht Task Fehler: {e}")
-            return {"weight": "0.000"}
+            return {"weight": "Undefiniert"}
     
     def _process_result(self, task_type: str, result: dict):
         """Verarbeitet Ergebnisse der Tasks"""
-        if task_type == "yolo":
-            dimensions = result.get("dimensions", [])
-            frames = result.get("frames", [])
-            self.output_received.emit("Abmessung", dimensions)
-            self.output_received.emit("yolo_frames", frames)
-        elif task_type == "barcode":
+        if task_type == "barcode":
             barcodes = result.get("barcodes", [])
             for barcode in barcodes:
                 self.output_received.emit("barcode", barcode)
         elif task_type == "weight":
             weight = result.get("weight", "Undefiniert")
             self.output_received.emit("weight", weight)
+        elif task_type == "volume":
+            self.output_received.emit("volume", result)
+
+
 
 
 
@@ -839,7 +844,7 @@ class FullscreenApp(QMainWindow):
         
         # Logo links
         logo_label = QLabel()
-        logo_path = os.path.join(self.Explorer_Structure, "logo.png")
+        logo_path = os.path.join(self.Explorer_Structure, "Logo.png")
         if os.path.exists(logo_path):
             pixmap = QPixmap(logo_path)
             pixmap = pixmap.scaled(150, 80, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
@@ -1430,8 +1435,11 @@ class FullscreenApp(QMainWindow):
                 "content": [
                     [("ram_image_final", 0), ("ram_image_final", 1)],
                     [("ram_image_final", 2), ("ram_image_final", 3)],
-                    f"{self.translator.get_text(self.language, 'overview', 'dimensions')} {self.abmessung}{self.translator.get_text(self.language, 'overview', 'mm')}",
-                    f"{self.translator.get_text(self.language, 'overview', 'weight')} {self.gewicht}{self.translator.get_text(self.language, 'overview', 'kg')}"
+
+                    f"{self.translator.get_text(self.language, 'overview', 'dimensions')} {self.abmessung} {self.translator.get_text(self.language, 'overview', 'mm')}",
+                    
+                    f"{self.translator.get_text(self.language, 'overview', 'weight')} {self.gewicht}{self.translator.get_text(self.language, 'overview', 'kg')}",
+
                 ]
             },
             "storage": {
@@ -1455,6 +1463,7 @@ class FullscreenApp(QMainWindow):
         
         self.stack.setCurrentIndex(current_page)
         self.update_buttons()
+        
 
     def clear_image_memory(self):
         """Löscht explizit alle Bildreferenzen und gibt RAM frei"""
@@ -2031,19 +2040,30 @@ class FullscreenApp(QMainWindow):
                     # Berechne relativen Pfad von CSV zu Bild
                     return os.path.relpath(full_path, date_folder)
                 
-                # 10. Abmessungen parsen
+                # 10. Abmessungen von OAK-D2
                 laenge = breite = hoehe = 0
-                if self.abmessung and self.abmessung != "Undefiniert":
+                if hasattr(self, 'abmessung') and self.abmessung:
                     try:
+                        # Format: "Länge x Breite x Höhe" (z.B. "250 x 150 x 100")
                         teile = self.abmessung.split(" x ")
-                        if len(teile) >= 2:
+                        if len(teile) >= 3:
                             laenge = float(teile[0])
                             breite = float(teile[1])
-                            hoehe = float(teile[2]) if len(teile) > 2 else 0
+                            hoehe = float(teile[2])
+                        else:
+                            logger.warning(f"Ungültiges Format für abmessung: {self.abmessung}")
+                    except Exception as e:
+                        logger.error(f"Fehler beim Parsen der 3D-Abmessungen: {e}")
+        
+                # 11. Gewicht parsen (bleibt gleich)
+                gewicht = 0
+                if self.gewicht and self.gewicht != "Undefiniert":
+                    try:
+                        gewicht_str = str(self.gewicht).replace("kg", "").strip()
+                        gewicht = float(gewicht_str)
                     except:
                         pass
-                
-                # 11. Gewicht parsen
+				# 11. Gewicht parsen
                 gewicht = 0
                 if self.gewicht and self.gewicht != "Undefiniert":
                     try:
@@ -2066,17 +2086,16 @@ class FullscreenApp(QMainWindow):
                             article_numbers.append(value)
                         else:
                             ean_codes.append(value)
-                
-                
-                # 13. Für jede Kombination eine Zeile in die CSV schreiben (APPEND)
+       
+                # 13. CSV-Zeilen schreiben - Für SAP
                 if not ean_codes and not article_numbers:
                     writer.writerow([
                         scan_timestamp,  # Scan_ID
                         "",  # Interne Materialnummer
                         f"{gewicht:.3f}".replace(".", ","),  # Gewicht in kg
-                        f"{laenge:.0f}",  # Länge
-                        f"{breite:.0f}",  # Breite
-                        f"{hoehe:.0f}",  # Höhe
+                        f"{laenge:.0f}",  # Länge in mm
+                        f"{breite:.0f}",  # Breite in mm
+                        f"{hoehe:.0f}",  # Höhe in mm
                         "",  # EAN
                         get_relative_path(bild_pfade.get("iso_Bild", "")) # ISO Bild
                     ])
@@ -2088,27 +2107,29 @@ class FullscreenApp(QMainWindow):
                                 scan_timestamp,  # Scan_ID
                                 article,  # Interne Materialnummer
                                 f"{gewicht:.3f}".replace(".", ","),  # Gewicht in kg
-                                f"{laenge:.0f}",  # Länge
-                                f"{breite:.0f}",  # Breite
-                                f"{hoehe:.0f}",  # Höhe
+                                f"{laenge:.0f}",  # Länge in mm
+                                f"{breite:.0f}",  # Breite in mm
+                                f"{hoehe:.0f}",  # Höhe in mm
                                 ean,  # EAN
                                 get_relative_path(bild_pfade.get("iso_Bild", ""))
-                            ])
+                           ])
                     logger.info(f"{len(article_numbers)}x{len(ean_codes)} Datensätze zu CSV hinzugefügt")
-            
-            # 14. Erfolgsmeldung
-            lines_added = max(1, len(article_numbers) * max(1, len(ean_codes)))
-            
-            success_msg = f"""Scan erfolgreich gespeichert!
-    📊 Statistik:
-    • {lines_added} neue Zeile(n) in CSV
-    • {len(ean_codes)} EAN-Code(s)
-    • {len(article_numbers)} Artikelnummer(n)
-    • {len(bild_pfade)} Bild(er) gespeichert
+        
+                # Erfolgsmeldung aktualisieren
+                lines_added = max(1, len(article_numbers) * max(1, len(ean_codes)))
+        
+                success_msg = f"""Scan erfolgreich gespeichert!
+Statistik:
+• {lines_added} neue Zeile(n) in CSV
+• {len(ean_codes)} EAN-Code(s)
+• {len(article_numbers)} Artikelnummer(n)
+• {len(bild_pfade)} Bild(er) gespeichert
+• Abmessungen: {laenge} x {breite} x {hoehe} mm
 
-    📈 CSV-Status: {os.path.getsize(csv_datei):,} Bytes
-    ({'Datei neu erstellt' if not file_exists else 'An bestehende Datei angehängt'})
-    """
+CSV-Status: {os.path.getsize(csv_datei):,} Bytes
+({'Datei neu erstellt' if not file_exists else 'An bestehende Datei angehängt'})
+"""
+
             
             QMessageBox.information(self, "Scan gespeichert", success_msg)
             logger.info(f"Scan {scan_timestamp} zu {csv_datei} hinzugefügt")
@@ -2346,66 +2367,15 @@ class FullscreenApp(QMainWindow):
     def handle_output(self, script_name: str, data: Any):
         """Verarbeitet die Ergebnisse der Worker-Threads mit Barcode-Speicherung"""
         logger.info(f"Ergebnis von {script_name} erhalten: Typ={type(data)}")
-        
-        if script_name == "Abmessung":
-            if isinstance(data, list):
-                self.abmessungen = data
-                logger.info(f"Abmessungen erhalten: {data}")
-                
-                # Versuche, eine aussagekräftige Abmessung zu extrahieren
-                try:
-                    # Finde die erste nicht-leere Abmessung
-                    valid_dimensions = [d for d in data if d != "0 x 0"]
-                    if valid_dimensions:
-                        # Nimm die erste gültige Abmessung
-                        first_dim = valid_dimensions[0]
-                        parts = first_dim.split(" x ")
-                        if len(parts) == 2:
-                            try:
-                                width = int(float(parts[0]))
-                                height = int(float(parts[1]))
-                                # Für einen Würfel: Länge = Breite = Höhe (vereinfacht)
-                                length = width
-                                self.abmessung_gesamt = f"{length} x {width} x {height}"
-                                self.abmessung = self.abmessung_gesamt
-                                logger.info(f"Gesamt-Abmessung berechnet: {self.abmessung}")
-                            except:
-                                self.abmessung = first_dim
-                                logger.info(f"Abmessung übernommen: {first_dim}")
-                        else:
-                            self.abmessung = first_dim
-                    else:
-                        self.abmessung = "Undefiniert"
-                        logger.warning("Keine gültigen Abmessungen gefunden")
-                except Exception as e:
-                    logger.error(f"Fehler beim Berechnen der Abmessung: {e}")
-                    self.abmessung = "Undefiniert"
-            else:
-                logger.error(f"Unerwartetes Format für Abmessungen: {type(data)}")
-                self.abmessung = "Undefiniert"
 
-        elif script_name == "yolo_frames":
-            if isinstance(data, list):
-                self.annotierte_frames = data
-                logger.info(f"Erhalte {len(data)} annotierte Frames")
-                
-                for i in range(min(len(data), CONFIG.NUM_CAMERAS)):
-                    if data[i] is not None and self.keep[i]:
-                        # BEHALTE RGB
-                        self.final_images[i] = data[i]
-                        logger.debug(f"Final image {i} gesetzt (Größe: {self.final_images[i].shape}, Typ: {self.final_images[i].dtype})")
-                    else:
-                        self.final_images[i] = None
-            else:
-                logger.error(f"Unerwartetes Format für yolo_frames: {type(data)}")
-
-        elif script_name == "barcode":
+        if script_name == "barcode":
             logger.info(f"Barcode-Daten empfangen: {data}")
             
             # Initialisiere all_barcodes wenn nötig
             if not hasattr(self, 'all_barcodes'):
                 self.all_barcodes = []
             else:
+                # Lösche alte Barcodes, bevor neue hinzugefügt werden
                 self.all_barcodes.clear()
             
             # Überprüfe den Typ von data
@@ -2444,24 +2414,49 @@ class FullscreenApp(QMainWindow):
                 logger.error(f"Unerwartetes Format für barcode: {type(data)} - {data}")
                 
         elif script_name == "weight":
-            self.gewicht = data
+            if data < 0.0:
+                self.gewicht = 0.0
+            else:
+                self.gewicht = data
+            
             logger.info(f"Gewicht: {data}")
         
+        elif script_name == "volume":
+            if isinstance(data, dict):
+                logger.info(f"Volumendaten erhalten: {data}")
+                
+                # Speichere die 3D-Abmessungen
+                if data.get("success"):
+                    print("Hallaidisakjdhjkasgdsflkhadkjfkj")
+
+                    print(data.get("abmessung", "0 x 0 x 0"))
+                    self.abmessung = data.get("abmessung", "0 x 0 x 0")
+                    
+                    # Optional: Tiefenbild anzeigen/speichern
+                    #depth_frame = data.get("depth_frame")
+                    #if depth_frame is not None:
+                        #self.depth_image = depth_frame
+                        
+                    logger.info(f"3D-Abmessungen: {self.abmessung}")
+                else:
+                    logger.warning(f"Volumenmessung fehlgeschlagen: {data.get('error')}")
+            else:
+                logger.error(f"Unerwartetes Format für Volumenmessung: {type(data)}")
+
         # Prüfe ob alle Daten vorhanden sind und aktualisiere GUI
         self._check_and_update_gui()
 
+
     def _check_and_update_gui(self):
         """Prüft ob alle Daten vorhanden sind und aktualisiert die GUI"""
-        # Stelle sicher, dass all_barcodes existiert
+        # Stelle sicher, dass all_barcodes, abmessung und gewicht existiert
         if not hasattr(self, 'all_barcodes'):
             self.all_barcodes = []
-        
-        # Stelle sicher, dass abmessung und gewicht existieren
         if not hasattr(self, 'abmessung') or self.abmessung is None:
             self.abmessung = "Undefiniert"
         if not hasattr(self, 'gewicht') or self.gewicht is None:
             self.gewicht = "Undefiniert"
-        
+            
         # Nach der Barcode-Erkennung Zugeschnittene Bilder erstellen
         if self.all_barcodes and hasattr(self, 'images'):
             for barcode in self.all_barcodes:
@@ -2490,23 +2485,19 @@ class FullscreenApp(QMainWindow):
         has_abmessung = self.abmessung not in [None, "Undefiniert"]
         has_gewicht = self.gewicht not in [None, "Undefiniert"]
         has_barcodes = len(self.all_barcodes) > 0
-        has_yolo_frames = hasattr(self, "annotierte_frames") and self.annotierte_frames
         
         # GUI aktualisieren wenn:
         # 1. Alle Daten vorhanden sind (Abmessung, Gewicht), ODER
-        # 2. YOLO-Frames vorhanden sind (für Bildanzeige), ODER
         # 3. Barcodes erkannt wurden
         update_needed = False
         
         if has_abmessung and has_gewicht:
             logger.info("Alle Hauptdaten vorhanden - aktualisiere GUI")
             update_needed = True
-        elif has_yolo_frames:
-            logger.info("YOLO-Frames vorhanden - aktualisiere Bilder in GUI")
-            update_needed = True
         elif has_barcodes:
             logger.info("Barcodes vorhanden - aktualisiere GUI")
             update_needed = True
+
         
         if update_needed:
             # Stelle sicher, dass alle final_images gesetzt sind
@@ -2538,96 +2529,63 @@ class FullscreenApp(QMainWindow):
         status.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(status)
         
+        # TEST: Direkt DepthAI prüfen
+        try:
+            devices = dai.Device.getAllAvailableDevices()
+            logger.info(f"DepthAI Geräte gefunden: {devices}")
+        
+            for device_info in devices:
+                logger.info(f"Device: {device_info}")
+                try:
+                    with dai.Device(device_info) as device:
+                        logger.info(f"Device {device_info.name} erfolgreich geöffnet")
+                        logger.info(f"  Kameras: {device.getConnectedCameras()}")
+                        logger.info(f"  USB Geschwindigkeit: {device.getUsbSpeed()}")
+                except Exception as e:
+                   logger.error(f"Fehler beim öffnen von {device_info}: {e}")
+        except Exception as e:
+           logger.error(f"DepthAI Test fehlgeschlagen: {e}")
+        
         def check_and_close():
-            # Teste eine breite Palette von Indizes
-            all_indices = []
-            usb_indices = []
-            oak_index = None
-            
-            # Teste Indizes 0-9
-            for i in range(10):
+            # Test für USB-Kameras
+            usb_count = 0
+            for i in range(CONFIG.NUM_CAMERAS-1): # Letzte Kamera ist OAK-D2
                 try:
                     cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
                     if cap.isOpened():
-                        ret, frame = cap.read()
-                        if ret and frame is not None:
-                            all_indices.append(i)
-                            
-                            # Versuche OAK-D2 anhand der Auflösung zu erkennen
-                            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                            
-                            # OAK-D2 hat typisch 1920x1080 oder höher
-                            if width >= 1280 or height >= 720:
-                                logger.info(f"Mögliche OAK-D2 an Index {i} ({width}x{height})")
-                                if oak_index is None:  # Erste gefundene als OAK
-                                    oak_index = i
-                                else:
-                                    usb_indices.append(i)
-                            else:
-                                usb_indices.append(i)
-                                
-                            cap.release()
-                            logger.info(f"Kamera gefunden an Index {i} ({width}x{height})")
-                except Exception as e:
-                    logger.debug(f"Index {i}: {e}")
+                        cap.release()
+                        usb_count += 1
+                except:
                     pass
             
-            # Speziell für OAK-D2 auch höhere Indizes testen
-            if oak_index is None:
-                for i in range(10, 15):
-                    try:
-                        cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
-                        if cap.isOpened():
-                            ret, frame = cap.read()
-                            if ret:
-                                oak_index = i
-                                logger.info(f"OAK-D2 an Index {i} gefunden")
-                                cap.release()
-                                break
-                            cap.release()
-                    except:
-                        pass
-            
+            # OAK-D Erkennung mit DepthAI
+            oak = False
+            try:
+                verfügbar = len(dai.Device.getAllAvailableDevices()) > 0
+                if verfügbar:
+                    oak = True
+                    print("OAK-D2 gefunden!")
+                else:
+                    print("Keine OAK-D2 Kamera gefunden!")
+            except Exception as e:
+                print(f"OAK-D Check Fehler: {e}")
+                oak = False
+
             dialog.close()
             
-            # Ergebnis anzeigen
-            result = f"Gefundene Kamera-Indizes: {all_indices}\n"
-            result += f"USB-Kameras: {len(usb_indices)} gefunden (Indizes: {usb_indices})\n"
-            result += f"OAK-D2: {'Nicht gefunden' if oak_index is None else f'Gefunden an Index {oak_index}'}"
+            result = f"USB-Kameras: {usb_count}/3\nOAK-D2: {'1/1' if oak else '0/1'}\n\n"
             
-            # Status setzen
-            self.camera.available_cameras = usb_indices[:3]  # Nur die ersten 3 für USB
-            if oak_index is not None:
-                # Für die 4. Kamera (Index 3) die OAK verwenden
-                if len(self.camera.available_cameras) < 3:
-                    # Falls weniger als 3 USB, OAK an letzter Position
-                    self.camera.available_cameras.append(oak_index)
-                else:
-                    # OAK als separate Kamera
-                    self.camera.oak_available = True
-                    self.camera.oak_index = oak_index
-            
-            logger.info(f"Verfügbare Kameras: {self.camera.available_cameras}")
-            logger.info(f"OAK verfügbar: {self.camera.oak_available}, Index: {getattr(self.camera, 'oak_index', None)}")
-            
-            # Messagebox anzeigen
-            msg = QMessageBox(self)
-            msg.setWindowTitle("Kamera-Test Ergebnis")
-            msg.setText(result)
-            
-            # Icon basierend auf Ergebnis
-            if len(usb_indices) >= 3 and oak_index is not None:
-                msg.setIcon(QMessageBox.Icon.Information)
-                msg.setText(result + "\n\n✓ Alle Kameras verfügbar")
-            elif len(usb_indices) >= 3:
-                msg.setIcon(QMessageBox.Icon.Warning)
-                msg.setText(result + "\n\n⚠ Nur USB-Kameras verfügbar, OAK-D2 fehlt")
+            if usb_count >= 3 and oak:
+                result += "Alle Kameras OK"
+                icon = QMessageBox.Icon.Information
+            elif usb_count >= 3:
+                result += "OAK-D2 fehlt"
+                icon = QMessageBox.Icon.Warning
             else:
-                msg.setIcon(QMessageBox.Icon.Critical)
-                msg.setText(result + "\n\n✗ Nicht genügend Kameras")
+                result += "Nicht genügend Kameras"
+                icon = QMessageBox.Icon.Critical
             
-            msg.exec()
+            QMessageBox(dialog).information(self, "Ergebnis", result)
         
         QTimer.singleShot(1000, check_and_close)
         dialog.exec()
