@@ -3348,3 +3348,6 @@ NameError: name 'ean_codes' is not defined
 2026-02-05 18:57:51,038 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
 2026-02-05 18:57:51,039 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2], OAK-D2: True
 2026-02-05 18:57:53,334 - __main__ - INFO - Programm wird beendet
+2026-02-12 09:50:09,635 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 09:50:11,662 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-12 09:50:11,662 - __main__ - INFO - Verf�gbare Kameras gefunden: [0], OAK-D2: False

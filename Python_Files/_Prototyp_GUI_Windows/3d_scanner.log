@@ -3034,3 +3034,6 @@ AttributeError: bn
 2026-02-03 14:55:48,918 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
 2026-02-03 14:55:49,087 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'EAN13', 'image_index': -1, 'cropped_image': None, 'is_article_number': False, 'source': 'manual'}
 2026-02-03 14:55:49,234 - __main__ - INFO - Barcode gelöscht: {'value': '', 'type': 'CODE128', 'image_index': -1, 'cropped_image': None, 'is_article_number': True, 'source': 'manual'}
+2026-02-12 09:44:08,074 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 09:44:10,051 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-12 09:44:10,051 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False

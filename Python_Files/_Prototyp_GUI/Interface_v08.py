@@ -2673,10 +2673,8 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             btn_close = QPushButton("Schließen")
             layout.addWidget(btn_close)
 
-        
-
             # 4) Button-Logik
-            faktor = btn_cell_1.clicked.connect(lambda: calibrate_cell(0, reference_weight))
+            btn_cell_1.clicked.connect(lambda: calibrate_cell(0, reference_weight))
             btn_cell_2.clicked.connect(lambda: calibrate_cell(1, reference_weight))
             btn_cell_3.clicked.connect(lambda: calibrate_cell(2, reference_weight))
 
