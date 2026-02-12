@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """
 3D-Volumenmessung mit OAK-D2 (DepthAI 2.29.0)
-Optimiert für Raspberry Pi 5 im USB2-Modus.
-- PointCloud-Node (sparse) für Geschwindigkeit
-- Feste Referenzhöhe 580 mm
-- LED-Beleuchtung integriert
-- Keine AttributeError mehr
+- PointCloud (sparse) für Stabilität
+- Detaillierte Tiefen-Debug-Ausgabe
+- Plausibilitätsprüfung der Tiefenwerte
 """
 
 import cv2
@@ -18,28 +16,19 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# ===========================================
-# KONFIGURATION (alles in mm)
-# ===========================================
 class Config:
     REFERENZ_HOEHE_MM = 580.0       # Abstand Kamera → Bodenplatte
-    MIN_OBJEKT_HOEHE_MM = 5.0       # Rauschen unterdrücken
-    MAX_OBJEKT_HOEHE_MM = 300.0     # Maximal erwartete Objekthöhe
-    MAX_LAENGE_BREITE_MM = 500.0    # Begrenzung für Plausibilität
+    MIN_OBJEKT_HOEHE_MM = 5.0
+    MAX_OBJEKT_HOEHE_MM = 300.0
+    MAX_LAENGE_BREITE_MM = 500.0
     
-    # PointCloud: SPARSE = schneller, sicher für USB2
-    POINTCLOUD_SPARSE = True        # True = ca. 1000 Punkte, reicht für BoundingBox
-    # KEIN setMaxPoints – in DepthAI 2.29.0 nicht verfügbar
-
-    # Serielle Schnittstelle für Beleuchtung
-    SERIAL_PORT = "/dev/ttyUSB0"    # Ggf. anpassen: /dev/ttyACM0
+    POINTCLOUD_SPARSE = True        # Sparse = schnellere Übertragung
+    
+    SERIAL_PORT = "/dev/ttyUSB0"    # Anpassen!
     SERIAL_BAUDRATE = 9600
 
-# ===========================================
-# LED-STEUERUNG (SERIELL)
-# ===========================================
+# ===== LED =====
 def control_light(state: bool):
-    """Schaltet die LED-Strips ein/aus"""
     try:
         with serial.Serial(Config.SERIAL_PORT, Config.SERIAL_BAUDRATE, timeout=1) as ser:
             time.sleep(1.5)
@@ -51,28 +40,23 @@ def control_light(state: bool):
     except Exception as e:
         logger.warning(f"Lichtsteuerung fehlgeschlagen: {e}")
 
-# ===========================================
-# KAMERA-PIPELINE MIT POINTCLOUD
-# ===========================================
+# ===== KAMERA =====
 class OakD2Volume:
     def __init__(self):
         self.pipeline = None
-        self.device = None
         
     def _build_pipeline(self):
-        """Erstellt Pipeline: Mono → Stereo → PointCloud (sparse)"""
         pipeline = dai.Pipeline()
         
-        # ---------- Linker & rechter Mono-Sensor ----------
+        # Mono-Kameras
         mono_left = pipeline.create(dai.node.MonoCamera)
         mono_right = pipeline.create(dai.node.MonoCamera)
-        
         mono_left.setBoardSocket(dai.CameraBoardSocket.CAM_B)
         mono_right.setBoardSocket(dai.CameraBoardSocket.CAM_C)
         mono_left.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         mono_right.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         
-        # ---------- StereoDepth ----------
+        # StereoDepth
         stereo = pipeline.create(dai.node.StereoDepth)
         stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.DEFAULT)
         stereo.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_5x5)
@@ -83,14 +67,12 @@ class OakD2Volume:
         mono_left.out.link(stereo.left)
         mono_right.out.link(stereo.right)
         
-        # ---------- PointCloud – SPARSE (keine maxPoints) ----------
+        # PointCloud (sparse)
         pointcloud = pipeline.create(dai.node.PointCloud)
         pointcloud.initialConfig.setSparse(Config.POINTCLOUD_SPARSE)
-        # setMaxPoints() existiert in DepthAI 2.29.0 NICHT – daher weggelassen
-        
         stereo.depth.link(pointcloud.inputDepth)
         
-        # ---------- Outputs ----------
+        # Outputs
         pc_out = pipeline.create(dai.node.XLinkOut)
         pc_out.setStreamName("pointcloud")
         pointcloud.outputPointCloud.link(pc_out.input)
@@ -99,11 +81,9 @@ class OakD2Volume:
         depth_out.setStreamName("depth")
         stereo.depth.link(depth_out.input)
         
-        self.pipeline = pipeline
         return pipeline
     
     def get_measurement(self) -> Dict:
-        """Führt eine vollständige 3D-Messung durch"""
         try:
             control_light(True)
             time.sleep(0.3)
@@ -117,35 +97,59 @@ class OakD2Volume:
                 depth_data = q_depth.get()
                 pc_data = q_pc.get()
                 
-                # Punktwolke prüfen
+                # ===== TIEFENBILD-DIAGNOSE =====
+                depth_frame = depth_data.getCvFrame()
+                logger.info(f"Tiefenbild: {depth_frame.shape}, Min={np.min(depth_frame)}, Max={np.max(depth_frame)}, Mean={np.mean(depth_frame):.1f}")
+                
+                # Prüfen: Sind überhaupt gültige Tiefenwerte da?
+                valid_depths = depth_frame[depth_frame > 0]
+                if len(valid_depths) == 0:
+                    return self._error_result("Keine gültigen Tiefenwerte (alles 0)")
+                logger.info(f"Gültige Tiefen: {len(valid_depths)} Pixel, Median={np.median(valid_depths):.1f} mm")
+                
+                # ===== PUNKTWOLKEN-DIAGNOSE =====
                 points = pc_data.getPoints()
                 if points is None or len(points) == 0:
                     return self._error_result("Keine Punktwolke empfangen")
                 
-                # Min/Max in X, Y, Z
+                # Statistik der Punktwolke
+                z_values = [p.z for p in points if p.z > 0]
+                if len(z_values) == 0:
+                    return self._error_result("Keine gültigen Z-Werte in Punktwolke")
+                
+                z_min = min(z_values)
+                z_max = max(z_values)
+                z_mean = sum(z_values) / len(z_values)
+                logger.info(f"Punktwolke: {len(points)} Punkte, Z: min={z_min:.1f}, max={z_max:.1f}, mean={z_mean:.1f} mm")
+                
+                # Offizielle API für Bounding Box
                 min_x = pc_data.getMinX()
                 max_x = pc_data.getMaxX()
                 min_y = pc_data.getMinY()
                 max_y = pc_data.getMaxY()
-                min_z = pc_data.getMinZ()       # höchster Punkt
+                min_z = pc_data.getMinZ()
+                max_z = pc_data.getMaxZ()
                 
-                logger.debug(f"Punkte: {len(points)}, Z: {min_z:.1f} - {pc_data.getMaxZ():.1f} mm")
+                logger.info(f"Bounding Box: X={min_x:.1f}..{max_x:.1f}, Y={min_y:.1f}..{max_y:.1f}, Z={min_z:.1f}..{max_z:.1f}")
                 
-                if None in (min_x, max_x, min_y, max_y, min_z):
-                    return self._error_result("Ungültige Bounding-Box")
+                # ===== PLAUSIBILITÄT REFERENZ =====
+                # Wenn min_z > REFERENZ_HOEHE_MM + 100mm, dann ist kein Objekt da
+                if min_z > Config.REFERENZ_HOEHE_MM + 100:
+                    return self._error_result(f"Kein Objekt im Messbereich (min_z={min_z:.1f} mm, Referenz={Config.REFERENZ_HOEHE_MM} mm)")
                 
-                # Dimensionen
+                # ===== DIMENSIONEN BERECHNEN =====
                 length = max_x - min_x
                 width  = max_y - min_y
                 if length < width:
                     length, width = width, length
                 
-                # Höhe = Boden - höchster Punkt
+                # Höhe: Referenz - höchster Punkt (kleinster Z)
                 height = Config.REFERENZ_HOEHE_MM - min_z
                 
                 # Plausibilität
                 if height < Config.MIN_OBJEKT_HOEHE_MM:
                     return self._error_result(f"Kein Objekt (Höhe {height:.1f} mm)")
+                
                 height = min(height, Config.MAX_OBJEKT_HOEHE_MM)
                 length = min(length, Config.MAX_LAENGE_BREITE_MM)
                 width  = min(width, Config.MAX_LAENGE_BREITE_MM)
@@ -153,7 +157,6 @@ class OakD2Volume:
                 volume = length * width * height
                 
                 # Visualisierung
-                depth_frame = depth_data.getCvFrame()
                 vis_frame = self._create_visualization(depth_frame, length, width, height)
                 
                 control_light(False)
@@ -174,7 +177,6 @@ class OakD2Volume:
             return self._error_result(str(e))
     
     def _create_visualization(self, depth_frame, length, width, height):
-        """Zeigt Messwerte im Tiefenbild an"""
         depth_vis = cv2.normalize(depth_frame, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
         depth_vis = cv2.cvtColor(depth_vis, cv2.COLOR_GRAY2BGR)
         
@@ -190,7 +192,6 @@ class OakD2Volume:
             y = y0 + i * 40
             cv2.putText(depth_vis, line, (30, y),
                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
-        
         return depth_vis
     
     def _error_result(self, msg):
@@ -203,25 +204,17 @@ class OakD2Volume:
             'depth_frame': None,
             'error': msg
         }
-    
-    def close(self):
-        if self.device:
-            self.device.close()
-            self.device = None
-
 
 def get_volume() -> Dict:
-    """Interface-Funktion für den ParallelWorker"""
     measurer = OakD2Volume()
     try:
         return measurer.get_measurement()
     finally:
-        measurer.close()
-
+        pass
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    print("🚀 Starte 3D-Volumenmessung (PointCloud, USB2, 580 mm Referenz)")
+    print("🚀 Starte 3D-Volumenmessung mit Debug")
     result = get_volume()
     
     if result['success']:
@@ -229,7 +222,7 @@ if __name__ == "__main__":
         print(f"   📏 Länge:  {result['length']:.1f} mm")
         print(f"   📐 Breite: {result['width']:.1f} mm")
         print(f"   📏 Höhe:  {result['height']:.1f} mm")
-        print(f"   📦 Volumen: {result['volume']:.0f} mm³  ({result['volume']/1000:.1f} cm³)")
+        print(f"   📦 Volumen: {result['volume']:.0f} mm³ ({result['volume']/1000:.1f} cm³)")
         
         if result['depth_frame'] is not None:
             cv2.imshow("Volumenmessung", result['depth_frame'])
