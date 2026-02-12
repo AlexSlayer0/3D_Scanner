@@ -102,8 +102,8 @@ class OakD2Camera:
         self.pipeline = dai.Pipeline()
         
         # Monokameras
-        mono_left = self.pipeline.create(dai.node.MonoCamera)
-        mono_right = self.pipeline.create(dai.node.MonoCamera)
+        mono_left = self.pipeline.create(dai.MonoCamera)
+        mono_right = self.pipeline.create(dai.MonoCamera)
         
         mono_left.setBoardSocket(dai.CameraBoardSocket.CAM_B)
         mono_right.setBoardSocket(dai.CameraBoardSocket.CAM_C)
@@ -111,8 +111,8 @@ class OakD2Camera:
         mono_right.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         
         # StereoDepth
-        stereo = self.pipeline.create(dai.node.StereoDepth)
-        stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.HIGH_DENSITY)
+        stereo = self.pipeline.create(dai.StereoDepth)
+        stereo.setDefaultProfilePreset(dai.StereoDepth.PresetMode.FAST_DENSITY)
         stereo.setRectifyEdgeFillColor(0)
         stereo.setLeftRightCheck(True)
         stereo.setExtendedDisparity(False)
@@ -122,7 +122,7 @@ class OakD2Camera:
         mono_right.out.link(stereo.right)
         
         # Output
-        xout_depth = self.pipeline.create(dai.node.XLinkOut)
+        xout_depth = self.pipeline.create(dai.XLinkOut)
         xout_depth.setStreamName("depth")
         stereo.depth.link(xout_depth.input)
     

@@ -3351,3 +3351,295 @@ NameError: name 'ean_codes' is not defined
 2026-02-12 09:50:09,635 - __main__ - INFO - 3D-Scanner wird gestartet...
 2026-02-12 09:50:11,662 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
 2026-02-12 09:50:11,662 - __main__ - INFO - Verf�gbare Kameras gefunden: [0], OAK-D2: False
+2026-02-12 10:23:25,969 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 10:23:26,620 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-12 10:23:26,620 - __main__ - INFO - Verfügbare Kameras gefunden: [], OAK-D2: False
+2026-02-12 10:23:36,725 - __main__ - INFO - Programm wird beendet
+2026-02-12 10:23:40,161 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 10:23:40,676 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-12 10:23:40,676 - __main__ - INFO - Verfügbare Kameras gefunden: [], OAK-D2: False
+2026-02-12 10:23:44,768 - __main__ - INFO - DepthAI Geräte gefunden: []
+2026-02-12 10:23:49,958 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 10:23:49,958 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 10:23:49,958 - __main__ - WARNING - Kamera 0 nicht verfügbar
+2026-02-12 10:23:49,966 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 10:23:49,967 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 10:23:49,967 - __main__ - WARNING - OAK-D2 nicht verfügbar
+2026-02-12 10:24:02,529 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-12 10:24:03,778 - __main__ - INFO - go_back: Aktuelle Seite 0, scan_start=False
+2026-02-12 10:24:13,966 - __main__ - INFO - Programm wird beendet
+2026-02-12 10:38:20,003 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 10:38:20,520 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-12 10:38:20,520 - __main__ - INFO - Verfügbare Kameras gefunden: [], OAK-D2: False
+2026-02-12 10:39:00,839 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 10:39:01,360 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-12 10:39:01,362 - __main__ - INFO - Verfügbare Kameras gefunden: [], OAK-D2: False
+2026-02-12 10:39:13,395 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 10:39:13,916 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-12 10:39:13,916 - __main__ - INFO - Verfügbare Kameras gefunden: [], OAK-D2: False
+2026-02-12 10:39:38,714 - __main__ - INFO - Programm wird beendet
+2026-02-12 10:40:40,106 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 10:40:40,620 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-02-12 10:40:40,620 - __main__ - INFO - Verfügbare Kameras gefunden: [], OAK-D2: False
+2026-02-12 10:40:43,699 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 10:40:43,700 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 10:40:43,700 - __main__ - WARNING - Kamera 0 nicht verfügbar
+2026-02-12 10:40:43,700 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 10:40:43,700 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 10:40:43,700 - __main__ - WARNING - OAK-D2 nicht verfügbar
+2026-02-12 10:40:45,821 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-12 10:50:42,222 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 10:50:42,916 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 10:50:42,916 - __main__ - INFO - Verfügbare Kameras gefunden: [], OAK-D2: True
+2026-02-12 10:50:47,312 - __main__ - INFO - DepthAI Geräte gefunden: [DeviceInfo(name=3.1.2, deviceId=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)]
+2026-02-12 10:50:47,312 - __main__ - INFO - Device: DeviceInfo(name=3.1.2, deviceId=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)
+2026-02-12 10:50:49,312 - __main__ - INFO - Device 3.1.2 erfolgreich geöffnet
+2026-02-12 10:50:49,313 - __main__ - INFO -   Kameras: [<CameraBoardSocket.CAM_A: 0>, <CameraBoardSocket.CAM_B: 1>, <CameraBoardSocket.CAM_C: 2>]
+2026-02-12 10:50:49,314 - __main__ - INFO -   USB Geschwindigkeit: UsbSpeed.SUPER
+2026-02-12 10:51:15,710 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 10:51:15,711 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 10:51:15,711 - __main__ - WARNING - Kamera 0 nicht verfügbar
+2026-02-12 10:51:15,721 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 10:51:15,721 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 10:51:15,722 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 10:51:20,884 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 10:51:20,884 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 10:51:22,349 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 10:51:25,306 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-12 10:51:27,680 - __main__ - INFO - DepthAI Geräte gefunden: [DeviceInfo(name=3.1.2, deviceId=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)]
+2026-02-12 10:51:27,680 - __main__ - INFO - Device: DeviceInfo(name=3.1.2, deviceId=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)
+2026-02-12 10:51:29,674 - __main__ - INFO - Device 3.1.2 erfolgreich geöffnet
+2026-02-12 10:51:29,676 - __main__ - INFO -   Kameras: [<CameraBoardSocket.CAM_A: 0>, <CameraBoardSocket.CAM_B: 1>, <CameraBoardSocket.CAM_C: 2>]
+2026-02-12 10:51:29,676 - __main__ - INFO -   USB Geschwindigkeit: UsbSpeed.SUPER
+2026-02-12 10:51:41,109 - __main__ - INFO - go_back: Aktuelle Seite 0, scan_start=False
+2026-02-12 10:51:41,611 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 10:51:41,611 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 10:51:41,611 - __main__ - WARNING - Kamera 0 nicht verfügbar
+2026-02-12 10:51:41,612 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 10:51:41,612 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 10:51:41,612 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 10:51:44,755 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 10:51:44,755 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 10:51:46,709 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            2026-02-12 11:09:36,691 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:09:37,876 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:09:37,876 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:09:42,080 - __main__ - INFO - DepthAI Geräte gefunden: [DeviceInfo(name=3.1.2, deviceId=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)]
+2026-02-12 11:09:42,080 - __main__ - INFO - Device: DeviceInfo(name=3.1.2, deviceId=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)
+2026-02-12 11:09:44,070 - __main__ - INFO - Device 3.1.2 erfolgreich geöffnet
+2026-02-12 11:09:44,071 - __main__ - INFO -   Kameras: [<CameraBoardSocket.CAM_A: 0>, <CameraBoardSocket.CAM_B: 1>, <CameraBoardSocket.CAM_C: 2>]
+2026-02-12 11:09:44,072 - __main__ - INFO -   USB Geschwindigkeit: UsbSpeed.SUPER
+2026-02-12 11:09:54,057 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:09:54,057 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:09:54,057 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:09:57,883 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:09:58,183 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:09:58,183 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:09:58,190 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:09:58,190 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:01,334 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:10:01,334 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:03,292 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:10:06,160 - __main__ - INFO - Wiederhole Bild 3
+2026-02-12 11:10:06,160 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:10:10,072 - __main__ - INFO - Wiederhole Bild 4
+2026-02-12 11:10:10,072 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:13,212 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:10:13,213 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:13,516 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:10:13,774 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-12 11:10:17,056 - __main__ - INFO - DepthAI Geräte gefunden: [DeviceInfo(name=3.1.2, deviceId=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)]
+2026-02-12 11:10:17,056 - __main__ - INFO - Device: DeviceInfo(name=3.1.2, deviceId=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)
+2026-02-12 11:10:19,045 - __main__ - INFO - Device 3.1.2 erfolgreich geöffnet
+2026-02-12 11:10:19,046 - __main__ - INFO -   Kameras: [<CameraBoardSocket.CAM_A: 0>, <CameraBoardSocket.CAM_B: 1>, <CameraBoardSocket.CAM_C: 2>]
+2026-02-12 11:10:19,047 - __main__ - INFO -   USB Geschwindigkeit: UsbSpeed.SUPER
+2026-02-12 11:10:25,165 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:10:25,166 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:10:25,166 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:26,972 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:27,273 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:10:27,273 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:10:27,276 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:10:27,276 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:30,416 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:10:30,416 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:31,872 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:10:35,209 - __main__ - INFO - Wiederhole Bild 1
+2026-02-12 11:10:35,209 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:36,989 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:37,289 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:10:37,920 - __main__ - INFO - Wiederhole Bild 1
+2026-02-12 11:10:37,920 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:39,549 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:39,849 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:10:40,431 - __main__ - INFO - Wiederhole Bild 1
+2026-02-12 11:10:40,431 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:42,077 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:42,378 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:10:42,941 - __main__ - INFO - Wiederhole Bild 1
+2026-02-12 11:10:42,942 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:44,573 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:44,874 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:10:45,424 - __main__ - INFO - Wiederhole Bild 1
+2026-02-12 11:10:45,425 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:47,069 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:47,370 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:10:48,823 - __main__ - INFO - Wiederhole Bild 4
+2026-02-12 11:10:48,824 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:10:51,963 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:10:51,963 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:10:53,916 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:10:58,049 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-12 11:11:00,142 - workers.Tiefenkamera_Messung_03 - ERROR - Volumenmessungsfehler: type object 'depthai.node.PresetMode' has no attribute 'HIGH_DENSITY'
+2026-02-12 11:11:00,152 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-12 11:11:00,152 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'abmessung': '0 x 0 x 0', 'success': False, 'error': "type object 'depthai.node.PresetMode' has no attribute 'HIGH_DENSITY'"}
+2026-02-12 11:11:00,153 - __main__ - WARNING - Volumenmessung fehlgeschlagen: type object 'depthai.node.PresetMode' has no attribute 'HIGH_DENSITY'
+2026-02-12 11:11:00,154 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-12 11:11:02,235 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-12 11:11:02,236 - __main__ - INFO - Gewicht: -362.945
+2026-02-12 11:11:02,236 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-12 11:26:46,678 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:26:47,863 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:26:47,863 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:26:52,072 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:26:52,072 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:26:52,072 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:26:55,871 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:26:56,172 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:26:56,172 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:26:56,178 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:26:56,178 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:26:59,324 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:26:59,324 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:27:00,803 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:27:03,254 - __main__ - INFO - Wiederhole Bild 4
+2026-02-12 11:27:03,254 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:27:06,391 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:27:06,391 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:27:08,351 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:27:09,873 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-12 11:27:10,971 - __main__ - INFO - go_back: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:27:11,689 - __main__ - INFO - go_back: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:27:11,961 - __main__ - INFO - go_back: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:27:12,148 - __main__ - INFO - go_back: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:31:21,637 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:31:22,662 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:31:22,663 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:31:25,933 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:31:25,934 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:31:25,934 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:31:29,743 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:31:30,043 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:31:30,043 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:31:30,044 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:31:30,044 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:31:33,183 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai' has no attribute 'ColorCamera'
+2026-02-12 11:31:33,183 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:31:34,991 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:31:41,649 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-12 11:31:45,351 - __main__ - INFO - Programm wird beendet
+2026-02-12 11:32:10,255 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:32:11,278 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:32:11,279 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:32:28,837 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:32:29,838 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:32:29,839 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:32:33,756 - __main__ - INFO - Programm wird beendet
+2026-02-12 11:36:23,448 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:36:24,470 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:36:24,471 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:36:27,552 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:36:27,552 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:36:27,552 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:36:31,360 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:36:31,661 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:36:31,661 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:36:31,661 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:36:31,662 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:36:34,801 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai' has no attribute 'ColorCamera'
+2026-02-12 11:36:34,801 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:36:36,755 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:41:22,713 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:41:23,718 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:41:23,719 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:41:26,616 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:41:26,616 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:41:26,616 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:41:30,417 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:41:30,718 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:41:30,718 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:41:30,719 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:41:30,719 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:41:33,858 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai' has no attribute 'ColorCamera'
+2026-02-12 11:41:33,858 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:41:35,663 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:41:36,935 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-12 11:41:38,796 - __main__ - INFO - Programm wird beendet
+2026-02-12 11:44:53,219 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:44:54,230 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:44:54,231 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:44:57,786 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:44:57,786 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:44:57,786 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:45:01,597 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:45:01,898 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:45:01,898 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:45:01,899 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:45:01,899 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:45:05,038 - __main__ - ERROR - Fehler bei OAK-D2 Bildaufnahme: module 'depthai' has no attribute 'ColorCamera'
+2026-02-12 11:45:05,038 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:45:07,023 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:45:10,267 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-12 11:45:13,109 - __main__ - INFO - Programm wird beendet
+2026-02-12 11:49:51,574 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:49:52,586 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:49:52,587 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:49:55,604 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:49:55,605 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:49:55,605 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:49:59,406 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:49:59,707 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:49:59,707 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:49:59,708 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:49:59,708 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:50:02,846 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:50:03,147 - __main__ - ERROR - OAK-D2 Fehler: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:50:03,149 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:50:06,055 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-12 11:51:43,733 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:51:44,746 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:51:44,747 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:51:47,542 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:51:47,542 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:51:47,542 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:51:51,349 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:51:51,649 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:51:51,650 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:51:51,650 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:51:51,650 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:51:54,791 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:51:55,091 - __main__ - ERROR - OAK-D2 Fehler: 'depthai.Pipeline' object has no attribute 'createXLinkOut'
+2026-02-12 11:51:56,271 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:55:00,865 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 11:55:01,882 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 11:55:01,883 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 11:55:04,862 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-12 11:55:04,863 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-12 11:55:04,863 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:55:08,672 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:55:08,973 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-12 11:55:08,973 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-12 11:55:08,974 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-12 11:55:08,974 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:55:12,115 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:55:12,415 - __main__ - ERROR - OAK-D2 Fehler: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:55:12,418 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 11:55:15,271 - __main__ - INFO - Wiederhole Bild 4
+2026-02-12 11:55:15,272 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-12 11:55:18,409 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-12 11:55:18,710 - __main__ - ERROR - OAK-D2 Fehler: module 'depthai.node' has no attribute 'XLinkOut'
+2026-02-12 11:55:18,713 - __main__ - WARNING - OAK-D2 Bildaufnahme fehlgeschlagen
+2026-02-12 13:17:16,212 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-12 13:17:17,210 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-12 13:17:17,212 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-12 13:17:21,677 - __main__ - INFO - Programm wird beendet

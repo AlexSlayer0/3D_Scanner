@@ -305,49 +305,35 @@ class CameraManager:
             self.oak_available = False
 
     def _take_oak_picture(self) -> Optional[np.ndarray]:
-        """Nimmt ein Bild mit der OAK-D2 RGB-Kamera auf - MIT LICHT"""
         try:
-            # Licht einschalten vor der Aufnahme
             self._control_light(True)
-            time.sleep(0.3)  # Kurze Pause für Licht-Stabilisierung
-        
+            time.sleep(0.3)
+
             pipeline = dai.Pipeline()
-        
-            # RGB-Kamera der OAK-D2
+
+            # ? 2.29.0: Node-Erzeugung mit dai.node.xxx
             cam_rgb = pipeline.create(dai.node.ColorCamera)
             cam_rgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
             cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
             cam_rgb.setPreviewSize(CONFIG.IMAGE_WIDTH, CONFIG.IMAGE_HEIGHT)
-        
-            # ENTFERNT: setExposureTime und setIspScale - die sind nicht in der API
-            # Die Standardeinstellungen sollten mit Blitz funktionieren
-        
-            # Ausgabestream
+
+            # ? 2.29.0: XLinkOut unter dai.node.xxx vorhanden
             xout_rgb = pipeline.create(dai.node.XLinkOut)
             xout_rgb.setStreamName("rgb")
             cam_rgb.preview.link(xout_rgb.input)
-        
-            # Verbindung herstellen und Bild aufnehmen
+
             with dai.Device(pipeline) as device:
-                q_rgb = device.getOutputQueue(name="rgb", maxSize=1, blocking=True)
-                in_rgb = q_rgb.get()
-                frame = in_rgb.getCvFrame()
-                logger.info("OAK-D2 Bild mit Licht erfolgreich aufgenommen")
-            
-                # Licht ausschalten NACH der Aufnahme
+                q_rgb = device.getOutputQueue("rgb", maxSize=1, blocking=True)
+                frame = q_rgb.get().getCvFrame()
                 self._control_light(False)
                 return frame
-            
+
         except Exception as e:
-            logger.error(f"Fehler bei OAK-D2 Bildaufnahme: {e}")
-            # Sicherheitshalber Licht ausschalten auch bei Fehler
-            try:
-                self._control_light(False)
-            except:
-                pass
+            self._control_light(False)
+            logger.error(f"OAK-D2 Fehler: {e}")
             return None
         
-    
+        
     def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
         """Erstellt ein Platzhalterbild für fehlende Kameras"""
         img = np.zeros((CONFIG.IMAGE_HEIGHT, CONFIG.IMAGE_WIDTH, 3), dtype=np.uint8)
@@ -635,8 +621,8 @@ class ParallelWorker(QThread):
     def _run_weight_task(self):
         """Führt Gewichtsmessung durch"""
         try:
-            import workers.Gewichts_Messung
-            weight = workers.Gewichts_Messung.get_weight()
+            import workers.Gewichts_Messung02
+            weight = workers.Gewichts_Messung02.get_weight()
             if weight is not None:
                 weight = round(weight, 3)
             return {"weight": weight}
@@ -682,9 +668,9 @@ class FullscreenApp(QMainWindow):
         self.port = CONFIG.USB0
         self.baudrate = CONFIG.BAURATE
         
-        import workers.Gewichts_Messung
-        workers.Gewichts_Messung.init_adc()
-        workers.Gewichts_Messung.tara()
+        import workers.Gewichts_Messung02
+        workers.Gewichts_Messung02.init_adc()
+        workers.Gewichts_Messung02.tara()
 
         # Datenvariablen
         self.abmessung: Optional[str] = None
@@ -2506,7 +2492,6 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
                     self.final_images[i] = self.images[i]
             
             # Lade die Seiten neu
-            self.load_pages()
             QApplication.processEvents()  # Erzwinge GUI-Update
 
 
@@ -2627,7 +2612,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
     def calibrate_scale(self):
         """ Führt eine Referenzkalibrierung für 3 Wägezellen durch. """
-        from workers.Gewichts_Messung import calibrate_cell
+        from workers.Gewichts_Messung02 import calibrate_cell
 
         try:
             # 1) Referenzgewicht abfragen
