@@ -2,13 +2,17 @@
 """
 3D-Volumenmessung mit OAK-D2 (DepthAI 2.29.0)
 Optimiert für Raspberry Pi 5 im USB2-Modus.
-Verwendet PointCloud-Node für direkte Dimensionsmessung ohne Pixelrechnung.
-Referenzebene (Boden) ist fest bei 580 mm.
+- PointCloud-Node für direkte Dimensionsmessung
+- Feste Referenzhöhe 580 mm (Bodenplatte)
+- LED-Beleuchtung für bessere Tiefenqualität
+- Keine DeprecationWarnings mehr
 """
 
 import cv2
 import depthai as dai
 import numpy as np
+import serial
+import time
 from typing import Dict, Optional
 import logging
 
@@ -24,8 +28,28 @@ class Config:
     MAX_LAENGE_BREITE_MM = 500.0    # Begrenzung für Plausibilität
     
     # PointCloud-Einstellungen (USB2‑tauglich)
-    POINTCLOUD_SPARSE = True        # True = schneller, reicht für BoundingBox
-    POINTCLOUD_MAX_POINTS = 5000    # Begrenzung für USB2
+    POINTCLOUD_SPARSE = False       # False = dichte Punktwolke (genauer)
+    POINTCLOUD_MAX_POINTS = 3000    # Begrenzung für USB2
+
+    # Serielle Schnittstelle für Beleuchtung
+    SERIAL_PORT = "/dev/ttyUSB0"    # Ggf. anpassen: /dev/ttyACM0
+    SERIAL_BAUDRATE = 9600
+
+# ===========================================
+# LED-STEUERUNG (SERIELL)
+# ===========================================
+def control_light(state: bool):
+    """Schaltet die LED-Strips ein/aus"""
+    try:
+        with serial.Serial(Config.SERIAL_PORT, Config.SERIAL_BAUDRATE, timeout=1) as ser:
+            time.sleep(1.5)  # Port-Initialisierung
+            ser.write(b"Change\n")
+            time.sleep(0.1)
+            ser.write(b"a\n" if state else b"0\n")
+            time.sleep(0.2)
+        logger.info(f"Licht {'EIN' if state else 'AUS'}")
+    except Exception as e:
+        logger.warning(f"Lichtsteuerung fehlgeschlagen: {e}")
 
 # ===========================================
 # KAMERA-PIPELINE MIT POINTCLOUD
@@ -50,9 +74,10 @@ class OakD2Volume:
         
         # ---------- StereoDepth für Disparität/Tiefe ----------
         stereo = pipeline.create(dai.node.StereoDepth)
-        stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.HIGH_DENSITY)
-        # Für USB2: weniger Last durch Median-Filter
-        stereo.setMedianFilter(dai.MedianFilter.KERNEL_5x5)
+        # NEU: DEFAULT statt deprecated HIGH_DENSITY
+        stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.DEFAULT)
+        # NEU: Median-Filter über initialConfig
+        stereo.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_5x5)
         stereo.setLeftRightCheck(True)
         stereo.setExtendedDisparity(False)
         stereo.setRectifyEdgeFillColor(0)
@@ -87,16 +112,24 @@ class OakD2Volume:
         berechnet Bounding Box + Volumen.
         """
         try:
+            # Licht EIN für bessere Tiefenqualität
+            control_light(True)
+            time.sleep(0.3)
+            
             pipeline = self._build_pipeline()
             
-            # WICHTIG: USB2-Modus für Stabilität erzwingen
             with dai.Device(pipeline, maxUsbSpeed=dai.UsbSpeed.HIGH) as device:
                 q_pc = device.getOutputQueue("pointcloud", maxSize=1, blocking=True)
                 q_depth = device.getOutputQueue("depth", maxSize=1, blocking=True)
                 
                 # Ein Tiefenbild + Punktwolke anfordern
-                depth_data = q_depth.get()      # Tiefenbild (für Visualisierung)
-                pc_data = q_pc.get()            # PointCloudData-Objekt
+                depth_data = q_depth.get()
+                pc_data = q_pc.get()
+                
+                # ---------- Prüfen, ob Punktwolke gültig ----------
+                points = pc_data.getPoints()
+                if points is None or len(points) == 0:
+                    return self._error_result("Keine Punktwolke empfangen")
                 
                 # ---------- 3D-Dimensionen aus Punktwolke extrahieren ----------
                 # Min/Max in X, Y, Z (in mm)
@@ -106,9 +139,13 @@ class OakD2Volume:
                 max_y = pc_data.getMaxY()
                 min_z = pc_data.getMinZ()       # kleinster Abstand → höchster Punkt!
                 
+                # Debug-Ausgabe für Fehlersuche
+                logger.debug(f"Punktwolke: {len(points)} Punkte")
+                logger.debug(f"Z-Bereich: {min_z:.1f} - {pc_data.getMaxZ():.1f} mm")
+                
                 # Plausibilitätsprüfungen
                 if None in (min_x, max_x, min_y, max_y, min_z):
-                    return self._error_result("Keine gültige Punktwolke")
+                    return self._error_result("Ungültige Bounding-Box-Werte")
                 
                 # Länge, Breite (in mm)
                 length = max_x - min_x
@@ -121,7 +158,7 @@ class OakD2Volume:
                 
                 # Plausibilitätsgrenzen
                 if height < Config.MIN_OBJEKT_HOEHE_MM:
-                    return self._error_result("Kein Objekt erkannt (Höhe zu klein)")
+                    return self._error_result(f"Kein Objekt erkannt (Höhe {height:.1f} mm < {Config.MIN_OBJEKT_HOEHE_MM} mm)")
                 if height > Config.MAX_OBJEKT_HOEHE_MM:
                     height = Config.MAX_OBJEKT_HOEHE_MM
                 if length > Config.MAX_LAENGE_BREITE_MM:
@@ -133,10 +170,11 @@ class OakD2Volume:
                 volume = length * width * height
                 
                 # ---------- Visualisierung vorbereiten ----------
-                depth_frame = depth_data.getCvFrame()  # Roh-Tiefenbild
-                vis_frame = self._create_visualization(
-                    depth_frame, pc_data, length, width, height
-                )
+                depth_frame = depth_data.getCvFrame()
+                vis_frame = self._create_visualization(depth_frame, pc_data, length, width, height)
+                
+                # Licht AUS
+                control_light(False)
                 
                 return {
                     'success': True,
@@ -150,25 +188,21 @@ class OakD2Volume:
                 
         except Exception as e:
             logger.error(f"Volumenmessung fehlgeschlagen: {e}", exc_info=True)
+            control_light(False)  # Licht auch im Fehlerfall ausschalten
             return self._error_result(str(e))
     
     def _create_visualization(self, depth_frame, pc_data, length, width, height):
-        """Erstellt ein visuelles Feedback mit Bounding Box"""
-        # Tiefenbild normalisieren und einfärben
+        """Erstellt visuelles Feedback mit Messwerten"""
         depth_vis = cv2.normalize(depth_frame, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
         depth_vis = cv2.cvtColor(depth_vis, cv2.COLOR_GRAY2BGR)
         
-        # 2D-Projektion der Bounding Box (vereinfacht)
-        # – sinnvoller wäre eine 3D-Reprojektion, aber für Debug reicht Text
-        h, w = depth_frame.shape
-        cv2.rectangle(depth_vis, (20, 20), (w-20, h-20), (0, 255, 0), 2)
-        
         # Messwerte ins Bild schreiben
+        volume_cm3 = (length * width * height) / 1000
         info = [
-            f"L: {length:.0f} mm",
-            f"B: {width:.0f} mm",
-            f"H: {height:.0f} mm",
-            f"Vol: {volume/1000:.0f} cm³"
+            f"Laenge: {length:.0f} mm",
+            f"Breite: {width:.0f} mm",
+            f"Hoehe:  {height:.0f} mm",
+            f"Volumen: {volume_cm3:.0f} cm³"
         ]
         y0 = 60
         for i, line in enumerate(info):
@@ -193,7 +227,7 @@ class OakD2Volume:
     def close(self):
         if self.device:
             self.device.close()
-
+            self.device = None
 
 # ===========================================
 # HAUPTFUNKTION FÜR INTERFACE_V08.PY
@@ -210,11 +244,11 @@ def get_volume() -> Dict:
     finally:
         measurer.close()
 
-
 # ===========================================
 # DIREKTTEST (WENN SKRIPT AUSGEFÜHRT WIRD)
 # ===========================================
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     print("🚀 Starte 3D-Volumenmessung (PointCloud, USB2, 580 mm Referenz)")
     result = get_volume()
     
@@ -226,8 +260,8 @@ if __name__ == "__main__":
         print(f"   📦 Volumen: {result['volume']:.0f} mm³  ({result['volume']/1000:.1f} cm³)")
         
         if result['depth_frame'] is not None:
-            cv2.imshow("Volumenmessung (Bounding Box)", result['depth_frame'])
-            print("\nBeliebiges Fenster schließen → Ende")
+            cv2.imshow("Volumenmessung", result['depth_frame'])
+            print("\nFenster schließen → Ende")
             cv2.waitKey(0)
             cv2.destroyAllWindows()
     else:
