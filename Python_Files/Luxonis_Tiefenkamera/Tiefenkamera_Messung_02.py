@@ -49,7 +49,7 @@ class Config:
     CY_FALLBACK = 239.5
 
     # Kalibrierungsdatei
-    CALIB_FILE = "distanz_calibration.json"
+    CALIB_FILE = "t_calibration.json"
 
     # Serielle Schnittstelle für LED (auf Windows ignoriert)
     SERIAL_PORT = "/dev/ttyUSB0"   # ggf. anpassen (z.B. COM3 unter Windows, aber dort deaktiviert)

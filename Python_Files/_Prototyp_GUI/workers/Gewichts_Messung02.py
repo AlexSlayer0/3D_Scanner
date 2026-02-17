@@ -38,7 +38,7 @@ mux_channels = [0, 1, 2]
 # ------------------------------
 # Persistenz: JSON-Datei
 # ------------------------------
-PARAM_FILE = "calibration.json"
+PARAM_FILE = "weight_calibration.json"
 
 # Standardwerte (werden beim 1. Start verwendet)
 DEFAULT_FAKTOREN = [-0.004423, -0.00425, -0.004543]

@@ -1,6 +1,5 @@
 #Interface_v08.py
 """=======TODO-Liste v0.8=======
-Objekt-Detection muss verbessert werden/Mit Bemassung der Distanz von der LIDAR-Kamera      !!!!!!!!!
 SAP-Integration                 (Platzhalter-Button/optional)
 Lokal speichern Integration     (Formatierung?)
 

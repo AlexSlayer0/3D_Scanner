@@ -3,9 +3,7 @@
 3D-Volumenmessung mit OAK-D2 (DepthAI 2.29.0)
 - ROI-begrenzt auf z.B. 500x500 mm
 - Kalibrierung des leeren Raums zur Unterdrückung von Bodenrauschen
-- Dynamisches Auslesen der intrinsischen Kameraparameter
-- Visualisierung mit Objektpunkten und Bounding Box
-- Optionale LED-Lichtsteuerung (seriell) für Raspberry Pi
+- Windows-kompatibel (keine Lichtsteuerung)
 """
 
 import cv2
@@ -13,17 +11,8 @@ import depthai as dai
 import numpy as np
 import json
 import os
-import time
 from typing import Dict, Optional, Tuple
 import logging
-import sys
-
-# Versuch, pyserial zu importieren (optional, für Licht)
-try:
-    import serial
-    SERIAL_AVAILABLE = True
-except ImportError:
-    SERIAL_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -39,48 +28,24 @@ class Config:
     MAX_OBJEKT_HOEHE_MM = 300.0
     MAX_LAENGE_BREITE_MM = 500.0
 
-    # Punktwolken-Dichte (True = schnell, False = dicht)
     POINTCLOUD_SPARSE = True
+    
+    # Intrinsische Kameraparameter (geschätzt für OAK-D2, bitte ggf. kalibrieren)
+    FX = 822.7   # Brennweite in x-Richtung (Pixel)
+    FY = 822.7   # Brennweite in y-Richtung (Pixel)
+    CX = 321.5   # Hauptpunkt x (Pixel)
+    CY = 239.5   # Hauptpunkt y (Pixel)
 
-    # Fallback-Kameraparameter (nur falls Auslesen fehlschlägt)
-    FX_FALLBACK = 822.7
-    FY_FALLBACK = 822.7
-    CX_FALLBACK = 321.5
-    CY_FALLBACK = 239.5
 
     # Kalibrierungsdatei
-    CALIB_FILE = "distanz_calibration.json"
+    CALIB_FILE = "t_calibration.json"
 
-    # Serielle Schnittstelle für LED (auf Windows ignoriert)
-    SERIAL_PORT = "/dev/ttyUSB0"   # ggf. anpassen (z.B. COM3 unter Windows, aber dort deaktiviert)
-    SERIAL_BAUDRATE = 9600
-
-# ===== LICHTSTEUERUNG (nur auf Linux/Pi aktiv) =====
-def control_light(state: bool):
-    """Schaltet LED ein/aus (nur wenn pyserial verfügbar und Port existiert)."""
-    if not SERIAL_AVAILABLE:
-        logger.debug("Lichtsteuerung deaktiviert (pyserial nicht installiert)")
-        return
-    try:
-        with serial.Serial(Config.SERIAL_PORT, Config.SERIAL_BAUDRATE, timeout=1) as ser:
-            time.sleep(1.5)  # Port-Initialisierung
-            ser.write(b"Change\n")
-            time.sleep(0.1)
-            ser.write(b"a\n" if state else b"0\n")
-            time.sleep(0.2)
-        logger.info(f"Licht {'EIN' if state else 'AUS'}")
-    except Exception as e:
-        logger.warning(f"Lichtsteuerung fehlgeschlagen: {e}")
-
-# ===== KAMERA-KLASSE =====
 class OakD2Volume:
     def __init__(self):
         self.pipeline = None
         self.calibration = self.load_calibration()
-        self.fx = self.fy = self.cx = self.cy = None  # werden später aus Gerät gelesen
 
     def _build_pipeline(self):
-        """Erstellt die DepthAI-Pipeline mit Mono, Stereo und PointCloud."""
         pipeline = dai.Pipeline()
 
         mono_left = pipeline.create(dai.node.MonoCamera)
@@ -114,35 +79,11 @@ class OakD2Volume:
 
         return pipeline
 
-    def _get_intrinsics(self, device):
-        """Liest die intrinsischen Parameter aus der Kamera-Kalibrierung."""
-        try:
-            calib = device.readCalibration()
-            # Für Mono-Kamera links (CAM_B) – da wir Tiefe aus Stereo verwenden,
-            # sind die intrinsischen der Mono-Kameras relevant.
-            # Wir nehmen CAM_B, da die Punktwolke in diesem Koordinatensystem vorliegt.
-            intrinsics = calib.getCameraIntrinsics(dai.CameraBoardSocket.CAM_B)
-            self.fx = intrinsics[0][0]
-            self.fy = intrinsics[1][1]
-            self.cx = intrinsics[0][2]
-            self.cy = intrinsics[1][2]
-            logger.info(f"Intrinsics geladen: fx={self.fx:.2f}, fy={self.fy:.2f}, cx={self.cx:.2f}, cy={self.cy:.2f}")
-        except Exception as e:
-            logger.warning(f"Konnte intrinsische Parameter nicht auslesen, verwende Fallback: {e}")
-            self.fx = Config.FX_FALLBACK
-            self.fy = Config.FY_FALLBACK
-            self.cx = Config.CX_FALLBACK
-            self.cy = Config.CY_FALLBACK
-
     def capture_pointcloud(self) -> Tuple[Optional[np.ndarray], Optional[np.ndarray]]:
         """Nimmt eine Punktwolke und ein Tiefenbild auf."""
         pipeline = self._build_pipeline()
         try:
             with dai.Device(pipeline, maxUsbSpeed=dai.UsbSpeed.HIGH) as device:
-                # Intrinsics auslesen (einmalig pro Device)
-                if self.fx is None:
-                    self._get_intrinsics(device)
-
                 q_pc = device.getOutputQueue("pointcloud", maxSize=1, blocking=True)
                 q_depth = device.getOutputQueue("depth", maxSize=1, blocking=True)
 
@@ -161,15 +102,7 @@ class OakD2Volume:
         print("\n=== KALIBRIERUNG: BITTE OBJEKT ENTFERNEN ===")
         input("Drücken Sie Enter, wenn die Box leer ist...")
 
-        # Licht einschalten (wenn verfügbar)
-        control_light(True)
-        time.sleep(0.3)
-
         depth_frame, points = self.capture_pointcloud()
-
-        # Licht ausschalten
-        control_light(False)
-
         if points is None:
             print("❌ Fehler bei Aufnahme")
             return False
@@ -189,7 +122,7 @@ class OakD2Volume:
 
         z_roi = z[mask]
 
-        # Statistik des Bodens
+        # Statistik des Bodens (wir nehmen an, dass im leeren Raum nur Boden ist)
         z_median = float(np.median(z_roi))
         z_std = float(np.std(z_roi))
         z_min = float(np.min(z_roi))
@@ -231,15 +164,7 @@ class OakD2Volume:
             return self._error_result("Keine Kalibrierung vorhanden. Bitte zuerst leeren Raum kalibrieren.")
 
         try:
-            # Licht einschalten
-            control_light(True)
-            time.sleep(0.3)
-
             depth_frame, points = self.capture_pointcloud()
-
-            # Licht ausschalten
-            control_light(False)
-
             if points is None:
                 return self._error_result("Keine Punktwolke empfangen")
 
@@ -262,9 +187,9 @@ class OakD2Volume:
             # Kalibrierungswerte
             z_median = self.calibration["z_median"]
             z_std = self.calibration["z_std"]
-            tolerance = 3 * z_std
+            tolerance = 3 * z_std  # z.B. 3 Sigma
 
-            # Bodenpunkte entfernen
+            # Bodenpunkte entfernen (alles innerhalb Toleranz um Median)
             object_mask = np.abs(z_valid - z_median) > tolerance
 
             if np.sum(object_mask) < 10:
@@ -289,7 +214,7 @@ class OakD2Volume:
             if length < width:
                 length, width = width, length
 
-            # Höhe = Bodenmedian - min_z
+            # Höhe = Bodenmedian - min_z (da min_z der höchste Punkt ist)
             height = z_median - min_z
             if height < Config.MIN_OBJEKT_HOEHE_MM:
                 return self._error_result(f"Objekt zu flach: {height:.1f} mm")
@@ -301,17 +226,17 @@ class OakD2Volume:
             volume = length * width * height
 
             # Visualisierung
+            # Punkte im ROI (vor der Filterung) als Nx3-Array
             points_roi = np.column_stack((x_valid, y_valid, z_valid))
 
             vis_frame = self._create_visualization(
                 depth_frame,
                 points_roi,
-                object_mask,
-                min_x, max_x, min_y, max_y, min_z,
+                object_mask,          # boolean-Maske: True = Objektpunkt
                 length, width, height,
                 z_median, min_z,
-                len(z_valid),
-                np.sum(object_mask)
+                len(z_valid),         # Anzahl ROI-Punkte
+                np.sum(object_mask)   # Anzahl Objektpunkte
             )
 
             return {
@@ -326,75 +251,55 @@ class OakD2Volume:
 
         except Exception as e:
             logger.error(f"Volumenmessung fehlgeschlagen: {e}", exc_info=True)
-            control_light(False)  # sicherheitshalber ausschalten
             return self._error_result(str(e))
 
     def _create_visualization(self, depth_frame, points_roi, object_mask,
-                              min_x, max_x, min_y, max_y, min_z,
-                              length, width, height, z_median, min_z_val,
-                              num_roi_points, num_obj_points):
-        """
-        Erstellt visualisiertes Bild mit:
-        - Falschfarben-Tiefenbild
-        - Halbtransparentem ROI
-        - Objektpunkten als weiße Punkte mit schwarzem Rand
-        - Gelber Bounding Box (projiziert)
-        - Separatem Infopanel mit Messwerten
-        """
-        # Tiefenbild normalisieren und einfärben
+                            length, width, height, z_median, min_z,
+                            num_roi_points, num_obj_points):
+
+        # ---------- Tiefenbild farbig ----------
         depth_norm = cv2.normalize(depth_frame, None, 0, 255, cv2.NORM_MINMAX)
         depth_norm = depth_norm.astype(np.uint8)
         depth_color = cv2.applyColorMap(depth_norm, cv2.COLORMAP_TURBO)
 
-        # Bild auf einheitliche Größe skalieren
+        # ---------- Bild skalieren ----------
         target_w = 900
         scale = target_w / depth_color.shape[1]
         target_h = int(depth_color.shape[0] * scale)
         vis = cv2.resize(depth_color, (target_w, target_h))
 
-        # Halbtransparenter ROI (grüne Fläche)
+        # ---------- ROI halbtransparent ----------
         overlay = vis.copy()
         cv2.rectangle(overlay, (40, 40), (target_w - 40, target_h - 40), (0, 255, 0), -1)
         vis = cv2.addWeighted(overlay, 0.08, vis, 0.92, 0)
 
-        # Objektpunkte projizieren und zeichnen
+        # ---------- Objektpunkte groß & sichtbar ----------
+        fx, fy = Config.FX, Config.FY
+        cx, cy = Config.CX, Config.CY
+
         obj_points = points_roi[object_mask]
+
         for x, y, z in obj_points:
             if z <= 0:
                 continue
-            u = (x * self.fx / z) + self.cx
-            v = (y * self.fy / z) + self.cy
+
+            u = (x * fx / z) + cx
+            v = (y * fy / z) + cy
+
             if 0 <= u < depth_color.shape[1] and 0 <= v < depth_color.shape[0]:
                 u_rs = int(u * scale)
                 v_rs = int(v * scale)
-                # Weißer Punkt mit schwarzem Rand (gut sichtbar)
+
+                # größerer Punkt mit weißem Rand
                 cv2.circle(vis, (u_rs, v_rs), 5, (255, 255, 255), -1)
                 cv2.circle(vis, (u_rs, v_rs), 7, (0, 0, 0), 2)
 
-        # Bounding Box (gelb) projizieren
-        corners_3d = np.array([
-            [min_x, min_y, min_z],
-            [max_x, min_y, min_z],
-            [max_x, max_y, min_z],
-            [min_x, max_y, min_z]
-        ])
-        corners_2d = []
-        for x, y, z in corners_3d:
-            if z <= 0:
-                continue
-            u = (x * self.fx / z) + self.cx
-            v = (y * self.fy / z) + self.cy
-            if 0 <= u < depth_color.shape[1] and 0 <= v < depth_color.shape[0]:
-                corners_2d.append((int(u * scale), int(v * scale)))
-        if len(corners_2d) == 4:
-            cv2.polylines(vis, [np.array(corners_2d)], True, (0, 255, 255), 3)
-
-        # ROI-Rahmen (grün) – zusätzlich zur Transparenz
+        # ---------- ROI-Rahmen ----------
         cv2.rectangle(vis, (40, 40), (target_w - 40, target_h - 40), (0, 255, 0), 3)
         cv2.putText(vis, "MESSBEREICH", (50, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
-        # Infopanel (rechts)
+        # ---------- Messwerte-Panel ----------
         panel_w = 320
         panel = np.zeros((target_h, panel_w, 3), dtype=np.uint8)
         panel[:] = (25, 25, 25)
@@ -405,7 +310,7 @@ class OakD2Volume:
             ("LAENGE",  f"{length:.1f} mm"),
             ("BREITE",  f"{width:.1f} mm"),
             ("HOEHE",   f"{height:.1f} mm"),
-            ("VOLUMEN", f"{volume_cm3:.0f} cm³"),
+            ("VOLUMEN", f"{volume_cm3:.0f} cm3"),
             ("", ""),
             ("ROI Punkte", str(num_roi_points)),
             ("Objektpunkte", str(num_obj_points)),
@@ -416,16 +321,18 @@ class OakD2Volume:
             if title == "":
                 y += 20
                 continue
+
             cv2.putText(panel, title, (20, y),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (180, 180, 180), 1)
             cv2.putText(panel, value, (20, y + 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
             y += 70
 
-        # Tiefenbild und Panel kombinieren
+        # ---------- Tiefenbild + Panel kombinieren ----------
         vis = np.hstack((vis, panel))
 
         return vis
+
 
     def _error_result(self, msg):
         return {
@@ -438,18 +345,19 @@ class OakD2Volume:
             'error': msg
         }
 
-# ===== SCHNITTSTELLE FÜR DAS HAUPTINTERFACE =====
 def get_volume() -> Dict:
     """Hauptfunktion für Interface_v08.py"""
     measurer = OakD2Volume()
     return measurer.get_measurement()
 
+# ===== KALIBRIERUNGSFUNKTION =====
 def calibrate():
-    """Führt die Kalibrierung durch."""
+    """Führt die Kalibrierung durch (kann separat aufgerufen werden)."""
     measurer = OakD2Volume()
     measurer.calibrate_empty_space()
 
 if __name__ == "__main__":
+    import sys
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
     if len(sys.argv) > 1 and sys.argv[1] == "calibrate":
