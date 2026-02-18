@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 3D-Volumenmessung mit OAK-D2 (DepthAI 2.29.0)
-- ROI-begrenzt auf z.B. 500x500 mm
+- ROI-begrenzt auf 500x500 mm
 - Kalibrierung des leeren Raums zur Unterdrückung von Bodenrauschen
 - Dynamisches Auslesen der intrinsischen Kameraparameter
 - Visualisierung mit Objektpunkten und Bounding Box
-- Optionale LED-Lichtsteuerung (seriell) für Raspberry Pi
+- LED-Lichtsteuerung (seriell) für Raspberry Pi
 """
 
 import cv2
@@ -455,19 +455,19 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "calibrate":
         calibrate()
     else:
-        print("\n🚀 Starte 3D-Volumenmessung (ROI 500x500 mm, dynamische Referenz, USB2)")
+        print("\nStarte 3D-Volumenmessung (ROI 500x500 mm, dynamische Referenz, USB2)")
         print("   (Falls keine Kalibrierung vorhanden, bitte zuerst mit 'calibrate' ausführen)\n")
         result = get_volume()
         if result['success']:
-            print("\n✅ MESSUNG ERFOLGREICH")
-            print(f"   📏 Länge:  {result['length']:.1f} mm")
-            print(f"   📐 Breite: {result['width']:.1f} mm")
-            print(f"   📏 Höhe:  {result['height']:.1f} mm")
-            print(f"   📦 Volumen: {result['volume']:.0f} mm³ ({result['volume']/1000:.1f} cm³)")
+            print("\n✅MESSUNG ERFOLGREICH")
+            print(f"   Länge:  {result['length']:.1f} mm")
+            print(f"   Breite: {result['width']:.1f} mm")
+            print(f"   Höhe:  {result['height']:.1f} mm")
+            print(f"   Volumen: {result['volume']:.0f} mm³ ({result['volume']/1000:.1f} cm³)")
 
             if result['depth_frame'] is not None:
                 cv2.imshow("Volumenmessung", result['depth_frame'])
-                print("\n🔲 Fenster schließen → Ende")
+                print("\nFenster schließen → Ende")
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
         else:

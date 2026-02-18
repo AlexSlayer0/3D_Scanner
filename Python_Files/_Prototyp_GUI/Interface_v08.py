@@ -24,7 +24,8 @@ from typing import List, Tuple, Dict, Optional, Any
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit,
     QPushButton, QLabel, QFrame, QSizePolicy, QStackedWidget, QScrollArea, 
-    QToolButton, QMessageBox, QDialog, QProgressBar, QComboBox, QInputDialog
+    QToolButton, QMessageBox, QDialog, QProgressBar, QComboBox, QInputDialog,
+    QCheckBox
 )
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal, QTimer
@@ -305,29 +306,70 @@ class CameraManager:
 
     def _take_oak_picture(self) -> Optional[np.ndarray]:
         try:
+            # Licht einschalten
             self._control_light(True)
-            time.sleep(0.3)
+            time.sleep(0.3)  # Kurze Stabilisierung
 
+            # Pipeline erstellen
             pipeline = dai.Pipeline()
 
-            # ? 2.29.0: Node-Erzeugung mit dai.node.xxx
-            cam_rgb = pipeline.create(dai.node.ColorCamera)
-            cam_rgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
-            cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
-            cam_rgb.setPreviewSize(CONFIG.IMAGE_WIDTH, CONFIG.IMAGE_HEIGHT)
+            # Kamera-Knoten
+            cam = pipeline.create(dai.node.ColorCamera)
+            cam.setBoardSocket(dai.CameraBoardSocket.CAM_A)
+            cam.setResolution(dai.ColorCameraProperties.SensorResolution.THE_12_MP)  # 12 MP Sensor
+            cam.setStillSize(4032, 3040)                     # Volle Auflösung für Standbild
+            cam.setPreviewSize(640, 480)                      # Preview (wird nicht verwendet, aber Kamera mag es)
+            cam.setInterleaved(False)
 
-            # ? 2.29.0: XLinkOut unter dai.node.xxx vorhanden
-            xout_rgb = pipeline.create(dai.node.XLinkOut)
-            xout_rgb.setStreamName("rgb")
-            cam_rgb.preview.link(xout_rgb.input)
+            # Auto-Fokus (kontinuierlich für Video/Standbild)
+            cam.initialControl.setAutoFocusMode(dai.RawCameraControl.AutoFocusMode.CONTINUOUS_VIDEO)
 
+            # Output für das Standbild
+            still_out = pipeline.create(dai.node.XLinkOut)
+            still_out.setStreamName("still")
+            cam.still.link(still_out.input)
+
+            # Input für Steuerbefehle (um das Bild auszulösen)
+            control_in = pipeline.create(dai.node.XLinkIn)
+            control_in.setStreamName("control")
+            control_in.out.link(cam.inputControl)
+
+            # Device starten
             with dai.Device(pipeline) as device:
-                q_rgb = device.getOutputQueue("rgb", maxSize=1, blocking=True)
-                frame = q_rgb.get().getCvFrame()
+                # Queues
+                still_queue = device.getOutputQueue("still", maxSize=1, blocking=False)
+                control_queue = device.getInputQueue("control")
+
+                # Kurze Wartezeit für Autofokus
+                time.sleep(2)
+
+                # Bildaufnahme auslösen
+                ctrl = dai.CameraControl()
+                ctrl.setCaptureStill(True)
+                control_queue.send(ctrl)
+
+                # Auf das Bild warten (Timeout 5 Sekunden)
+                start = time.time()
+                frame = None
+                while time.time() - start < 5:
+                    packet = still_queue.tryGet()
+                    if packet is not None:
+                        frame = packet.getCvFrame()  # BGR numpy array
+                        break
+                    time.sleep(0.1)
+
+                # Licht ausschalten (erfolgreich oder nicht)
                 self._control_light(False)
+
+                if frame is None:
+                    logger.error("OAK-D2: Kein Bild innerhalb von 5 Sekunden empfangen")
+                    return None
+
+                logger.debug(f"OAK-D2: Bild aufgenommen, Größe {frame.shape[1]}x{frame.shape[0]}")
                 return frame
 
         except Exception as e:
+            # Licht im Fehlerfall ebenfalls ausschalten
             self._control_light(False)
             logger.error(f"OAK-D2 Fehler: {e}")
             return None
@@ -561,7 +603,7 @@ class ParallelWorker(QThread):
     def _run_volume_task(self):
         """Führt Volumenmessung mit OAK-D2 durch"""
         try:
-            import workers.Tiefenkamera_Messung_03 as volume_module
+            import workers.Tiefenkamera_Messung_02 as volume_module
             volume_result = volume_module.get_volume()
             
             # Formatieren für Anzeige
@@ -1301,11 +1343,12 @@ class FullscreenApp(QMainWindow):
         return label
 
     def _create_ram_image_final_widget(self, idx: int) -> QLabel:
-        """Erstellt ein finales RAM-Bild-Widget"""
         label = QLabel()
         self.final_image_labels[idx] = label
         if self.final_images[idx] is not None:
-            label.setPixmap(self.convert_to_pixmap(self.final_images[idx]))
+            # Hier die gewünschte Größe angeben, z.B. 500x400 Pixel
+            pixmap = self.convert_to_pixmap(self.final_images[idx], width=450, height=350)
+            label.setPixmap(pixmap)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         return label
 
@@ -1319,6 +1362,193 @@ class FullscreenApp(QMainWindow):
     def _create_input_widget(self, label_text: str, placeholder: str = "", preset_text: str = "") -> QFrame:
         """Erstellt ein Eingabewidget"""
         return self.make_card_with_input(label_text, preset_text, placeholder)
+
+
+    def create_dimension_editor(self) -> QWidget:
+        """Erstellt ein editierbares Widget für die Abmessungen (L x B x H)"""
+        widget = QWidget()
+        layout = QHBoxLayout(widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(5)
+
+        # Label
+        label = QLabel(self.translator.get_text(self.language, 'overview', 'dimensions'))
+        label.setStyleSheet("font-size: 18px; color: #ecf0f1;")
+        layout.addWidget(label)
+
+        # Eingabefeld
+        self.dimension_edit = QLineEdit()
+        self.dimension_edit.setText(self.abmessung if self.abmessung else "0 x 0 x 0")
+        self.dimension_edit.setStyleSheet("""
+            QLineEdit {
+                background: #34495e;
+                color: #ecf0f1;
+                border: 1px solid #5d6d7e;
+                border-radius: 4px;
+                padding: 5px 10px;
+                font-size: 18px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #3498db;
+            }
+        """)
+        self.dimension_edit.setFixedWidth(200)
+        self.dimension_edit.textChanged.connect(self.on_dimension_changed)
+        layout.addWidget(self.dimension_edit)
+
+        # Einheit
+        unit = QLabel(self.translator.get_text(self.language, 'overview', 'mm'))
+        unit.setStyleSheet("font-size: 18px; color: #ecf0f1;")
+        layout.addWidget(unit)
+
+        layout.addStretch()
+        return widget
+
+    def create_weight_editor(self) -> QWidget:
+        """Erstellt ein editierbares Widget für das Gewicht"""
+        widget = QWidget()
+        layout = QHBoxLayout(widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(5)
+
+        # Label
+        label = QLabel(self.translator.get_text(self.language, 'overview', 'weight'))
+        label.setStyleSheet("font-size: 18px; color: #ecf0f1;")
+        layout.addWidget(label)
+
+        # Eingabefeld
+        self.weight_edit = QLineEdit()
+        gewicht_str = str(self.gewicht).replace("kg", "").strip() if self.gewicht else "0"
+        self.weight_edit.setText(gewicht_str)
+        self.weight_edit.setStyleSheet("""
+            QLineEdit {
+                background: #34495e;
+                color: #ecf0f1;
+                border: 1px solid #5d6d7e;
+                border-radius: 4px;
+                padding: 5px 10px;
+                font-size: 18px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #3498db;
+            }
+        """)
+        self.weight_edit.setFixedWidth(100)
+        self.weight_edit.textChanged.connect(self.on_weight_changed)
+        layout.addWidget(self.weight_edit)
+
+        # Einheit
+        unit = QLabel(self.translator.get_text(self.language, 'overview', 'kg'))
+        unit.setStyleSheet("font-size: 18px; color: #ecf0f1;")
+        layout.addWidget(unit)
+
+        layout.addStretch()
+        return widget
+
+    def on_dimension_changed(self, text: str):
+        """Wird aufgerufen, wenn die Abmessungen bearbeitet werden"""
+        self.abmessung = text
+        logger.debug(f"Abmessung manuell geändert: {self.abmessung}")
+
+    def on_weight_changed(self, text: str):
+        """Wird aufgerufen, wenn das Gewicht bearbeitet wird"""
+        # Versuche, als float zu speichern, sonst als String
+        try:
+            # Wenn nur Zahl, formatiere sie
+            val = float(text.replace(',', '.'))
+            self.gewicht = val
+        except ValueError:
+            # Falls Benutzer etwas wie "1.5 kg" eingibt, extrahiere Zahl
+            import re
+            match = re.search(r"[\d.,]+", text)
+            if match:
+                try:
+                    self.gewicht = float(match.group().replace(',', '.'))
+                except:
+                    self.gewicht = text
+            else:
+                self.gewicht = text
+        logger.debug(f"Gewicht manuell geändert: {self.gewicht}")
+
+    def create_combined_editor(self) -> QWidget:
+        """Erstellt ein Widget mit Dimensions- und Gewichtseditor nebeneinander, mittig ausgerichtet"""
+        container = QWidget()
+        layout = QHBoxLayout(container)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(500)   # Abstand zwischen den beiden Blöcken vergrößert (z.B. 60 Pixel)
+
+        # Dimensions-Block
+        dim_widget = QWidget()
+        dim_layout = QHBoxLayout(dim_widget)
+        dim_layout.setContentsMargins(0, 0, 0, 0)
+        dim_layout.setSpacing(5)
+        dim_label = QLabel(self.translator.get_text(self.language, 'overview', 'dimensions'))
+        dim_label.setStyleSheet("font-size: 18px; color: #ecf0f1;")
+        dim_layout.addWidget(dim_label)
+
+        self.dimension_edit = QLineEdit()
+        self.dimension_edit.setText(self.abmessung if self.abmessung else "0 x 0 x 0")
+        self.dimension_edit.setStyleSheet("""
+            QLineEdit {
+                background: #34495e;
+                color: #ecf0f1;
+                border: 1px solid #5d6d7e;
+                border-radius: 4px;
+                padding: 5px 10px;
+                font-size: 18px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #3498db;
+            }
+        """)
+        self.dimension_edit.setFixedWidth(200)
+        self.dimension_edit.textChanged.connect(self.on_dimension_changed)
+        dim_layout.addWidget(self.dimension_edit)
+
+        dim_unit = QLabel(self.translator.get_text(self.language, 'overview', 'mm'))
+        dim_unit.setStyleSheet("font-size: 18px; color: #ecf0f1;")
+        dim_layout.addWidget(dim_unit)
+        layout.addWidget(dim_widget)
+
+        # Gewichts-Block
+        weight_widget = QWidget()
+        weight_layout = QHBoxLayout(weight_widget)
+        weight_layout.setContentsMargins(0, 0, 0, 0)
+        weight_layout.setSpacing(5)
+        weight_label = QLabel(self.translator.get_text(self.language, 'overview', 'weight'))
+        weight_label.setStyleSheet("font-size: 18px; color: #ecf0f1;")
+        weight_layout.addWidget(weight_label)
+
+        self.weight_edit = QLineEdit()
+        gewicht_str = str(self.gewicht).replace("kg", "").strip() if self.gewicht else "0"
+        self.weight_edit.setText(gewicht_str)
+        self.weight_edit.setStyleSheet("""
+            QLineEdit {
+                background: #34495e;
+                color: #ecf0f1;
+                border: 1px solid #5d6d7e;
+                border-radius: 4px;
+                padding: 5px 10px;
+                font-size: 18px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #3498db;
+            }
+        """)
+        self.weight_edit.setFixedWidth(100)
+        self.weight_edit.textChanged.connect(self.on_weight_changed)
+        weight_layout.addWidget(self.weight_edit)
+
+        weight_unit = QLabel(self.translator.get_text(self.language, 'overview', 'kg'))
+        weight_unit.setStyleSheet("font-size: 18px; color: #ecf0f1;")
+        weight_layout.addWidget(weight_unit)
+        layout.addWidget(weight_widget)
+
+        # Zentrierung: Dehnungsflächen links und rechts
+        layout.insertStretch(0, 1)
+        layout.addStretch(1)
+
+        return container
 
     def add_page(self, title: str, widgets: List[Any]):
         """Fügt eine Seite zum Stack hinzu"""
@@ -1420,11 +1650,7 @@ class FullscreenApp(QMainWindow):
                 "content": [
                     [("ram_image_final", 0), ("ram_image_final", 1)],
                     [("ram_image_final", 2), ("ram_image_final", 3)],
-
-                    f"{self.translator.get_text(self.language, 'overview', 'dimensions')} {self.abmessung} {self.translator.get_text(self.language, 'overview', 'mm')}",
-                    
-                    f"{self.translator.get_text(self.language, 'overview', 'weight')} {self.gewicht}{self.translator.get_text(self.language, 'overview', 'kg')}",
-
+                     ("custom", self.create_combined_editor()),          # Kombinierte Editoren (mittig)
                 ]
             },
             "storage": {
@@ -1495,13 +1721,13 @@ class FullscreenApp(QMainWindow):
 
 
     def add_new_barcode_field(self):
-        """Fügt ein neues leeres Barcode-Feld hinzu"""
+        """Fügt ein neues leeres Barcode-Feld hinzu (standardmäßig ausgewählt)"""
         logger.info("Füge neues Barcode-Feld hinzu")
-        
+
         if not hasattr(self, 'all_barcodes'):
             self.all_barcodes = []
-        
-        # Frage den Benutzer nach dem Typ (vereinfachte Version)
+
+        # Dialog zur Typauswahl (wie gehabt)
         dialog = QDialog(self)
         dialog.setWindowTitle("Barcode-Typ auswählen")
         dialog.setFixedSize(400, 200)
@@ -1526,66 +1752,62 @@ class FullscreenApp(QMainWindow):
                 background: #2980b9;
             }
         """)
-        
+
         layout = QVBoxLayout(dialog)
-        
+
         label = QLabel("Welchen Typ von Barcode möchten Sie hinzufügen?")
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(label)
-        
+
         btn_layout = QHBoxLayout()
-        
-        # Knopf für Artikelnummer (Interne Materialnummer)
+
         btn_article = QPushButton("Interne Materialnummer")
         btn_article.setMinimumHeight(50)
-        
-        # Knopf für EAN-Code
+
         btn_ean = QPushButton("EAN-Code")
         btn_ean.setMinimumHeight(50)
-        
+
         btn_layout.addWidget(btn_article)
         btn_layout.addWidget(btn_ean)
-        
+
         layout.addLayout(btn_layout)
-        
-        # Neue Barcode-ID bestimmen
-        new_index = len(self.all_barcodes)
-        
+
         def add_barcode(is_article: bool):
             if is_article:
                 new_barcode = {
-                    "value": "", 
-                    "type": "CODE128", 
-                    "image_index": -1, 
+                    "value": "",
+                    "type": "CODE128",           # Standard für Artikelnummern
+                    "image_index": -1,
                     "cropped_image": None,
                     "is_article_number": True,
-                    "source": "manual"
+                    "source": "manual",
+                    "selected": True             
                 }
             else:
                 new_barcode = {
-                    "value": "", 
-                    "type": "EAN13", 
-                    "image_index": -1, 
+                    "value": "",
+                    "type": "EAN13",
+                    "image_index": -1,
                     "cropped_image": None,
                     "is_article_number": False,
-                    "source": "manual"
+                    "source": "manual",
+                    "selected": True          
                 }
-            
+
             self.all_barcodes.append(new_barcode)
             dialog.accept()
-            
+
             # Seite neu laden, um das neue Feld anzuzeigen
             self.load_pages()
-            
             # Direkt zur Storage Page springen (Index 3)
             if self.stack.count() > 3:
                 self.stack.setCurrentIndex(3)
-        
+
         btn_article.clicked.connect(lambda: add_barcode(True))
         btn_ean.clicked.connect(lambda: add_barcode(False))
-        
-        dialog.exec()
 
+        dialog.exec()
+        
     def find_barcode_widgets(self, widget: QWidget) -> List[Tuple[QWidget, int]]:
         """Findet alle Barcode-Widgets und ihre Indizes"""
         barcode_widgets = []
@@ -1686,20 +1908,24 @@ class FullscreenApp(QMainWindow):
         
         return content
 
+    def update_barcode_selected(self, index: int, state: int):
+        """Aktualisiert den Auswahlstatus eines Barcodes"""
+        if index < len(self.all_barcodes):
+            self.all_barcodes[index]['selected'] = (state == Qt.CheckState.Checked.value)
+            logger.debug(f"Barcode {index} selected = {self.all_barcodes[index]['selected']}")
+
+
+
     def create_editable_barcode_widget(self, barcode: Dict, index: int) -> QFrame:
-        """Erstellt ein bearbeitbares Barcode-Widget mit Eingabefeldern"""
+        """Erstellt ein bearbeitbares Barcode-Widget mit Auswahl-Checkbox"""
         frame = QFrame()
         frame.setObjectName(f"barcode_widget_{index}")
-        
-        # Bestimme ob Artikelnummer oder EAN13
+
         is_article_number = barcode.get('is_article_number', False)
         source = barcode.get('source', 'manual')
-        
-        # Größere Bildabmessungen
-        IMAGE_WIDTH = 500  # Statt 250
-        IMAGE_HEIGHT = 350  # Statt 150
-        
-        # Unterschiedliches Styling für Artikelnummer vs EAN13
+        selected = barcode.get('selected', False)
+
+        # Styling je nach Typ (Artikelnummer oder EAN)
         if is_article_number:
             frame_style = """
                 QFrame {
@@ -1722,10 +1948,27 @@ class FullscreenApp(QMainWindow):
             """
             label_type = self.translator.get_text(self.language, "storage", "barcode_label")
             type_hint = self.translator.get_text(self.language, "storage", "for_ean13")
-        
+
         frame.setStyleSheet(frame_style + """
             QLabel {
                 color: #ECF0F1;
+            }
+            QCheckBox {
+                color: #ECF0F1;
+                font-size: 14px;
+                spacing: 8px;
+            }
+            QCheckBox::indicator {
+                width: 20px;
+                height: 20px;
+            }
+            QCheckBox::indicator:unchecked {
+                border: 2px solid #5d6d7e;
+                background: #2C3E50;
+            }
+            QCheckBox::indicator:checked {
+                border: 2px solid #3498db;
+                background: #3498db;
             }
             QLineEdit, QComboBox {
                 background: #2C3E50;
@@ -1739,27 +1982,32 @@ class FullscreenApp(QMainWindow):
                 border: 1px solid #3498db;
             }
         """)
-        
+
         layout = QHBoxLayout(frame)
         layout.setSpacing(20)
-        
-        # Linke Seite: Barcode-Bild mit Farbcodierung
-        image_container = QWidget()
-        image_layout = QVBoxLayout(image_container)
-        image_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        
-        # Übersetzte Text für die GUI
-        type_label_text = self.translator.get_text(self.language, "storage", "type_label")
-        source_label_text = self.translator.get_text(self.language, "storage", "source_label")
-        
+
+        # ----- Linke Spalte: Checkbox + Bild + Quelle -----
+        left_column = QWidget()
+        left_layout = QVBoxLayout(left_column)
+        left_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        left_layout.setSpacing(10)
+
+        # Checkbox für Auswahl
+        checkbox = QCheckBox("Barcode auswählen")
+        checkbox.setChecked(selected)
+        checkbox.stateChanged.connect(lambda state, idx=index: self.update_barcode_selected(idx, state))
+        left_layout.addWidget(checkbox, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        # Bild (wie gehabt, mit fester Größe)
+        IMAGE_WIDTH = 500
+        IMAGE_HEIGHT = 350
+
         if "cropped_image" in barcode and barcode["cropped_image"] is not None:
             cropped_img = barcode["cropped_image"]
-            
-            # Farbige Umrandung basierend auf Typ
             border_color = (255, 165, 0) if is_article_number else (0, 255, 0)  # Orange für Artikel, Grün für EAN
-            
+
             if len(cropped_img.shape) == 3:
-                bordered_img = cv2.copyMakeBorder(cropped_img, 8, 8, 8, 8, 
+                bordered_img = cv2.copyMakeBorder(cropped_img, 8, 8, 8, 8,
                                                 cv2.BORDER_CONSTANT, value=border_color)
                 if cropped_img.shape[2] == 3:
                     bordered_img = cv2.cvtColor(bordered_img, cv2.COLOR_BGR2RGB)
@@ -1767,81 +2015,67 @@ class FullscreenApp(QMainWindow):
                 bordered_img = cv2.cvtColor(cropped_img, cv2.COLOR_GRAY2RGB)
                 bordered_img = cv2.copyMakeBorder(bordered_img, 8, 8, 8, 8,
                                                 cv2.BORDER_CONSTANT, value=border_color)
-            
-            # VERGRÖSSERT: Neue Bildgröße
+
             pixmap = self.convert_to_pixmap(bordered_img, width=IMAGE_WIDTH, height=IMAGE_HEIGHT)
             image_label = QLabel()
             image_label.setPixmap(pixmap)
             image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            
-            # Klick-Event für Vergrößerung hinzufügen
-            image_label.mousePressEvent = lambda event, img=cropped_img, barcode_type=("Artikelnummer" if is_article_number else "EAN"): self.show_enlarged_image(img, barcode_type)
+            image_label.mousePressEvent = lambda event, img=cropped_img, bt=("Artikelnummer" if is_article_number else "EAN"): self.show_enlarged_image(img, bt)
             image_label.setCursor(Qt.CursorShape.PointingHandCursor)
             image_label.setToolTip("Klicken zum Vergrößern")
-            
-            image_layout.addWidget(image_label)
-            
-            # Bildquelle
+            left_layout.addWidget(image_label)
+
+            # Quellenangabe
+            source_label_text = self.translator.get_text(self.language, "storage", "source_label")
             image_names = ["ISO Bild", "Top Bild", "Right Bild", "Behind Bild"]
             img_idx = barcode.get('image_index', 0)
             if img_idx >= 0 and img_idx < len(image_names):
                 source_text = f"{source_label_text} {image_names[img_idx]}"
             else:
                 source_text = f"{source_label_text} {self.translator.get_text(self.language, 'storage', 'manual')}"
-            
             source_label = QLabel(source_text)
             source_label.setStyleSheet("font-size: 12px; color: #BDC3C7; margin-top: 8px;")
             source_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            image_layout.addWidget(source_label)
+            left_layout.addWidget(source_label)
         else:
             placeholder = QLabel("Kein Bild verfügbar")
-            placeholder.setStyleSheet("""
-                color: #BDC3C7;
-                font-style: italic;
-                font-size: 14px;
-            """)
+            placeholder.setStyleSheet("color: #BDC3C7; font-style: italic; font-size: 14px;")
             placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            placeholder.setFixedSize(IMAGE_WIDTH, IMAGE_HEIGHT)  # Auch Platzhalter vergrößern
-            image_layout.addWidget(placeholder)
-            
-            source_label = QLabel(f"{source_label_text} {self.translator.get_text(self.language, 'storage', 'manual')}")
+            placeholder.setFixedSize(IMAGE_WIDTH, IMAGE_HEIGHT)
+            left_layout.addWidget(placeholder)
+
+            source_label = QLabel(f"{self.translator.get_text(self.language, 'storage', 'source_label')} {self.translator.get_text(self.language, 'storage', 'manual')}")
             source_label.setStyleSheet("font-size: 12px; color: #BDC3C7; margin-top: 8px;")
             source_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            image_layout.addWidget(source_label)
-        layout.addWidget(image_container)
-        
-        # Rechte Seite: Bearbeitbare Informationen
+            left_layout.addWidget(source_label)
+
+        layout.addWidget(left_column)
+
+        # ----- Rechte Spalte: Bearbeitbare Informationen -----
         info_container = QWidget()
         info_layout = QVBoxLayout(info_container)
         info_layout.setSpacing(15)
-        
-        # Typ-Anzeige (Artikelnummer oder Barcode) mit Hinweis
+
+        # Typ-Anzeige
         type_header = QLabel(f"{label_type} {type_hint}")
         type_header.setStyleSheet("font-size: 16px; font-weight: bold; color: #F39C12;" if is_article_number else "font-size: 16px; font-weight: bold; color: #3498db;")
         info_layout.addWidget(type_header)
-        
+
         # Eingabefeld für Wert
         barcode_input = QLineEdit()
         barcode_input.setText(barcode.get('value', ''))
-        
-        if is_article_number:
-            barcode_input.setPlaceholderText("Artikelnummer hier eingeben...")
-        else:
-            barcode_input.setPlaceholderText("EAN13 Barcode hier eingeben...")
-        
-        barcode_input.textChanged.connect(lambda text: self.update_barcode_value(index, text))
+        barcode_input.setPlaceholderText("Artikelnummer hier eingeben..." if is_article_number else "EAN13 Barcode hier eingeben...")
+        barcode_input.textChanged.connect(lambda text, idx=index: self.update_barcode_value(idx, text))
         info_layout.addWidget(barcode_input)
-        
+
         # Barcode-Typ Auswahl
-        type_sublabel = QLabel(type_label_text)
+        type_sublabel = QLabel(self.translator.get_text(self.language, "storage", "type_label"))
         type_sublabel.setStyleSheet("font-size: 14px; font-weight: bold; margin-top: 10px;")
         info_layout.addWidget(type_sublabel)
-        
-        type_combo = QComboBox()
-        
-        type_combo.wheelEvent = lambda event: None  # Ignoriere alle Wheel-Events
 
-        # Barcode-Typen mit Trennung
+        type_combo = QComboBox()
+        type_combo.wheelEvent = lambda event: None  # Mausrad deaktivieren
+
         type_combo.addItem("EAN13 - Produkt-Barcode")
         type_combo.addItem("EAN8")
         type_combo.addItem("UPC-A")
@@ -1851,11 +2085,8 @@ class FullscreenApp(QMainWindow):
         type_combo.addItem("ITF - Artikelnummer")
         type_combo.addItem("QR - Artikelnummer")
         type_combo.addItem("Andere - Artikelnummer")
-        
-        # Aktuellen Typ setzen
+
         current_type = barcode.get('type', 'CODE128' if is_article_number else 'EAN13')
-        
-        # Mapping für die Anzeige
         type_mapping = {
             'EAN13': "EAN13 - Produkt-Barcode",
             'EAN8': "EAN8",
@@ -1866,46 +2097,43 @@ class FullscreenApp(QMainWindow):
             'ITF': "ITF - Artikelnummer",
             'QR': "QR - Artikelnummer"
         }
-        
         display_type = type_mapping.get(current_type, "Andere - Artikelnummer")
         type_combo.setCurrentText(display_type)
-        
-        # Bei Typänderung: is_article_number aktualisieren
-        type_combo.currentTextChanged.connect(lambda text: self.update_barcode_type_and_status(index, text))
+
+        type_combo.currentTextChanged.connect(lambda text, idx=index: self.update_barcode_type_and_status(idx, text))
         info_layout.addWidget(type_combo)
-        
+
         # Status-Anzeige
         status_label = QLabel()
         if barcode.get('value'):
             if is_article_number:
                 status_text = f"Artikelnummer {self.translator.get_text(self.language, 'storage', source)}"
-                status_color = "#E67E22"  # Orange
+                status_color = "#E67E22"
             else:
                 status_text = f"EAN13 Barcode {self.translator.get_text(self.language, 'storage', source)}"
-                status_color = "#2ecc71"  # Grün
+                status_color = "#2ecc71"
         else:
             if is_article_number:
                 status_text = "Artikelnummer bitte manuell eingeben"
-                status_color = "#e74c3c"  # Rot
+                status_color = "#e74c3c"
             else:
                 status_text = "EAN13 Barcode bitte manuell eingeben"
-                status_color = "#e74c3c"  # Rot
-        
+                status_color = "#e74c3c"
+
         status_label.setText(status_text)
         status_label.setStyleSheet(f"color: {status_color}; font-weight: bold; margin-top: 10px;")
         info_layout.addWidget(status_label)
-        
+
         info_layout.addStretch()
         layout.addWidget(info_container, stretch=1)
-        
-        # Referenzen speichern
+
+        # Referenzen für späteren Zugriff speichern
         frame.barcode_input = barcode_input
         frame.type_combo = type_combo
         frame.status_label = status_label
-        frame.is_article_number = is_article_number
-        
-        return frame
+        frame.checkbox = checkbox
 
+        return frame
 
     def update_barcode_value(self, index: int, value: str):
         """Aktualisiert den Barcode-Wert"""
@@ -2057,21 +2285,28 @@ class FullscreenApp(QMainWindow):
                     except:
                         pass
                 
-                # 12. Barcodes trennen
+
+                # 12. Nur ausgewählte Barcodes berücksichtigen
+                selected_barcodes = [b for b in self.all_barcodes if b.get('selected', False)]
+
+                # Falls keine ausgewählt (weil alle Checkboxen deaktiviert), dann alle verwenden (Fallback)
+                if not selected_barcodes:
+                    logger.warning("Kein Barcode ausgewählt – alle werden exportiert.")
+                    selected_barcodes = self.all_barcodes
+
                 ean_codes = []
                 article_numbers = []
-                
-                if hasattr(self, 'all_barcodes'):
-                    for barcode in self.all_barcodes:
-                        value = barcode.get('value', '').strip()
-                        if not value:
-                            continue
-                        
-                        if barcode.get('is_article_number', False):
-                            article_numbers.append(value)
-                        else:
-                            ean_codes.append(value)
+
+                for barcode in selected_barcodes:
+                    value = barcode.get('value', '').strip()
+                    if not value:
+                        continue
+                    if barcode.get('is_article_number', False):
+                        article_numbers.append(value)
+                    else:
+                        ean_codes.append(value)
        
+
                 # 13. CSV-Zeilen schreiben - Für SAP
                 if not ean_codes and not article_numbers:
                     writer.writerow([
@@ -2266,6 +2501,10 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         def finish_loading():
             if self.loading_dialog.isVisible():
                 self.loading_dialog.accept()
+                
+                # --- Seite neu laden, damit die Bilder erscheinen ---
+                self.load_pages()
+                
                 self.stack.setCurrentIndex(2)  # Übersichtsseite
                 self.update_buttons()
                 self.scan_start = False
@@ -2354,34 +2593,43 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         logger.info(f"Ergebnis von {script_name} erhalten: Typ={type(data)}")
 
         if script_name == "barcode":
-            logger.info(f"Barcode-Daten empfangen: {data}")
-            
+            logger.info(f"Barcode-Daten empfangen: {str(data)[:40]}...")
+
             # Initialisiere all_barcodes wenn nötig
             if not hasattr(self, 'all_barcodes'):
                 self.all_barcodes = []
             else:
-                # Lösche alte Barcodes, bevor neue hinzugefügt werden
+                # Alte Barcodes löschen (damit keine doppelten Einträge entstehen)
                 self.all_barcodes.clear()
-            
+
             # Überprüfe den Typ von data
             if isinstance(data, list):
-                # Falls data bereits eine Liste von Barcode-Dicts ist
+                # data ist bereits eine Liste von Barcode-Dicts
                 for barcode in data:
                     if isinstance(barcode, dict) and barcode.get("found", False):
                         barcode_info = {
                             "value": barcode.get("value"),
                             "type": barcode.get("type"),
                             "image_index": barcode.get("image_index", 0),
-                            "cropped_image": barcode.get("cropped_image")
+                            "cropped_image": barcode.get("cropped_image"),
+                            "is_article_number": (barcode.get("type") != "EAN13"),  # Automatisch setzen
+                            "source": "detected",
+                            "selected": False  # erstmal alle false
                         }
                         self.all_barcodes.append(barcode_info)
-                
+
+                # Standardmäßig den ersten EAN‑13 Barcode auswählen
+                first_ean13_selected = False
+                for barcode in self.all_barcodes:
+                    if barcode.get("type") == "EAN13" and not first_ean13_selected:
+                        barcode["selected"] = True
+                        first_ean13_selected = True
+                    # alle anderen bleiben False (könnte man auch explizit setzen, ist aber bereits False)
+
                 logger.info(f"{len(self.all_barcodes)} Barcodes gesammelt")
-                
-                # Debug-Ausgabe der Barcode-Daten
                 for i, barcode in enumerate(self.all_barcodes):
-                    logger.info(f"Barcode {i}: Wert={barcode.get('value')}, Typ={barcode.get('type')}")
-                    
+                    logger.info(f"Barcode {i}: Wert={barcode.get('value')}, Typ={barcode.get('type')}, selected={barcode.get('selected')}")
+
             elif isinstance(data, dict):
                 # Falls data ein einzelnes Barcode-Dict ist (für Kompatibilität)
                 if data.get("found", False):
@@ -2389,10 +2637,13 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
                         "value": data.get("value"),
                         "type": data.get("type"),
                         "image_index": data.get("image_index", 0),
-                        "cropped_image": data.get("cropped_image")
+                        "cropped_image": data.get("cropped_image"),
+                        "is_article_number": (data.get("type") != "EAN13"),
+                        "source": "detected",
+                        "selected": (data.get("type") == "EAN13")  # Wenn es ein EAN13 ist, true, sonst false
                     }
                     self.all_barcodes.append(barcode_info)
-                    logger.info(f"Barcode gespeichert: {data.get('value')}")
+                    logger.info(f"Barcode gespeichert: {data.get('value')}, selected={barcode_info['selected']}")
                 else:
                     logger.info("Barcode wurde nicht gefunden (found=False)")
             else:
