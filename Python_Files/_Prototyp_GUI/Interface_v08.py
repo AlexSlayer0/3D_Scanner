@@ -92,107 +92,174 @@ logger = setup_logging(CONFIG.LOG_LEVEL)
 
 # ==================== Translation Manager ====================
 class TranslationManager:
-    """Verwaltet mehrsprachige Texte"""
+    """Verwaltet mehrsprachige Texte - thematisch strukturierte Version"""
     
     def __init__(self):
         # Struktur: (Deutsch, Englisch, Italienisch)
         self.translations = {
+            # ---------- Startseite ----------
             "start": {
+                # Titel und Überschriften
                 "title": ("3D Scanner Interface", "3D Scanner Interface", "3D Scanner Interfaccia"),
                 "subtitle": ("Interface um den 3D-Scanner zu bedienen", "Interface to operate the 3D scanner", "Interfaccia per gestire lo scanner 3D"),
+                "status_title": ("System Status", "System Status", "Stato del Sistema"),
+                
+                # Anweisungen
                 "instruction1": ("Bitte lege den Artikel der gescannt werden soll in die Box ein", "Please place the item to be scanned in the box", "Si prega di posizionare l'articolo nella scatola"),
                 "instruction2": ("Stellen Sie sicher, dass der Artikel vollständig im Sichtfeld aller Kameras liegt", "Make sure the item is completely in the field of view of all cameras", "Assicurarsi che l'articolo sia completamente nel campo visivo di tutte le telecamere"),
-                "instruction3": ("Maximale Größe: 50x50x50 cm", "Maximum size: 50x50x50 cm", "Dimensione massima: 50x50x50 cm"),
+                "instruction3": ("Maximale Größe: 30x30x30 cm", "Maximum size: 30x30x30 cm", "Dimensione massima: 30x30x30 cm"),
                 "instruction4": ("Maximales Gewicht: 20 kg", "Maximum weight: 20 kg", "Peso massimo: 20 kg"),
+                
+                # Buttons
                 "scan_btn": ("Scan Starten", "Start Scan", "Avvia Scan"),
                 "save_btn": ("Lokal speichern", "Save Locally", "Salva localmente"),
-                "status_title": ("System Status", "System Status", "Stato del Sistema"),
-                "camera_status": ("Kamera System", "Camera System", "Sistema Fotocamera"),
-                "light_status": ("Beleuchtung", "Lighting", "Illuminazione"),
-                "measure_status": ("Mess-System", "Measurement System", "Sistema di Misura"),
-                "scale_status": ("Waage", "Scale", "Bilancia"),
-                "storage_status": ("Speicher", "Storage", "Memoria"),
+                "quit_btn": ("Programm beenden", "Quit Program", "Esci dal Programma"),
+                
+                # Status-Buttons
+                "check_camera": ("Kamera prüfen", "Check Camera", "Controlla Fotocamera"),
+                "calibrate_depthcamera": ("Tiefenkamera kalibrieren", "Calibrate Depth Camera", "Calibra Telecamera Profondità"),
+                "check_light": ("Beleuchtung prüfen", "Check Lighting", "Controlla Illuminazione"),
+                "calibrate_scale": ("Waage kalibrieren", "Calibrate Scale", "Calibra Bilancia"),
+                "check_storage": ("Speicher prüfen", "Check Storage", "Controlla Memoria"),
+                
+                # Status-Werte
                 "ready": ("Bereit", "Ready", "Pronto"),
                 "active": ("Aktiv", "Active", "Attivo"),
                 "calibrated": ("Kalibriert", "Calibrated", "Calibrato"),
                 "connected": ("Verbunden", "Connected", "Connesso"),
                 "available": ("Verfügbar", "Available", "Disponibile"),
-                "quit_btn": ("Programm beenden", "Quit Program", "Esci dal Programma"),
-                "check_camera": ("Kamera prüfen", "Check Camera", "Controlla Fotocamera"),
-                "check_light": ("Beleuchtung prüfen", "Check Lighting", "Controlla Illuminazione"),
-                "calibrate_scale": ("Waage kalibrieren", "Calibrate Scale", "Calibra Bilancia"),
-                "check_storage": ("Speicher prüfen", "Check Storage", "Controlla Memoria")
+                
+                # SAP-Integration
+                "sap_integration_title": ("SAP-Integration", "SAP Integration", "Integrazione SAP"),
+                "sap_integration_message": ("SAP-Integration würde jetzt gestartet werden...", "SAP Integration would now be started...", "L'integrazione SAP verrà ora avviata...")
             },
+            
+            # ---------- Foto-Auswahl ----------
             "photo": {
                 "title": ("Foto-Auswahl", "Photo Selection", "Selezione Foto"),
                 "retry_btn": ("Wiederholen", "Retake", "Ripeti"),
                 "discard_btn": ("Verwerfen", "Discard", "Scarta")
             },
+            
+            # ---------- Übersichtsseite ----------
             "overview": {
                 "title": ("Kamera-Übersicht", "Camera Overview", "Panoramica Fotocamera"),
-                "dimensions": ("Abmessungen:", "Dimensions:", "Dimensioni:"),
-                "weight": ("Gewicht:", "Weight:", "Peso:"),
+                "dimensions": ("                             Abmessungen:", "                             Dimensions:", "                             Dimensioni:"),
+                "weight": ("                             Gewicht:", "                             Weight:", "                             Peso:"),
                 "mm": ("mm", "mm", "mm"),
                 "kg": ("kg", "kg", "kg")
             },
+            
+            # ---------- Storage / Barcode-Seite ----------
             "storage": {
+                # Titel
                 "title": ("Speicher Option", "Storage Options", "Opzioni di Memorizzazione"),
+                "check_camera_title": ("Kamera-Check", "Camera Check", "Controllo Telecamera"),
+                "check_result": ("Ergebnis", "Result", "Risultato"),
+                
+                # Allgemeine Texte
                 "no_barcodes": ("Keine Barcodes erkannt", "No barcodes detected", "Nessun codice a barre rilevato"),
-                "sap_btn": ("SAP-Eintrag", "SAP Entry", "SAP Entry"),
-                "save_btn": ("Lokal speichern", "Save Locally", "Salva localmente"),
-                "restart_btn": ("Neu Beginnen", "Restart", "Riavvia"),
-                "add_barcode_btn": ("Weiteren Barcode hinzufügen", "Add another barcode", "Aggiungi altro codice"),
                 "barcode_label": ("Barcode:", "Barcode:", "Codice a barre:"),
                 "article_number_label": ("Artikelnummer:", "Article number:", "Numero articolo:"),
                 "type_label": ("Typ:", "Type:", "Tipo:"),
                 "source_label": ("Quelle:", "Source:", "Fonte:"),
-                "manual_entry": ("Manuelle Eingabe", "Manual Entry", "Ingresso Manuale"),
                 "detected": ("Erkannt", "Detected", "Rilevato"),
                 "manual": ("Manuell", "Manual", "Manuale"),
                 "for_ean13": ("(EAN13 als Barcode)", "(EAN13 as barcode)", "(EAN13 come codice)"),
-                "for_other": ("(andere als Artikelnummer)", "(other as article number)", "(altro come numero articolo)")
+                "for_other": ("(andere als Artikelnummer)", "(other as article number)", "(altro come numero articolo)"),
+                
+                # Platzhalter
+                "article_number_placeholder": ("Artikelnummer hier eingeben...", "Enter article number here...", "Inserisci qui il numero articolo..."),
+                "ean13_placeholder": ("EAN13 Barcode hier eingeben...", "Enter EAN13 barcode here...", "Inserisci qui il codice a barre EAN13..."),
+                
+                # Buttons
+                "sap_btn": ("SAP-Eintrag", "SAP Entry", "SAP Entry"),
+                "save_btn": ("Lokal speichern", "Save Locally", "Salva localmente"),
+                "restart_btn": ("Neu Beginnen", "Restart", "Riavvia"),
+                "add_barcode_btn": ("Weiteren Barcode hinzufügen", "Add another barcode", "Aggiungi altro codice"),
+                "add_article_btn": ("Interne Materialnummer", "Internal article number", "Numero articolo interno"),
+                "add_ean_btn": ("EAN-Code", "EAN code", "Codice EAN"),
+                
+                # Barcode-Listen
+                "ean13_barcodes": ("EAN13 Barcodes", "EAN13 barcodes", "Codici a barre EAN13"),
+                "article_numbers": ("Artikelnummern", "Article numbers", "Numeri articolo"),
+                
+                # Barcode-Widget
+                "select_barcode": ("Barcode auswählen", "Select barcode", "Seleziona codice"),
+                "click_to_enlarge": ("Klicken zum Vergrößern", "Click to enlarge", "Clicca per ingrandire"),
+                "barcode_recognized": ("Barcode erkannt/bearbeitet", "Barcode recognized/edited", "Codice riconosciuto/modificato"),
+                "barcode_not_recognized": ("Kein Barcode erkannt - Bitte manuell eingeben", "No barcode detected - Please enter manually", "Nessun codice rilevato - Inserire manualmente"),
+                "article_number_empty": ("Keine Artikelnummer - Bitte eingeben", "No article number - Please enter", "Nessun numero articolo - Inserire"),
+                "ean13_empty": ("Kein EAN13 - Bitte eingeben", "No EAN13 - Please enter", "Nessun EAN13 - Inserire"),
+                
+                # Kamera-Check
+                "checking_cameras": ("Teste Kameras...", "Checking cameras...", "Controllo telecamere..."),
+                "camera_check_result": ("USB-Kameras:", "USB cameras:", "Telecamere USB:"),
+                "all_cameras_ok": ("Alle Kameras OK", "All cameras OK", "Tutte le telecamere OK"),
+                "oak_d2_missing": ("OAK-D2 fehlt", "OAK-D2 missing", "OAK-D2 mancante"),
+                "not_enough_cameras": ("Nicht genügend Kameras", "Not enough cameras", "Telecamere insufficienti")
             },
+            
+            # ---------- MessageBoxen (Dialoge) ----------
             "messagebox": {
-                "camera_error": ("Kamerafehler", "Camera Error", "Errore Fotocamera"),
-                "measurement_error": ("Messfehler", "Measurement Error", "Errore di Misura"),
+                # Allgemeine Fehler
                 "storage_error": ("Speicherfehler", "Storage Error", "Errore di Memoria"),
+                "storage_error_title": ("Fehler", "Error", "Errore"),
+                "storage_error_message": ("Speicherprüfung fehlgeschlagen:", "Storage check failed:", "Verifica spazio fallita:"),
+                
+                # Datenverlust
                 "data_loss_confirm": ("Datenverlust bestätigen", "Confirm Data Loss", "Conferma Perdita Dati"),
                 "data_loss_message": ("Möchten Sie wirklich zurück zur Startseite? Alle erfassten Daten gehen verloren.", "Do you really want to go back to the start page? All captured data will be lost.", "Vuoi davvero tornare alla pagina iniziale? Tutti i dati acquisiti saranno persi."),
-                "cancel_confirm": ("Abbrechen", "Cancel", "Annulla"),
+                
+                # Scan-Status
                 "scan_aborted_title": ("Scan abgebrochen", "Scan Aborted", "Scansione Annullata"),
                 "scan_aborted_message": ("Der Scan wurde abgebrochen.", "The scan has been aborted.", "La scansione è stata annullata."),
                 "scan_completed_title": ("Scan abgeschlossen", "Scan Completed", "Scansione Completata"),
                 "scan_completed_message": ("Der Scan war erfolgreich!\nDie Daten stehen nun zur Verfügung.", "The scan was successful!\nThe data is now available.", "La scansione è stata completata con successo!\nI dati sono ora disponibili."),
+                
+                # Bilder / Barcodes
                 "no_images_title": ("Keine Bilder", "No Images", "Nessuna Immagine"),
                 "no_images_message": ("Bitte nehmen Sie zuerst Bilder auf, bevor Sie fortfahren.", "Please take pictures first before continuing.", "Per favore scatta prima le foto prima di continuare."),
-                "no_barcodes_title": ("Keine Barcodes", "No Barcodes", "Nessun Codice a Barre"),
-                "no_barcodes_message": ("Es wurden keine Barcodes zum Speichern gefunden.", "No barcodes were found to save.", "Non è stato trovato alcun codice a barre da salvare."),
                 
-                "save_error_title": ("Speicherfehler", "Save Error", "Errore di Salvataggio"),
-                "save_error_message": ("Fehler beim Speichern der Daten.", "Error saving data.", "Errore durante il salvataggio dei dati."),
-                "save_success_title": ("Erfolgreich gespeichert", "Save Successful", "Salvataggio Riuscito"),
-                "save_success_message": ("{count} Barcode(s) wurden lokal gespeichert.", "{count} barcode(s) have been saved locally.", "{count} codice(i) a barre sono stati salvati localmente."),
-                
+                # SAP
                 "sap_integration_title": ("SAP-Integration", "SAP Integration", "Integrazione SAP"),
                 "sap_integration_message": ("SAP-Integration würde jetzt gestartet werden...", "SAP Integration would now be started...", "L'integrazione SAP verrà ora avviata..."),
                 
-                "scale_calibration_title": ("Waagen-Kalibrierung", "Scale Calibration", "Calibrazione Bilancia"),
-                "scale_calibration_input": ("Referenzgewicht eingeben (kg):", "Enter reference weight (kg):", "Inserisci peso di riferimento (kg):"),
-                "scale_calibration_default": ("1.000", "1.000", "1.000"),
-                "scale_calibration_starting": ("Kalibrierung wird gestartet...", "Starting calibration...", "Avvio calibrazione..."),
-                "scale_calibration_live": ("Rohdaten-Live-Anzeige", "Live Raw Data Display", "Visualizzazione Dati in Tempo Reale"),
-                "scale_calibration_raw": ("Rohwert:", "Raw Value:", "Valore Grezzo:"),
-                "scale_calibration_progress": ("Kalibrierungsfortschritt:", "Calibration Progress:", "Progresso Calibrazione:"),
-                "scale_calibration_complete": ("Kalibrierung erfolgreich!", "Calibration successful!", "Calibrazione completata!"),
-                "scale_calibration_error": ("Kalibrierungsfehler:", "Calibration error:", "Errore di calibrazione:"),
-
+                # Speicherinfo
                 "storage_info_title": ("Speicherplatz-Information", "Storage Information", "Informazioni Spazio"),
                 "storage_total": ("Gesamter Speicher:", "Total Storage:", "Spazio Totale:"),
                 "storage_used": ("Belegt:", "Used:", "Utilizzato:"),
                 "storage_free": ("Frei:", "Free:", "Libero:"),
-                "storage_config_folder": ("📁 Konfigurierter Scans-Ordner:", "📁 Configured Scans Folder:", "📁 Cartella Scans Configurata:"),
-                "storage_error_title": ("Fehler", "Error", "Errore"),
-                "storage_error_message": ("Speicherprüfung fehlgeschlagen:", "Storage check failed:", "Verifica spazio fallita:")
+                "storage_config_folder": ("Konfigurierter Scans-Ordner:", "Configured Scans Folder:", "Cartella Scans Configurata:")
+            },
+            
+            # ---------- Lade-Dialog ----------
+            "loading": {
+                "dialog_title": ("Ladevorgang der Daten", "Data loading", "Caricamento dati"),
+                "status_label": ("Daten werden verarbeitet...", "Processing data...", "Elaborazione dati..."),
+                "cancel_btn": ("Abbrechen", "Cancel", "Annulla")
+            },
+            
+            # ---------- Kalibrierung ----------
+            "calibration": {
+                # ----- Waagen-Kalibrierung -----
+                "ref_weight_title": ("Referenzgewicht eingeben", "Enter reference weight", "Inserisci peso di riferimento"),
+                "ref_weight_message": ("Geben Sie das Gewicht des Referenzgewichts in kg ein:", "Enter the weight of the reference weight in kg:", "Inserisci il peso del peso di riferimento in kg:"),
+                "dialog_title": ("Referenzkalibrierung - Rohdaten", "Reference Calibration - Raw Data", "Calibrazione di Riferimento - Dati Grezzi"),
+                "calibration_info": ("Lege das Referenzgewicht auf die jeweilige Wägezelle\nund drücke den passenden Button.", "Place the reference weight on the respective load cell\nand press the corresponding button.", "Posizionare il peso di riferimento sulla rispettiva cella di carico\ne premere il pulsante corrispondente."),
+                "raw_data_label": ("Faktor: ---", "Factor: ---", "Fattore: ---"),
+                "cell_1_btn": ("Zelle 1 kalibrieren", "Calibrate cell 1", "Calibra cella 1"),
+                "cell_2_btn": ("Zelle 2 kalibrieren", "Calibrate cell 2", "Calibra cella 2"),
+                "cell_3_btn": ("Zelle 3 kalibrieren", "Calibrate cell 3", "Calibra cella 3"),
+                "close_btn": ("Schließen", "Close", "Chiudi"),
+                
+                # ----- Tiefenkamera-Kalibrierung -----
+                "depth_calibration_title": ("Tiefenkamera-Kalibrierung", "Depth Camera Calibration", "Calibrazione Telecamera Profondità"),
+                "depth_calibration_hint": ("Der 3D-Scanner muss leer sein!\nSoll die Kalibrierung gestartet werden?", "The 3D scanner must be empty!\nStart calibration?", "Lo scanner 3D deve essere vuoto!\nAvviare la calibrazione?"),
+                "depth_calibration_running": ("Kalibrierung läuft...", "Calibration in progress...", "Calibrazione in corso..."),
+                "depth_calibration_success": ("Tiefenkamera erfolgreich kalibriert.", "Depth camera calibrated successfully.", "Telecamera profondità calibrata con successo."),
+                "depth_calibration_error_title": ("Kalibrierungsfehler", "Calibration Error", "Errore di Calibrazione"),
+                "depth_calibration_error_message": ("Fehler bei der Tiefenkamera-Kalibrierung:", "Error during depth camera calibration:", "Errore durante la calibrazione della telecamera profondità:")
             }
         }
         
@@ -208,7 +275,7 @@ class TranslationManager:
         # Sicherstellen, dass wir immer einen String zurückgeben
         if isinstance(text_tuple, tuple) and len(text_tuple) > lang_index:
             return text_tuple[lang_index]
-        return f"[{key}]"
+        return f"[{key}]"    
 
 # ==================== Camera Manager ====================
 class CameraManager:
@@ -1063,6 +1130,7 @@ class FullscreenApp(QMainWindow):
         # Status-Buttons
         status_buttons = [
             (self.translator.get_text(self.language, "start", "check_camera"), self.check_camera),
+            (self.translator.get_text(self.language, "start", "calibrate_depthcamera"), self.calibrate_depthcamera),
             (self.translator.get_text(self.language, "start", "check_light"), self.check_light),
             (self.translator.get_text(self.language, "start", "calibrate_scale"), self.calibrate_scale),
             (self.translator.get_text(self.language, "start", "check_storage"), self.check_storage)
@@ -1470,86 +1538,6 @@ class FullscreenApp(QMainWindow):
                 self.gewicht = text
         logger.debug(f"Gewicht manuell geändert: {self.gewicht}")
 
-    def create_combined_editor(self) -> QWidget:
-        """Erstellt ein Widget mit Dimensions- und Gewichtseditor nebeneinander, mittig ausgerichtet"""
-        container = QWidget()
-        layout = QHBoxLayout(container)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(500)   # Abstand zwischen den beiden Blöcken vergrößert (z.B. 60 Pixel)
-
-        # Dimensions-Block
-        dim_widget = QWidget()
-        dim_layout = QHBoxLayout(dim_widget)
-        dim_layout.setContentsMargins(0, 0, 0, 0)
-        dim_layout.setSpacing(5)
-        dim_label = QLabel(self.translator.get_text(self.language, 'overview', 'dimensions'))
-        dim_label.setStyleSheet("font-size: 18px; color: #ecf0f1;")
-        dim_layout.addWidget(dim_label)
-
-        self.dimension_edit = QLineEdit()
-        self.dimension_edit.setText(self.abmessung if self.abmessung else "0 x 0 x 0")
-        self.dimension_edit.setStyleSheet("""
-            QLineEdit {
-                background: #34495e;
-                color: #ecf0f1;
-                border: 1px solid #5d6d7e;
-                border-radius: 4px;
-                padding: 5px 10px;
-                font-size: 18px;
-            }
-            QLineEdit:focus {
-                border: 1px solid #3498db;
-            }
-        """)
-        self.dimension_edit.setFixedWidth(200)
-        self.dimension_edit.textChanged.connect(self.on_dimension_changed)
-        dim_layout.addWidget(self.dimension_edit)
-
-        dim_unit = QLabel(self.translator.get_text(self.language, 'overview', 'mm'))
-        dim_unit.setStyleSheet("font-size: 18px; color: #ecf0f1;")
-        dim_layout.addWidget(dim_unit)
-        layout.addWidget(dim_widget)
-
-        # Gewichts-Block
-        weight_widget = QWidget()
-        weight_layout = QHBoxLayout(weight_widget)
-        weight_layout.setContentsMargins(0, 0, 0, 0)
-        weight_layout.setSpacing(5)
-        weight_label = QLabel(self.translator.get_text(self.language, 'overview', 'weight'))
-        weight_label.setStyleSheet("font-size: 18px; color: #ecf0f1;")
-        weight_layout.addWidget(weight_label)
-
-        self.weight_edit = QLineEdit()
-        gewicht_str = str(self.gewicht).replace("kg", "").strip() if self.gewicht else "0"
-        self.weight_edit.setText(gewicht_str)
-        self.weight_edit.setStyleSheet("""
-            QLineEdit {
-                background: #34495e;
-                color: #ecf0f1;
-                border: 1px solid #5d6d7e;
-                border-radius: 4px;
-                padding: 5px 10px;
-                font-size: 18px;
-            }
-            QLineEdit:focus {
-                border: 1px solid #3498db;
-            }
-        """)
-        self.weight_edit.setFixedWidth(100)
-        self.weight_edit.textChanged.connect(self.on_weight_changed)
-        weight_layout.addWidget(self.weight_edit)
-
-        weight_unit = QLabel(self.translator.get_text(self.language, 'overview', 'kg'))
-        weight_unit.setStyleSheet("font-size: 18px; color: #ecf0f1;")
-        weight_layout.addWidget(weight_unit)
-        layout.addWidget(weight_widget)
-
-        # Zentrierung: Dehnungsflächen links und rechts
-        layout.insertStretch(0, 1)
-        layout.addStretch(1)
-
-        return container
-
     def add_page(self, title: str, widgets: List[Any]):
         """Fügt eine Seite zum Stack hinzu"""
         page = QWidget()
@@ -1650,7 +1638,7 @@ class FullscreenApp(QMainWindow):
                 "content": [
                     [("ram_image_final", 0), ("ram_image_final", 1)],
                     [("ram_image_final", 2), ("ram_image_final", 3)],
-                     ("custom", self.create_combined_editor()),          # Kombinierte Editoren (mittig)
+                    [("custom", self.create_dimension_editor()),("custom", self.create_weight_editor())],
                 ]
             },
             "storage": {
@@ -1761,10 +1749,10 @@ class FullscreenApp(QMainWindow):
 
         btn_layout = QHBoxLayout()
 
-        btn_article = QPushButton("Interne Materialnummer")
+        btn_article = QPushButton(self.translator.get_text(self.language, "storage", "add_article_btn"))
         btn_article.setMinimumHeight(50)
 
-        btn_ean = QPushButton("EAN-Code")
+        btn_ean = QPushButton(self.translator.get_text(self.language, "storage", "add_ean_btn"))
         btn_ean.setMinimumHeight(50)
 
         btn_layout.addWidget(btn_article)
@@ -1851,14 +1839,14 @@ class FullscreenApp(QMainWindow):
             
             # Zeige EAN13 Barcodes zuerst
             if ean13_barcodes:
-                content.append(("text", "EAN13 Barcodes:"))
+                content.append(("text", self.translator.get_text(self.language, "storage", "ean13_barcodes") + ":"))
                 for i, barcode in enumerate(ean13_barcodes):
                     barcode_card = ("custom", self.create_editable_barcode_widget(barcode, i))
                     content.append([barcode_card])
             
             # Zeige Artikelnummern
             if article_numbers:
-                content.append(("text", "Artikelnummer:"))
+                content.append(("text", self.translator.get_text(self.language, "storage", "article_numbers") + ":"))
                 start_idx = len(ean13_barcodes)
                 for j, article in enumerate(article_numbers):
                     idx = start_idx + j
@@ -1993,12 +1981,11 @@ class FullscreenApp(QMainWindow):
         left_layout.setSpacing(10)
 
         # Checkbox für Auswahl
-        checkbox = QCheckBox("Barcode auswählen")
+        checkbox = QCheckBox(self.translator.get_text(self.language, "storage", "select_barcode"))
         checkbox.setChecked(selected)
         checkbox.stateChanged.connect(lambda state, idx=index: self.update_barcode_selected(idx, state))
         left_layout.addWidget(checkbox, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Bild (wie gehabt, mit fester Größe)
         IMAGE_WIDTH = 500
         IMAGE_HEIGHT = 350
 
@@ -2022,7 +2009,7 @@ class FullscreenApp(QMainWindow):
             image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             image_label.mousePressEvent = lambda event, img=cropped_img, bt=("Artikelnummer" if is_article_number else "EAN"): self.show_enlarged_image(img, bt)
             image_label.setCursor(Qt.CursorShape.PointingHandCursor)
-            image_label.setToolTip("Klicken zum Vergrößern")
+            image_label.setToolTip(self.translator.get_text(self.language, "storage", "click_to_enlarge"))
             left_layout.addWidget(image_label)
 
             # Quellenangabe
@@ -2064,7 +2051,7 @@ class FullscreenApp(QMainWindow):
         # Eingabefeld für Wert
         barcode_input = QLineEdit()
         barcode_input.setText(barcode.get('value', ''))
-        barcode_input.setPlaceholderText("Artikelnummer hier eingeben..." if is_article_number else "EAN13 Barcode hier eingeben...")
+        barcode_input.setPlaceholderText(self.translator.get_text(self.language, "storage", "article_number_placeholder") if is_article_number else self.translator.get_text(self.language, "storage", "ean13_placeholder"))
         barcode_input.textChanged.connect(lambda text, idx=index: self.update_barcode_value(idx, text))
         info_layout.addWidget(barcode_input)
 
@@ -2114,10 +2101,10 @@ class FullscreenApp(QMainWindow):
                 status_color = "#2ecc71"
         else:
             if is_article_number:
-                status_text = "Artikelnummer bitte manuell eingeben"
+                status_text = self.translator.get_text(self.language, "storage", "article_number_empty")
                 status_color = "#e74c3c"
             else:
-                status_text = "EAN13 Barcode bitte manuell eingeben"
+                status_text = self.translator.get_text(self.language, "storage", "ean13_empty")
                 status_color = "#e74c3c"
 
         status_label.setText(status_text)
@@ -2144,10 +2131,10 @@ class FullscreenApp(QMainWindow):
             if hasattr(self, 'barcode_input_widgets') and index < len(self.barcode_input_widgets):
                 frame = self.barcode_input_widgets[index]
                 if value.strip():
-                    frame.status_label.setText("Barcode erkannt/bearbeitet")
+                    frame.status_label.setText(self.translator.get_text(self.language, "storage", "barcode_recognized"))
                     frame.status_label.setStyleSheet("color: #2ecc71; font-weight: bold; margin-top: 10px;")
                 else:
-                    frame.status_label.setText("Kein Barcode erkannt - Bitte manuell eingeben")
+                    frame.status_label.setText(self.translator.get_text(self.language, "storage", "barcode_not_recognized"))
                     frame.status_label.setStyleSheet("color: #e74c3c; font-weight: bold; margin-top: 10px;")
 
     def update_barcode_type_and_status(self, index: int, display_type: str):
@@ -2229,20 +2216,18 @@ class FullscreenApp(QMainWindow):
                 # 8. Alle Bilder speichern und Pfade merken
                 image_names = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
                 bild_pfade = {}
-                
+    
                 for idx, img in enumerate(self.images):
-                    if img is not None and idx < len(image_names):
+                    if img is not None and idx < len(image_names) and self.keep[idx]:
                         img_name = image_names[idx]
                         bild_datei = f"{img_name}.jpg"
                         bild_pfad = os.path.join(scan_bilder_folder, bild_datei)
                         
-                        # Bild speichern
-                        if len(img.shape) == 3 and img.shape[2] == 3:
-                            bgr_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-                        else:
-                            bgr_img = img
+                        # --- Hier kommt die Skalierung für OAK-D2 ---
+                        if idx == CONFIG.NUM_CAMERAS - 1:  # Letzte Kamera = OAK-D2
+                            img = cv2.resize(img, (640, 480), interpolation=cv2.INTER_AREA)
                         
-                        cv2.imwrite(bild_pfad, bgr_img)
+                        cv2.imwrite(bild_pfad, img, [cv2.IMWRITE_JPEG_QUALITY, 95])
                         bild_pfade[img_name] = bild_pfad
                         logger.info(f"{img_name} gespeichert: {bild_pfad}")
                 
@@ -2445,7 +2430,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
     def show_loading_dialog(self):
         """Zeigt den Lade-Dialog mit Fortschrittsbalken"""
         self.loading_dialog = QDialog(self)
-        self.loading_dialog.setWindowTitle("Ladevorgang der Daten")
+        self.loading_dialog.setWindowTitle(self.translator.get_text(self.language, "loading", "dialog_title"))
         self.loading_dialog.setModal(True)
         self.loading_dialog.setFixedSize(350, 450)
 
@@ -2460,7 +2445,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         layout.addWidget(gif_label)
 
         # Status-Label
-        status_label = QLabel("Daten werden verarbeitet...")
+        status_label = QLabel(self.translator.get_text(self.language, "loading", "status_label"))
         status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         status_label.setStyleSheet("font-size: 16px; margin: 20px;")
         layout.addWidget(status_label)
@@ -2485,7 +2470,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         layout.addWidget(self.progress_bar)
 
         # Abbrechen-Button
-        cancel_btn = QPushButton("Abbrechen")
+        cancel_btn = QPushButton(self.translator.get_text(self.language, "loading", "cancel_btn"))
         cancel_btn.setFixedSize(120, 40)
         cancel_btn.setStyleSheet("""
             QPushButton {
@@ -2746,29 +2731,53 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
 
     def check_camera(self):
-        """Verbesserte Kamera-Prüfung für Linux"""
-        
+        """Verbesserte Kamera-Prüfung für Linux mit schönem Lade-Dialog"""
         dialog = QDialog(self)
-        dialog.setWindowTitle("Kamera-Prüfung")
-        dialog.setFixedSize(400, 200)
+        dialog.setWindowTitle(self.translator.get_text(self.language, "storage", "check_camera_title"))
         dialog.setModal(True)
+        dialog.setFixedSize(400, 250)
+        dialog.setStyleSheet("""
+            QDialog {
+                background-color: #2c3e50;
+                border-radius: 12px;
+            }
+            QLabel {
+                color: #ecf0f1;
+                font-size: 16px;
+            }
+            QProgressBar {
+                border: 2px solid #34495e;
+                border-radius: 8px;
+                background-color: #34495e;
+                color: #ecf0f1;
+                font-size: 14px;
+                text-align: center;
+            }
+            QProgressBar::chunk {
+                background-color: #3498db;
+                border-radius: 6px;
+            }
+        """)
         
         layout = QVBoxLayout(dialog)
-        layout.setContentsMargins(20, 20, 20, 20)
-        
+        layout.setContentsMargins(30, 30, 30, 30)
+        layout.setSpacing(20)
+
+        # Status-Text
+        status_label = QLabel(self.translator.get_text(self.language, "storage", "checking_cameras"))
+        status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(status_label)
+
+        # Fortschrittsbalken (unbestimmt)
         progress = QProgressBar()
         progress.setRange(0, 0)
+        progress.setTextVisible(False)
         layout.addWidget(progress)
-        
-        status = QLabel("Teste Kameras...")
-        status.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(status)
-        
-        # TEST: Direkt DepthAI prüfen
+
+        # DepthAI Logging im Hintergrund (optional)
         try:
             devices = dai.Device.getAllAvailableDevices()
             logger.info(f"DepthAI Geräte gefunden: {devices}")
-        
             for device_info in devices:
                 logger.info(f"Device: {device_info}")
                 try:
@@ -2777,14 +2786,14 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
                         logger.info(f"  Kameras: {device.getConnectedCameras()}")
                         logger.info(f"  USB Geschwindigkeit: {device.getUsbSpeed()}")
                 except Exception as e:
-                   logger.error(f"Fehler beim öffnen von {device_info}: {e}")
+                    logger.error(f"Fehler beim öffnen von {device_info}: {e}")
         except Exception as e:
-           logger.error(f"DepthAI Test fehlgeschlagen: {e}")
-        
+            logger.error(f"DepthAI Test fehlgeschlagen: {e}")
+
         def check_and_close():
             # Test für USB-Kameras
             usb_count = 0
-            for i in range(CONFIG.NUM_CAMERAS-1): # Letzte Kamera ist OAK-D2
+            for i in range(CONFIG.NUM_CAMERAS-1):
                 try:
                     cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
                     if cap.isOpened():
@@ -2792,39 +2801,199 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
                         usb_count += 1
                 except:
                     pass
-            
-            # OAK-D Erkennung mit DepthAI
+
             oak = False
             try:
                 verfügbar = len(dai.Device.getAllAvailableDevices()) > 0
-                if verfügbar:
-                    oak = True
-                    print("OAK-D2 gefunden!")
-                else:
-                    print("Keine OAK-D2 Kamera gefunden!")
-            except Exception as e:
-                print(f"OAK-D Check Fehler: {e}")
-                oak = False
+                oak = verfügbar
+            except:
+                pass
 
-            dialog.close()
-            
-            result = f"USB-Kameras: {usb_count}/3\nOAK-D2: {'1/1' if oak else '0/1'}\n\n"
-            
+            dialog.accept()
+
+            # Ergebnis zusammenbauen
+            result_lines = []
+            result_lines.append(f"{self.translator.get_text(self.language, 'storage', 'camera_check_result')} {usb_count}/3")
+            result_lines.append(f"OAK-D2: {'1/1' if oak else '0/1'}")
+            result_lines.append("")
+
             if usb_count >= 3 and oak:
-                result += "Alle Kameras OK"
+                result_lines.append(self.translator.get_text(self.language, "storage", "all_cameras_ok"))
                 icon = QMessageBox.Icon.Information
             elif usb_count >= 3:
-                result += "OAK-D2 fehlt"
+                result_lines.append(self.translator.get_text(self.language, "storage", "oak_d2_missing"))
                 icon = QMessageBox.Icon.Warning
             else:
-                result += "Nicht genügend Kameras"
+                result_lines.append(self.translator.get_text(self.language, "storage", "not_enough_cameras"))
                 icon = QMessageBox.Icon.Critical
-            
-            QMessageBox(dialog).information(self, "Ergebnis", result)
-        
+
+            result_text = "\n".join(result_lines)
+
+            # Stilvolle MessageBox
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle(self.translator.get_text(self.language, "storage", "check_result"))
+            msg_box.setText(result_text)
+            msg_box.setIcon(icon)
+            msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msg_box.setStyleSheet("""
+                QMessageBox {
+                    background-color: #2c3e50;
+                    color: #ecf0f1;
+                }
+                QLabel {
+                    color: #ecf0f1;
+                    font-size: 14px;
+                }
+                QPushButton {
+                    background-color: #3498db;
+                    color: white;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 8px 16px;
+                    font-size: 14px;
+                }
+                QPushButton:hover {
+                    background-color: #2980b9;
+                }
+            """)
+            msg_box.exec()
+
         QTimer.singleShot(1000, check_and_close)
         dialog.exec()
-            
+
+
+    def calibrate_depthcamera(self):
+        """Führt die Tiefenkamera-Kalibrierung durch (Hinweis, Fortschrittsdialog, Thread)."""
+        # Hinweis: Scanner muss leer sein
+        reply = QMessageBox.question(
+            self,
+            self.translator.get_text(self.language, "calibration", "depth_calibration_title"),
+            self.translator.get_text(self.language, "calibration", "depth_calibration_hint"),
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel
+        )
+        if reply != QMessageBox.StandardButton.Ok:
+            return
+
+        # Fortschrittsdialog
+        progress_dialog = QDialog(self)
+        progress_dialog.setWindowTitle(self.translator.get_text(self.language, "calibration", "depth_calibration_title"))
+        progress_dialog.setModal(True)
+        progress_dialog.setFixedSize(350, 250)
+        progress_dialog.setStyleSheet("""
+            QDialog {
+                background-color: #2c3e50;
+                border-radius: 12px;
+            }
+            QLabel {
+                color: #ecf0f1;
+                font-size: 16px;
+            }
+            QProgressBar {
+                border: 2px solid #34495e;
+                border-radius: 8px;
+                background-color: #34495e;
+                color: #ecf0f1;
+                font-size: 14px;
+                text-align: center;
+            }
+            QProgressBar::chunk {
+                background-color: #3498db;
+                border-radius: 6px;
+            }
+        """)
+
+        layout = QVBoxLayout(progress_dialog)
+        layout.setContentsMargins(30, 30, 30, 30)
+        layout.setSpacing(20)
+
+        # Status-Text
+        status_label = QLabel(self.translator.get_text(self.language, "calibration", "depth_calibration_running"))
+        status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(status_label)
+
+        # Fortschrittsbalken (unbestimmt)
+        progress = QProgressBar()
+        progress.setRange(0, 0)
+        progress.setTextVisible(False)
+        layout.addWidget(progress)
+
+        # Worker-Thread
+        class CalibrationThread(QThread):
+            finished = pyqtSignal(bool, str)
+
+            def run(self):
+                try:
+                    from workers.Tiefenkamera_Messung_02 import calibrate
+                    calibrate()
+                    self.finished.emit(True, "")
+                except Exception as e:
+                    self.finished.emit(False, str(e))
+
+        def on_finished(success, error):
+            progress_dialog.accept()
+            if success:
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle(self.translator.get_text(self.language, "calibration", "depth_calibration_title"))
+                msg_box.setText(self.translator.get_text(self.language, "calibration", "depth_calibration_success"))
+                msg_box.setIcon(QMessageBox.Icon.Information)
+                msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+                msg_box.setStyleSheet("""
+                    QMessageBox {
+                        background-color: #2c3e50;
+                        color: #ecf0f1;
+                    }
+                    QLabel {
+                        color: #ecf0f1;
+                        font-size: 14px;
+                    }
+                    QPushButton {
+                        background-color: #3498db;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 8px 16px;
+                        font-size: 14px;
+                    }
+                    QPushButton:hover {
+                        background-color: #2980b9;
+                    }
+                """)
+                msg_box.exec()
+            else:
+                error_msg = f"{self.translator.get_text(self.language, 'calibration', 'depth_calibration_error_message')}\n{error}"
+                msg_box = QMessageBox(self)
+                msg_box.setWindowTitle(self.translator.get_text(self.language, "calibration", "depth_calibration_error_title"))
+                msg_box.setText(error_msg)
+                msg_box.setIcon(QMessageBox.Icon.Critical)
+                msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+                msg_box.setStyleSheet("""
+                    QMessageBox {
+                        background-color: #2c3e50;
+                        color: #ecf0f1;
+                    }
+                    QLabel {
+                        color: #ecf0f1;
+                        font-size: 14px;
+                    }
+                    QPushButton {
+                        background-color: #e74c3c;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 8px 16px;
+                        font-size: 14px;
+                    }
+                    QPushButton:hover {
+                        background-color: #c0392b;
+                    }
+                """)
+                msg_box.exec()
+
+        self.calibration_thread = CalibrationThread()
+        self.calibration_thread.finished.connect(on_finished)
+        self.calibration_thread.start()
+        progress_dialog.exec()
+
 
     def check_light(self):
         try:
@@ -2857,7 +3026,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
             ser.close()
         except Exception as e:
-            logger.Waning(f"Fehler: {e}")
+            logger.warning(f"Fehler: {e}")
         
 
     def calibrate_scale(self):
@@ -2868,8 +3037,8 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             # 1) Referenzgewicht abfragen
             reference_weight, ok = QInputDialog.getDouble(
                 self,
-                "Referenzkalibrierung",
-                "Referenzgewicht in kg eingeben:",
+                self.translator.get_text(self.language, "calibration", "ref_weight_title"),
+                self.translator.get_text(self.language, "calibration", "ref_weight_message"),
                 decimals=3,
                 min=0.1
             )
@@ -2879,33 +3048,30 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
             # 2) Dialog für Kalibrierung
             dialog = QDialog(self)
-            dialog.setWindowTitle("Referenzkalibrierung - Rohdaten")
+            dialog.setWindowTitle(self.translator.get_text(self.language, "calibration", "dialog_title"))
             dialog.setModal(True)
 
             layout = QVBoxLayout(dialog)
 
-            info_label = QLabel(
-                "Lege das Referenzgewicht auf die jeweilige Wägezelle\n"
-                "und drücke den passenden Button."
-            )
+            info_label = QLabel(self.translator.get_text(self.language, "calibration", "calibration_info"))
             layout.addWidget(info_label)
 
             # Rohdatenanzeige
-            self.raw_value_label = QLabel("Faktor: ---")
+            self.raw_value_label = QLabel(self.translator.get_text(self.language, "calibration", "raw_data_label"))
             self.raw_value_label.setStyleSheet("font-size: 14pt; font-weight: bold;")
             layout.addWidget(self.raw_value_label)
 
             # 3) Buttons für jede Zelle
-            btn_cell_1 = QPushButton("Zelle 1 kalibrieren")
-            btn_cell_2 = QPushButton("Zelle 2 kalibrieren")
-            btn_cell_3 = QPushButton("Zelle 3 kalibrieren")
+            btn_cell_1 = QPushButton(self.translator.get_text(self.language, "calibration", "cell_1_btn"))
+            btn_cell_2 = QPushButton(self.translator.get_text(self.language, "calibration", "cell_2_btn"))
+            btn_cell_3 = QPushButton(self.translator.get_text(self.language, "calibration", "cell_3_btn"))
 
             layout.addWidget(btn_cell_1)
             layout.addWidget(btn_cell_2)
             layout.addWidget(btn_cell_3)
 
             # Abbrechen
-            btn_close = QPushButton("Schließen")
+            btn_close = QPushButton(self.translator.get_text(self.language, "calibration", "close_btn"))
             layout.addWidget(btn_close)
 
             # 4) Button-Logik

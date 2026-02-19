@@ -159,7 +159,7 @@ class OakD2Volume:
     def calibrate_empty_space(self):
         """Führt eine Kalibrierung ohne Objekt durch und speichert die Bodenstatistik."""
         print("\n=== KALIBRIERUNG: BITTE OBJEKT ENTFERNEN ===")
-        input("Drücken Sie Enter, wenn die Box leer ist...")
+        #input("Drücken Sie Enter, wenn die Box leer ist...")
 
         # Licht einschalten (wenn verfügbar)
         control_light(True)
@@ -171,7 +171,7 @@ class OakD2Volume:
         control_light(False)
 
         if points is None:
-            print("❌ Fehler bei Aufnahme")
+            print("Fehler bei Aufnahme")
             return False
 
         # Punkte im ROI filtern
@@ -184,7 +184,7 @@ class OakD2Volume:
                (y > Config.ROI_Y_MIN) & (y < Config.ROI_Y_MAX)
 
         if np.sum(mask) < 100:
-            print("❌ Zu wenig Punkte im ROI. ROI prüfen oder Kamera ausrichten.")
+            print("Zu wenig Punkte im ROI. ROI prüfen oder Kamera ausrichten.")
             return False
 
         z_roi = z[mask]
@@ -211,7 +211,7 @@ class OakD2Volume:
         with open(Config.CALIB_FILE, "w") as f:
             json.dump(calibration, f, indent=2)
 
-        print(f"\n✅ Kalibrierung erfolgreich!")
+        print(f"\nKalibrierung erfolgreich!")
         print(f"   Bodenmedian: {z_median:.1f} mm")
         print(f"   Standardabweichung: {z_std:.1f} mm")
         print(f"   Spanne: {z_min:.1f} - {z_max:.1f} mm")
@@ -459,7 +459,7 @@ if __name__ == "__main__":
         print("   (Falls keine Kalibrierung vorhanden, bitte zuerst mit 'calibrate' ausführen)\n")
         result = get_volume()
         if result['success']:
-            print("\n✅MESSUNG ERFOLGREICH")
+            print("\nMESSUNG ERFOLGREICH")
             print(f"   Länge:  {result['length']:.1f} mm")
             print(f"   Breite: {result['width']:.1f} mm")
             print(f"   Höhe:  {result['height']:.1f} mm")
@@ -471,4 +471,4 @@ if __name__ == "__main__":
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
         else:
-            print(f"\n❌ FEHLER: {result.get('error')}")
+            print(f"\nFEHLER: {result.get('error')}")
