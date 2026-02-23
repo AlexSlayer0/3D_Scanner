@@ -9,7 +9,8 @@ Licht passt
 import os # Für Dateipfade und Betriebssysteminteraktionen
 import csv # Für CSV-Verarbeitung (SAP-Integration)
 import sys
-import time # Für Verzögerungen
+import time
+from tkinter import dialog # Für Verzögerungen
 import cv2 # Für Kamerazugriff und Bildverarbeitung
 import json
 import serial # Für Beleuchtung
@@ -30,6 +31,8 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal, QTimer
+from torch import layout
+from torch import layout
 
 
 # OpenCV-Warnungen reduzieren
@@ -118,9 +121,8 @@ class TranslationManager:
                 
                 # Status-Buttons
                 "check_camera": ("Kamera prüfen", "Check Camera", "Controlla Fotocamera"),
-                "calibrate_depthcamera": ("Tiefenkamera kalibrieren", "Calibrate Depth Camera", "Calibra Telecamera Profondità"),
                 "check_light": ("Beleuchtung prüfen", "Check Lighting", "Controlla Illuminazione"),
-                "calibrate_scale": ("Waage kalibrieren", "Calibrate Scale", "Calibra Bilancia"),
+                "tara_scale": ("Waage tarieren", "Tare Scale", "Taratura Bilancia"),
                 "check_storage": ("Speicher prüfen", "Check Storage", "Controlla Memoria"),
                 
                 # Status-Werte
@@ -241,27 +243,21 @@ class TranslationManager:
                 "cancel_btn": ("Abbrechen", "Cancel", "Annulla")
             },
             
-            # ---------- Kalibrierung ----------
+            # ---------- Kalibrierung / Tarierung ----------
             "calibration": {
-                # ----- Waagen-Kalibrierung -----
-                "ref_weight_title": ("Referenzgewicht eingeben", "Enter reference weight", "Inserisci peso di riferimento"),
-                "ref_weight_message": ("Geben Sie das Gewicht des Referenzgewichts in kg ein:", "Enter the weight of the reference weight in kg:", "Inserisci il peso del peso di riferimento in kg:"),
-                "dialog_title": ("Referenzkalibrierung - Rohdaten", "Reference Calibration - Raw Data", "Calibrazione di Riferimento - Dati Grezzi"),
-                "calibration_info": ("Lege das Referenzgewicht auf die jeweilige Wägezelle\nund drücke den passenden Button.", "Place the reference weight on the respective load cell\nand press the corresponding button.", "Posizionare il peso di riferimento sulla rispettiva cella di carico\ne premere il pulsante corrispondente."),
-                "raw_data_label": ("Faktor: ---", "Factor: ---", "Fattore: ---"),
-                "cell_1_btn": ("Zelle 1 kalibrieren", "Calibrate cell 1", "Calibra cella 1"),
-                "cell_2_btn": ("Zelle 2 kalibrieren", "Calibrate cell 2", "Calibra cella 2"),
-                "cell_3_btn": ("Zelle 3 kalibrieren", "Calibrate cell 3", "Calibra cella 3"),
-                "close_btn": ("Schließen", "Close", "Chiudi"),
-                
-                # ----- Tiefenkamera-Kalibrierung -----
-                "depth_calibration_title": ("Tiefenkamera-Kalibrierung", "Depth Camera Calibration", "Calibrazione Telecamera Profondità"),
-                "depth_calibration_hint": ("Der 3D-Scanner muss leer sein!\nSoll die Kalibrierung gestartet werden?", "The 3D scanner must be empty!\nStart calibration?", "Lo scanner 3D deve essere vuoto!\nAvviare la calibrazione?"),
-                "depth_calibration_running": ("Kalibrierung läuft...", "Calibration in progress...", "Calibrazione in corso..."),
-                "depth_calibration_success": ("Tiefenkamera erfolgreich kalibriert.", "Depth camera calibrated successfully.", "Telecamera profondità calibrata con successo."),
-                "depth_calibration_error_title": ("Kalibrierungsfehler", "Calibration Error", "Errore di Calibrazione"),
-                "depth_calibration_error_message": ("Fehler bei der Tiefenkamera-Kalibrierung:", "Error during depth camera calibration:", "Errore durante la calibrazione della telecamera profondità:")
-            }
+                # ----- Tara-Dialog -----
+                "tara_dialog_title": ("Waage tarieren", "Tare scale", "Taratura bilancia"),
+                "tara_info": ("Stellen Sie sicher, dass die Waage leer ist.\nDer aktuelle Gewichtswert wird live angezeigt.", 
+                            "Make sure the scale is empty.\nThe current weight is displayed live.",
+                            "Assicurarsi che la bilancia sia vuota.\nIl peso attuale viene visualizzato in tempo reale."),
+                "tara_btn": ("Tarieren", "Tare", "Tarare"),
+                "tara_success_title": ("Tara erfolgreich", "Tare successful", "Taratura riuscita"),
+                "tara_success_message": ("Die Waage wurde erfolgreich tariert.", "The scale has been successfully tared.", "La bilancia è stata tarata con successo."),
+                "tara_error_title": ("Tara fehlgeschlagen", "Tare failed", "Taratura fallita"),
+                "tara_error_message": ("Die Tara-Funktion ist fehlgeschlagen.", "The tare function has failed.", "La funzione di tara è fallita."),
+                "current_weight_label": ("Aktuelles Gewicht:", "Current weight:", "Peso attuale:"),
+                "close_btn": ("Schließen", "Close", "Chiudi")
+            }              
         }
         
         # Sprach-Mapping: 0=Deutsch, 1=Englisch, 2=Italienisch
@@ -671,8 +667,8 @@ class ParallelWorker(QThread):
     def _run_volume_task(self):
         """Führt Volumenmessung mit OAK-D2 durch"""
         try:
-            import workers.Tiefenkamera_Messung_02 as volume_module
-            volume_result = volume_module.get_volume()
+            import workers.distanz_meassure03 as volume_module
+            volume_result = volume_module.main()
             
             # Formatieren für Anzeige
             if volume_result.get("success"):
@@ -1131,9 +1127,8 @@ class FullscreenApp(QMainWindow):
         # Status-Buttons
         status_buttons = [
             (self.translator.get_text(self.language, "start", "check_camera"), self.check_camera),
-            (self.translator.get_text(self.language, "start", "calibrate_depthcamera"), self.calibrate_depthcamera),
             (self.translator.get_text(self.language, "start", "check_light"), self.check_light),
-            (self.translator.get_text(self.language, "start", "calibrate_scale"), self.calibrate_scale),
+            (self.translator.get_text(self.language, "start", "tara_scale"), self.tara_scale),
             (self.translator.get_text(self.language, "start", "check_storage"), self.check_storage)
         ]
 
@@ -2862,139 +2857,6 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         dialog.exec()
 
 
-    def calibrate_depthcamera(self):
-        """Führt die Tiefenkamera-Kalibrierung durch (Hinweis, Fortschrittsdialog, Thread)."""
-        # Hinweis: Scanner muss leer sein
-        reply = QMessageBox.question(
-            self,
-            self.translator.get_text(self.language, "calibration", "depth_calibration_title"),
-            self.translator.get_text(self.language, "calibration", "depth_calibration_hint"),
-            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel
-        )
-        if reply != QMessageBox.StandardButton.Ok:
-            return
-
-        # Fortschrittsdialog
-        progress_dialog = QDialog(self)
-        progress_dialog.setWindowTitle(self.translator.get_text(self.language, "calibration", "depth_calibration_title"))
-        progress_dialog.setModal(True)
-        progress_dialog.setFixedSize(350, 250)
-        progress_dialog.setStyleSheet("""
-            QDialog {
-                background-color: #2c3e50;
-                border-radius: 12px;
-            }
-            QLabel {
-                color: #ecf0f1;
-                font-size: 16px;
-            }
-            QProgressBar {
-                border: 2px solid #34495e;
-                border-radius: 8px;
-                background-color: #34495e;
-                color: #ecf0f1;
-                font-size: 14px;
-                text-align: center;
-            }
-            QProgressBar::chunk {
-                background-color: #3498db;
-                border-radius: 6px;
-            }
-        """)
-
-        layout = QVBoxLayout(progress_dialog)
-        layout.setContentsMargins(30, 30, 30, 30)
-        layout.setSpacing(20)
-
-        # Status-Text
-        status_label = QLabel(self.translator.get_text(self.language, "calibration", "depth_calibration_running"))
-        status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(status_label)
-
-        # Fortschrittsbalken (unbestimmt)
-        progress = QProgressBar()
-        progress.setRange(0, 0)
-        progress.setTextVisible(False)
-        layout.addWidget(progress)
-
-        # Worker-Thread
-        class CalibrationThread(QThread):
-            finished = pyqtSignal(bool, str)
-
-            def run(self):
-                try:
-                    from workers.Tiefenkamera_Messung_02 import calibrate
-                    calibrate()
-                    self.finished.emit(True, "")
-                except Exception as e:
-                    self.finished.emit(False, str(e))
-
-        def on_finished(success, error):
-            progress_dialog.accept()
-            if success:
-                msg_box = QMessageBox(self)
-                msg_box.setWindowTitle(self.translator.get_text(self.language, "calibration", "depth_calibration_title"))
-                msg_box.setText(self.translator.get_text(self.language, "calibration", "depth_calibration_success"))
-                msg_box.setIcon(QMessageBox.Icon.Information)
-                msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
-                msg_box.setStyleSheet("""
-                    QMessageBox {
-                        background-color: #2c3e50;
-                        color: #ecf0f1;
-                    }
-                    QLabel {
-                        color: #ecf0f1;
-                        font-size: 14px;
-                    }
-                    QPushButton {
-                        background-color: #3498db;
-                        color: white;
-                        border: none;
-                        border-radius: 6px;
-                        padding: 8px 16px;
-                        font-size: 14px;
-                    }
-                    QPushButton:hover {
-                        background-color: #2980b9;
-                    }
-                """)
-                msg_box.exec()
-            else:
-                error_msg = f"{self.translator.get_text(self.language, 'calibration', 'depth_calibration_error_message')}\n{error}"
-                msg_box = QMessageBox(self)
-                msg_box.setWindowTitle(self.translator.get_text(self.language, "calibration", "depth_calibration_error_title"))
-                msg_box.setText(error_msg)
-                msg_box.setIcon(QMessageBox.Icon.Critical)
-                msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
-                msg_box.setStyleSheet("""
-                    QMessageBox {
-                        background-color: #2c3e50;
-                        color: #ecf0f1;
-                    }
-                    QLabel {
-                        color: #ecf0f1;
-                        font-size: 14px;
-                    }
-                    QPushButton {
-                        background-color: #e74c3c;
-                        color: white;
-                        border: none;
-                        border-radius: 6px;
-                        padding: 8px 16px;
-                        font-size: 14px;
-                    }
-                    QPushButton:hover {
-                        background-color: #c0392b;
-                    }
-                """)
-                msg_box.exec()
-
-        self.calibration_thread = CalibrationThread()
-        self.calibration_thread.finished.connect(on_finished)
-        self.calibration_thread.start()
-        progress_dialog.exec()
-
-
     def check_light(self):
         try:
             ser = serial.Serial(self.port, self.baudrate, timeout=1)
@@ -3027,70 +2889,83 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             ser.close()
         except Exception as e:
             logger.warning(f"Fehler: {e}")
+
+
+    def tara_scale(self):
+        """Öffnet einen Dialog zum Tarieren der Waage mit Live-Gewichtsanzeige."""
+        from workers.Gewichts_Messung02 import tara, get_weight
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle(self.translator.get_text(self.language, "calibration", "tara_dialog_title"))
+        dialog.setModal(True)
+        dialog.setMinimumWidth(400)
+
+        layout = QVBoxLayout(dialog)
+
+        # Info-Label
+        info_label = QLabel(self.translator.get_text(self.language, "calibration", "tara_info"))
+        info_label.setWordWrap(True)
+        layout.addWidget(info_label)
+
+        # Live-Gewichtsanzeige
+        weight_header = QLabel(self.translator.get_text(self.language, "calibration", "current_weight_label"))
+
+        weight_display = QLabel(" --.- kg")
+        weight_display.setStyleSheet("font-size: 20pt; font-weight: bold; color: #3498db;")
+        weight_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(weight_header)
+        layout.addWidget(weight_display)
+
+        # Tara-Button
+        btn_tara = QPushButton(self.translator.get_text(self.language, "calibration", "tara_btn"))
+        btn_tara.setStyleSheet("font-size: 16px; padding: 10px;")
+        layout.addWidget(btn_tara)
+
+        # Schließen-Button
+        btn_close = QPushButton(self.translator.get_text(self.language, "calibration", "close_btn"))
+        btn_close.setStyleSheet("font-size: 14px; padding: 8px;")
+        layout.addWidget(btn_close)
+
+        # Timer für regelmäßige Aktualisierung (alle 200 ms)
+        timer = QTimer()
+        timer.setInterval(200)
+
+        def update_weight():
+            """Holt aktuelles Gewicht und aktualisiert die Anzeige."""
+            try:
+                weight = get_weight()
+                if weight is not None:
+                    weight_display.setText(f"{weight:.3f} kg")
+                else:
+                    weight_display.setText("Fehler")
+            except Exception as e:
+                weight_display.setText(f"Fehler ({e})")
+
+        timer.timeout.connect(update_weight)
+        timer.start()
+
+        def do_tara():
+            """Führt die Tara-Funktion aus und gibt Rückmeldung."""
+            try:
+                tara()
+                QMessageBox.information(dialog, self.translator.get_text(self.language, "calibration", "tara_success_title"), 
+                                       self.translator.get_text(self.language, "calibration", "tara_success_message"))
+                update_weight()  # Sofortige Aktualisierung
+
+            except Exception as e:
+                QMessageBox.critical(dialog, self.translator.get_text(self.language, "calibration", "tara_error_title"), 
+                                   self.translator.get_text(self.language, "calibration", "tara_error_message")+"\n"+str(e))
+
+        btn_tara.clicked.connect(do_tara)
+        btn_close.clicked.connect(dialog.accept)
+
+        # Dialog modal ausführen
+        dialog.exec()
+
+        # Timer nach Schließen des Dialogs stoppen
+        timer.stop()
+
         
-
-    def calibrate_scale(self):
-        """ Führt eine Referenzkalibrierung für 3 Wägezellen durch. umändern auf nur tarrieren keine kalibrierung möglich hat alex toll gemacht!!!!!!!!"""
-        from workers.Gewichts_Messung02 import calibrate_cell
-
-        try:
-            # 1) Referenzgewicht abfragen
-            reference_weight, ok = QInputDialog.getDouble(
-                self,
-                self.translator.get_text(self.language, "calibration", "ref_weight_title"),
-                self.translator.get_text(self.language, "calibration", "ref_weight_message"),
-                decimals=3,
-                min=0.1
-            )
-
-            if not ok:
-                return
-
-            # 2) Dialog für Kalibrierung
-            dialog = QDialog(self)
-            dialog.setWindowTitle(self.translator.get_text(self.language, "calibration", "dialog_title"))
-            dialog.setModal(True)
-
-            layout = QVBoxLayout(dialog)
-
-            info_label = QLabel(self.translator.get_text(self.language, "calibration", "calibration_info"))
-            layout.addWidget(info_label)
-
-            # Rohdatenanzeige
-            self.raw_value_label = QLabel(self.translator.get_text(self.language, "calibration", "raw_data_label"))
-            self.raw_value_label.setStyleSheet("font-size: 14pt; font-weight: bold;")
-            layout.addWidget(self.raw_value_label)
-
-            # 3) Buttons für jede Zelle
-            btn_cell_1 = QPushButton(self.translator.get_text(self.language, "calibration", "cell_1_btn"))
-            btn_cell_2 = QPushButton(self.translator.get_text(self.language, "calibration", "cell_2_btn"))
-            btn_cell_3 = QPushButton(self.translator.get_text(self.language, "calibration", "cell_3_btn"))
-
-            layout.addWidget(btn_cell_1)
-            layout.addWidget(btn_cell_2)
-            layout.addWidget(btn_cell_3)
-
-            # Abbrechen
-            btn_close = QPushButton(self.translator.get_text(self.language, "calibration", "close_btn"))
-            layout.addWidget(btn_close)
-
-            # 4) Button-Logik
-            btn_cell_1.clicked.connect(lambda: calibrate_cell(0, reference_weight))
-            btn_cell_2.clicked.connect(lambda: calibrate_cell(1, reference_weight))
-            btn_cell_3.clicked.connect(lambda: calibrate_cell(2, reference_weight))
-
-            btn_close.clicked.connect(dialog.close)
-
-            dialog.exec()
-
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Kalibrierungsfehler",
-                f"Fehler bei der Referenzkalibrierung:\n{str(e)}"
-            )
-
-
     def check_storage(self):
         """Prüft und zeigt den verfügbaren Speicherplatz - kompakte Version"""
         try:
