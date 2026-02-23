@@ -24,7 +24,6 @@ DEFAULT_COLOR_TOLERANCE = 25      # nicht mehr für Segmentierung genutzt, aber 
 DEFAULT_MIN_AREA = 25
 FALLBACK_FOCAL_LENGTH_PX = 580
 DEFAULT_GROUND_TOLERANCE_MM = 5
-DEFAULT_HUE_TOLERANCE = 5
 
 def load_calibration():
     if not os.path.exists(CALIB_FILE):
@@ -36,7 +35,6 @@ def load_calibration():
             "COLOR_TOLERANCE": DEFAULT_COLOR_TOLERANCE,
             "MIN_AREA": DEFAULT_MIN_AREA,
             "ground_tolerance_mm": DEFAULT_GROUND_TOLERANCE_MM,
-            "hue_tolerance": DEFAULT_HUE_TOLERANCE
         }
 
     try:
@@ -47,56 +45,50 @@ def load_calibration():
             "COLOR_TOLERANCE": data.get("COLOR_TOLERANCE", DEFAULT_COLOR_TOLERANCE),
             "MIN_AREA": data.get("MIN_AREA", DEFAULT_MIN_AREA),
             "ground_tolerance_mm": data.get("GROUND_TOLERANCE_MM", DEFAULT_GROUND_TOLERANCE_MM),
-            "hue_tolerance": data.get("HUE_TOLERANCE", DEFAULT_HUE_TOLERANCE)
         }
 
         z_list = data.get("z_median_liste")
         mm_list = data.get("mm_per_pixel_liste")
         focal_list = data.get("focal_length_pix")
 
-        if z_list and isinstance(z_list, list) and len(z_list) > 0:
-            print("Mehrere z_median Werte gefunden:")
-            for i, z in enumerate(z_list):
-                print(f"  {i}: {z} mm")
+        print("Mehrere z_median Werte:")
+        for i, z in enumerate(z_list):
+            print(f"  {i}: {z} mm")
 
-            active = data.get("active_z_median_index")
-            if active is not None and 0 <= active < len(z_list):
-                selected = active
-                print(f"Verwende aktiven Index {selected} aus Datei.")
-            else:
-                while True:
-                    try:
-                        sel = input(f"Bitte wählen Sie den gewünschten Index (0-{len(z_list)-1}): ").strip()
-                        if sel == "":
-                            sel = "0"
-                        selected = int(sel)
-                        if 0 <= selected < len(z_list):
-                            break
-                        print(f"Index muss zwischen 0 und {len(z_list)-1} liegen.")
-                    except ValueError:
-                        print("Ungültige Eingabe.")
-
-            calib["z_median"] = z_list[selected]
-
-            if mm_list and isinstance(mm_list, list) and len(mm_list) == len(z_list):
-                calib["mm_per_pixel"] = mm_list[selected]
-            else:
-                print("Warnung: mm_per_pixel_liste fehlt oder falsche Länge. Fallback auf Einzelwert.")
-                calib["mm_per_pixel"] = data.get("mm_per_pixel") or data.get("mm_per_pixel_763mm")
-
-            if isinstance(focal_list, list) and len(focal_list) == len(z_list):
-                calib["focal_length_pix"] = focal_list[selected]
-            else:
-                if focal_list is not None and not isinstance(focal_list, list):
-                    calib["focal_length_pix"] = focal_list
-                else:
-                    calib["focal_length_pix"] = FALLBACK_FOCAL_LENGTH_PX
-                    print(f"Warnung: focal_length_pix Liste fehlt. Verwende Fallback {FALLBACK_FOCAL_LENGTH_PX} px.")
+        active = data.get("active_z_median_index")
+        if active is not None and 0 <= active < len(z_list):
+            selected = active
+            print(f"Verwende aktiven Index {selected} aus Datei.")
         else:
-            # Alte Struktur
-            calib["z_median"] = data.get("z_median")
+            while True:
+                try:
+                    sel = input(f"Bitte wählen Sie den gewünschten Index (0-{len(z_list)-1}): ").strip()
+                    if sel == "":
+                        sel = "0"
+                    selected = int(sel)
+                    if 0 <= selected < len(z_list):
+                        break
+                    print(f"Index muss zwischen 0 und {len(z_list)-1} liegen.")
+                except ValueError:
+                    print("Ungültige Eingabe.")
+
+        calib["z_median"] = z_list[selected]
+
+        if mm_list and isinstance(mm_list, list) and len(mm_list) == len(z_list):
+            calib["mm_per_pixel"] = mm_list[selected]
+        else:
+            print("Warnung: mm_per_pixel_liste fehlt oder falsche Länge. Fallback auf Einzelwert.")
             calib["mm_per_pixel"] = data.get("mm_per_pixel") or data.get("mm_per_pixel_763mm")
-            calib["focal_length_pix"] = data.get("focal_length_pix", FALLBACK_FOCAL_LENGTH_PX)
+
+        if isinstance(focal_list, list) and len(focal_list) == len(z_list):
+            calib["focal_length_pix"] = focal_list[selected]
+        else:
+            if focal_list is not None and not isinstance(focal_list, list):
+                calib["focal_length_pix"] = focal_list
+            else:
+                calib["focal_length_pix"] = FALLBACK_FOCAL_LENGTH_PX
+                print(f"Warnung: focal_length_pix Liste fehlt. Verwende Fallback {FALLBACK_FOCAL_LENGTH_PX} px.")
+
 
         print("Kalibrierung geladen:")
         if calib["z_median"] is not None:
@@ -119,7 +111,6 @@ def load_calibration():
             "COLOR_TOLERANCE": DEFAULT_COLOR_TOLERANCE,
             "MIN_AREA": DEFAULT_MIN_AREA,
             "ground_tolerance_mm": DEFAULT_GROUND_TOLERANCE_MM,
-            "hue_tolerance": DEFAULT_HUE_TOLERANCE
         }
 
 def create_hsv_mask(hsv_img, ref_hsv, hue_tol, sat_tol, val_tol):
