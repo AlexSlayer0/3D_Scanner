@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 3D-Volumenmessung mit OAK-D2 (DepthAI 2.29.0)
-- ROI-begrenzt auf 500x500 mm
+- ROI-begrenzt auf 500x500 mm (in der x-y-Ebene der linken Mono-Kamera)
 - Kalibrierung des leeren Raums zur Unterdrückung von Bodenrauschen
-- Dynamisches Auslesen der intrinsischen Kameraparameter
+- Dynamisches Auslesen der intrinsischen Kameraparameter (linke Mono-Kamera)
 - Visualisierung mit Objektpunkten und Bounding Box
-- LED-Lichtsteuerung (seriell) für Raspberry Pi
+- LED-Lichtsteuerung (seriell) für Raspberry Pi (optional)
 """
 
 import cv2
@@ -29,6 +29,8 @@ logger = logging.getLogger(__name__)
 
 class Config:
     # ROI in Weltkoordinaten (mm) – an Ihre Box anpassen!
+    # Achtung: Diese Koordinaten beziehen sich auf das Kamera-Koordinatensystem
+    # der linken Mono-Kamera (CAM_C). Die Kamera sollte senkrecht über der Box montiert sein.
     ROI_X_MIN = -250
     ROI_X_MAX = 250
     ROI_Y_MIN = -250
@@ -37,16 +39,17 @@ class Config:
     # Höhen-Toleranzen
     MIN_OBJEKT_HOEHE_MM = 5.0
     MAX_OBJEKT_HOEHE_MM = 300.0
-    MAX_LAENGE_BREITE_MM = 500.0
+    MAX_LAENGE_BREITE_MM = 450.0
 
     # Punktwolken-Dichte (True = schnell, False = dicht)
     POINTCLOUD_SPARSE = True
 
     # Fallback-Kameraparameter (nur falls Auslesen fehlschlägt)
-    FX_FALLBACK = 822.7
-    FY_FALLBACK = 822.7
-    CX_FALLBACK = 321.5
-    CY_FALLBACK = 239.5
+    # Diese Werte stammen aus der Kalibrierung der linken Mono-Kamera (CAM_C) bei 1280x800.
+    FX_FALLBACK = 796.398
+    FY_FALLBACK = 796.079
+    CX_FALLBACK = 639.694
+    CY_FALLBACK = 400.728
 
     # Kalibrierungsdatei
     CALIB_FILE = "distanz_calibration.json"
@@ -83,6 +86,7 @@ class OakD2Volume:
         """Erstellt die DepthAI-Pipeline mit Mono, Stereo und PointCloud."""
         pipeline = dai.Pipeline()
 
+        # Mono-Kameras: Links = CAM_C, Rechts = CAM_A (laut Kalibrierung)
         mono_left = pipeline.create(dai.node.MonoCamera)
         mono_right = pipeline.create(dai.node.MonoCamera)
         mono_left.setBoardSocket(dai.CameraBoardSocket.CAM_B)
@@ -90,6 +94,7 @@ class OakD2Volume:
         mono_left.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         mono_right.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
 
+        # Stereo-Tiefe
         stereo = pipeline.create(dai.node.StereoDepth)
         stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.DEFAULT)
         stereo.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_5x5)
@@ -100,6 +105,7 @@ class OakD2Volume:
         mono_left.out.link(stereo.left)
         mono_right.out.link(stereo.right)
 
+        # Punktwolke
         pointcloud = pipeline.create(dai.node.PointCloud)
         pointcloud.initialConfig.setSparse(Config.POINTCLOUD_SPARSE)
         stereo.depth.link(pointcloud.inputDepth)
@@ -115,18 +121,19 @@ class OakD2Volume:
         return pipeline
 
     def _get_intrinsics(self, device):
-        """Liest die intrinsischen Parameter aus der Kamera-Kalibrierung."""
+        """
+        Liest die intrinsischen Parameter der linken Mono-Kamera (CAM_C) aus.
+        Die Punktwolke wird standardmäßig im Koordinatensystem dieser Kamera geliefert.
+        """
         try:
             calib = device.readCalibration()
-            # Für Mono-Kamera links (CAM_B) – da wir Tiefe aus Stereo verwenden,
-            # sind die intrinsischen der Mono-Kameras relevant.
-            # Wir nehmen CAM_B, da die Punktwolke in diesem Koordinatensystem vorliegt.
-            intrinsics = calib.getCameraIntrinsics(dai.CameraBoardSocket.CAM_B)
+            # Für die linke Mono-Kamera (CAM_B) – native Auflösung 1280x800
+            intrinsics = calib.getCameraIntrinsics(dai.CameraBoardSocket.CAM_B, 1280, 800)
             self.fx = intrinsics[0][0]
             self.fy = intrinsics[1][1]
             self.cx = intrinsics[0][2]
             self.cy = intrinsics[1][2]
-            logger.info(f"Intrinsics geladen: fx={self.fx:.2f}, fy={self.fy:.2f}, cx={self.cx:.2f}, cy={self.cy:.2f}")
+            logger.info(f"Intrinsics (CAM_B) geladen: fx={self.fx:.2f}, fy={self.fy:.2f}, cx={self.cx:.2f}, cy={self.cy:.2f}")
         except Exception as e:
             logger.warning(f"Konnte intrinsische Parameter nicht auslesen, verwende Fallback: {e}")
             self.fx = Config.FX_FALLBACK
@@ -138,7 +145,7 @@ class OakD2Volume:
         """Nimmt eine Punktwolke und ein Tiefenbild auf."""
         pipeline = self._build_pipeline()
         try:
-            with dai.Device(pipeline, maxUsbSpeed=dai.UsbSpeed.HIGH) as device:
+            with dai.Device(pipeline, maxUsbSpeed=dai.UsbSpeed.SUPER) as device:
                 # Intrinsics auslesen (einmalig pro Device)
                 if self.fx is None:
                     self._get_intrinsics(device)
@@ -146,12 +153,25 @@ class OakD2Volume:
                 q_pc = device.getOutputQueue("pointcloud", maxSize=1, blocking=True)
                 q_depth = device.getOutputQueue("depth", maxSize=1, blocking=True)
 
-                depth_data = q_depth.get()
-                pc_data = q_pc.get()
+                # Mit Timeout versehen, um nicht ewig zu blockieren
+                depth_data = None
+                pc_data = None
+                for _ in range(30):  # max. 3 Sekunden warten (bei ~10 fps)
+                    depth_data = q_depth.tryGet()
+                    pc_data = q_pc.tryGet()
+                    if depth_data is not None and pc_data is not None:
+                        break
+                    time.sleep(0.1)
+                else:
+                    raise RuntimeError("Keine Daten von der Kamera erhalten")
 
                 depth_frame = depth_data.getCvFrame()
-                points = pc_data.getPoints()  # numpy array (N, 3)
-                return depth_frame, points
+                points = pc_data.getPoints()  # numpy array (N, 3) in Metern
+
+                # In Millimeter umwandeln für konsistente Verarbeitung
+                points_mm = points * 1000.0
+                logger.debug(f"Empfangene Punkte: {points_mm.shape[0]} Punkte")
+                return depth_frame, points_mm
         except Exception as e:
             logger.error(f"Fehler bei Aufnahme: {e}")
             return None, None
@@ -159,7 +179,7 @@ class OakD2Volume:
     def calibrate_empty_space(self):
         """Führt eine Kalibrierung ohne Objekt durch und speichert die Bodenstatistik."""
         print("\n=== KALIBRIERUNG: BITTE OBJEKT ENTFERNEN ===")
-        #input("Drücken Sie Enter, wenn die Box leer ist...")
+        input("Drücken Sie Enter, wenn die Box leer ist...")
 
         # Licht einschalten (wenn verfügbar)
         control_light(True)
@@ -264,8 +284,8 @@ class OakD2Volume:
             z_std = self.calibration["z_std"]
             tolerance = 3 * z_std
 
-            # Bodenpunkte entfernen
-            object_mask = np.abs(z_valid - z_median) > tolerance
+            # Bodenpunkte entfernen (Objekte liegen näher an der Kamera -> kleinerer z-Wert)
+            object_mask = (z_median - z_valid) > tolerance  # oder: np.abs(z_valid - z_median) > tolerance
 
             if np.sum(object_mask) < 10:
                 return self._error_result("Kein Objekt erkannt (nach Bodenfilterung)")
@@ -281,7 +301,7 @@ class OakD2Volume:
             max_x = np.max(x_obj)
             min_y = np.min(y_obj)
             max_y = np.max(y_obj)
-            min_z = np.min(z_obj)
+            min_z = np.min(z_obj)  # kleinster z = nächster Punkt (Oberkante)
 
             # Dimensionen
             length = max_x - min_x
@@ -289,7 +309,7 @@ class OakD2Volume:
             if length < width:
                 length, width = width, length
 
-            # Höhe = Bodenmedian - min_z
+            # Höhe = Bodenmedian - min_z (da z mit Abstand zur Kamera abnimmt)
             height = z_median - min_z
             if height < Config.MIN_OBJEKT_HOEHE_MM:
                 return self._error_result(f"Objekt zu flach: {height:.1f} mm")
@@ -364,7 +384,7 @@ class OakD2Volume:
                 continue
             u = (x * self.fx / z) + self.cx
             v = (y * self.fy / z) + self.cy
-            if 0 <= u < depth_color.shape[1] and 0 <= v < depth_color.shape[0]:
+            if 0 <= u < depth_frame.shape[1] and 0 <= v < depth_frame.shape[0]:
                 u_rs = int(u * scale)
                 v_rs = int(v * scale)
                 # Weißer Punkt mit schwarzem Rand (gut sichtbar)
@@ -384,7 +404,7 @@ class OakD2Volume:
                 continue
             u = (x * self.fx / z) + self.cx
             v = (y * self.fy / z) + self.cy
-            if 0 <= u < depth_color.shape[1] and 0 <= v < depth_color.shape[0]:
+            if 0 <= u < depth_frame.shape[1] and 0 <= v < depth_frame.shape[0]:
                 corners_2d.append((int(u * scale), int(v * scale)))
         if len(corners_2d) == 4:
             cv2.polylines(vis, [np.array(corners_2d)], True, (0, 255, 255), 3)

@@ -2,7 +2,8 @@
 """=======TODO-Liste v0.8=======
 SAP-Integration                 (Platzhalter-Button/optional)
 Lokal speichern Integration     (Formatierung?)
-
+4k bild wird nach wiederholung nicht richtig beim kamera manager aktualisiert nach einem scan und dann wieederholt.
+Licht passt
 ================================"""
 
 import os # Für Dateipfade und Betriebssysteminteraktionen
@@ -727,7 +728,7 @@ class ParallelWorker(QThread):
             return {"barcodes": []}
     
     def _run_weight_task(self):
-        """Führt Gewichtsmessung durch"""
+        """Führt Gewichtsmessung durch Wichtig -------------------------- 20 wert erst nehmen durch tiefpassd und somit genau messung durchführen ca. 0.05 s delay dazwischen für stabilisierung der messung"""
         try:
             import workers.Gewichts_Messung02
             weight = workers.Gewichts_Messung02.get_weight()
@@ -2007,7 +2008,6 @@ class FullscreenApp(QMainWindow):
             image_label = QLabel()
             image_label.setPixmap(pixmap)
             image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            image_label.mousePressEvent = lambda event, img=cropped_img, bt=("Artikelnummer" if is_article_number else "EAN"): self.show_enlarged_image(img, bt)
             image_label.setCursor(Qt.CursorShape.PointingHandCursor)
             image_label.setToolTip(self.translator.get_text(self.language, "storage", "click_to_enlarge"))
             left_layout.addWidget(image_label)
@@ -3030,7 +3030,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         
 
     def calibrate_scale(self):
-        """ Führt eine Referenzkalibrierung für 3 Wägezellen durch. """
+        """ Führt eine Referenzkalibrierung für 3 Wägezellen durch. umändern auf nur tarrieren keine kalibrierung möglich hat alex toll gemacht!!!!!!!!"""
         from workers.Gewichts_Messung02 import calibrate_cell
 
         try:

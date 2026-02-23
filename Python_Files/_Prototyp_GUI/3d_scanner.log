@@ -5243,3 +5243,394 @@ NameError: name 'ean_codes' is not defined
 2026-02-19 17:18:45,309 - __main__ - INFO - Leerer Scan zu CSV hinzugefügt: 20260219_171845
 2026-02-19 17:18:48,628 - __main__ - INFO - Scan 20260219_171845 zu /home/leitner/Desktop/Scans\2026-02-19\scans_2026-02-19.csv hinzugefügt
 2026-02-19 17:18:51,473 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-02-20 14:58:35,162 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-20 14:58:37,145 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-20 14:58:37,147 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-20 14:58:44,232 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-20 14:58:44,232 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-20 14:58:44,232 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 14:58:44,234 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:44,344 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:45,925 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 14:58:45,925 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:46,036 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:46,036 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-20 14:58:46,036 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-20 14:58:46,038 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-20 14:58:46,040 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 14:58:46,040 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:46,144 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:51,649 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 14:58:51,656 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:51,768 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:59,242 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-20 14:58:59,333 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:58:59,648 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-20 14:58:59,652 - __main__ - INFO - Gewicht: 1500.0
+2026-02-20 14:58:59,653 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 14:59:02,332 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 14:59:04,839 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 14:59:04,842 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-20 14:59:04,845 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'abmessung': '0 x 0 x 0', 'success': False, 'error': 'Keine Punkte im ROI'}
+2026-02-20 14:59:04,849 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Punkte im ROI
+2026-02-20 14:59:04,850 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 14:59:09,426 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-20 14:59:09,427 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-20 14:59:09,962 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-20 14:59:09,962 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-20 14:59:10,450 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-20 14:59:10,450 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-20 14:59:10,924 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-20 14:59:10,925 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-20 14:59:11,192 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-02-20 14:59:11,192 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-02-20 14:59:11,197 - __main__ - INFO - Alle Tasks fertig
+2026-02-20 14:59:14,321 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 14:59:52,393 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-20 14:59:54,535 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-20 14:59:54,536 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-20 14:59:58,044 - __main__ - INFO - DepthAI Geräte gefunden: [DeviceInfo(name=1.1, mxid=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)]
+2026-02-20 14:59:58,045 - __main__ - INFO - Device: DeviceInfo(name=1.1, mxid=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)
+2026-02-20 14:59:59,841 - __main__ - INFO - Device 1.1 erfolgreich geöffnet
+2026-02-20 14:59:59,844 - __main__ - INFO -   Kameras: [<CameraBoardSocket.CAM_A: 0>, <CameraBoardSocket.CAM_B: 1>, <CameraBoardSocket.CAM_C: 2>]
+2026-02-20 14:59:59,846 - __main__ - INFO -   USB Geschwindigkeit: UsbSpeed.SUPER
+2026-02-20 15:00:08,422 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:00:11,281 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 15:00:14,345 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:03:35,103 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:03:37,891 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 15:03:40,406 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:08:05,320 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-20 15:08:07,613 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-20 15:08:07,613 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-20 15:08:11,325 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:08:14,269 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 15:08:15,632 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:12:23,179 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:12:25,978 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 15:12:28,022 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:12:45,153 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:12:47,985 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 15:12:50,499 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 15:12:52,387 - __main__ - INFO - Programm wird beendet
+2026-02-20 16:59:07,328 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-02-20 16:59:09,569 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-02-20 16:59:09,570 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-02-20 16:59:10,969 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-20 16:59:10,969 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-20 16:59:10,969 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 16:59:10,970 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:11,075 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:12,968 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 16:59:12,969 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:13,074 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:13,075 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-20 16:59:13,075 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-20 16:59:13,076 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-20 16:59:13,077 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 16:59:13,078 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:13,183 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:18,643 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 16:59:18,646 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:18,748 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:23,082 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-20 16:59:23,135 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:23,457 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-20 16:59:23,458 - __main__ - INFO - Gewicht: 1500.0
+2026-02-20 16:59:23,458 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 16:59:25,979 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 16:59:27,707 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-20 16:59:27,708 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-20 16:59:28,706 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-20 16:59:28,706 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-20 16:59:29,069 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:29,152 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 16:59:29,153 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-20 16:59:29,153 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'abmessung': '0 x 0 x 0', 'success': False, 'error': "'NoneType' object has no attribute 'write'"}
+2026-02-20 16:59:29,154 - __main__ - WARNING - Volumenmessung fehlgeschlagen: 'NoneType' object has no attribute 'write'
+2026-02-20 16:59:29,154 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 16:59:29,251 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-20 16:59:29,251 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-20 16:59:29,739 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-20 16:59:29,739 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-20 16:59:30,207 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-02-20 16:59:30,207 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-02-20 16:59:30,211 - __main__ - INFO - Alle Tasks fertig
+2026-02-20 16:59:32,286 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:00:02,155 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:00:03,749 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:00:03,749 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-02-20 17:00:04,588 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:00:26,661 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-20 17:00:26,662 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-20 17:00:26,662 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:00:26,663 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:26,778 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:28,815 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:00:28,817 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:28,919 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:28,920 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-20 17:00:28,920 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-20 17:00:28,921 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-20 17:00:28,922 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:00:28,922 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:29,028 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:34,631 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:00:34,634 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:34,741 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:36,805 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:00:36,836 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:36,945 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-20 17:00:36,946 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-20 17:00:37,164 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-20 17:00:37,165 - __main__ - INFO - Gewicht: 2250.0
+2026-02-20 17:00:37,166 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:00:37,707 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-20 17:00:37,708 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-20 17:00:38,261 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-20 17:00:38,262 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-20 17:00:38,732 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-20 17:00:38,733 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-20 17:00:38,948 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-02-20 17:00:38,949 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-02-20 17:00:39,807 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 17:00:42,321 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:42,341 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-20 17:00:42,343 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'abmessung': '0 x 0 x 0', 'success': False, 'error': 'Objekt zu flach: -5827.0 mm'}
+2026-02-20 17:00:42,344 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Objekt zu flach: -5827.0 mm
+2026-02-20 17:00:42,344 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:00:42,346 - __main__ - INFO - Alle Tasks fertig
+2026-02-20 17:00:45,253 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:00:52,328 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-02-20 17:00:54,595 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-20 17:00:54,595 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-20 17:00:54,596 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:00:54,596 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:54,708 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:56,638 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:00:56,640 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:56,755 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:56,755 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-20 17:00:56,756 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-20 17:00:56,756 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-20 17:00:56,758 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:00:56,758 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:00:56,865 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:02,382 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:01:02,383 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:02,488 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:07,184 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:01:07,209 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:07,312 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-20 17:01:07,313 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-20 17:01:07,535 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-20 17:01:07,536 - __main__ - INFO - Gewicht: 2625.0
+2026-02-20 17:01:07,537 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:01:08,019 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-20 17:01:08,020 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-20 17:01:08,586 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-20 17:01:08,587 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-20 17:01:09,077 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-20 17:01:09,077 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-20 17:01:09,289 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-02-20 17:01:09,289 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-02-20 17:01:10,117 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 17:01:12,655 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:12,667 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-20 17:01:12,671 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'abmessung': '0 x 0 x 0', 'success': False, 'error': 'Objekt zu flach: -5827.0 mm'}
+2026-02-20 17:01:12,674 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Objekt zu flach: -5827.0 mm
+2026-02-20 17:01:12,675 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:01:12,680 - __main__ - INFO - Alle Tasks fertig
+2026-02-20 17:01:14,458 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:01:26,815 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:01:27,259 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:01:27,259 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-02-20 17:01:27,949 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:01:33,551 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-20 17:01:33,551 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-20 17:01:33,553 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:01:33,553 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:33,658 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:35,649 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:01:35,650 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:35,759 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:35,759 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-20 17:01:35,760 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-20 17:01:35,760 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-20 17:01:35,761 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:01:35,762 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:35,869 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:41,465 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:01:41,466 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:41,568 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:47,196 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:01:54,371 - __main__ - INFO - Wiederhole Bild 4
+2026-02-20 17:01:54,372 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:01:54,373 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:54,488 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:01:59,912 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:01:59,913 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:00,015 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:02,169 - __main__ - INFO - Wiederhole Bild 4
+2026-02-20 17:02:02,169 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:02:02,170 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:02,274 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:07,732 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:02:07,733 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:07,838 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:10,014 - __main__ - INFO - Wiederhole Bild 4
+2026-02-20 17:02:10,016 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:02:10,016 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:10,118 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:15,555 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:02:15,556 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:15,662 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:19,815 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:02:19,828 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:19,944 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-20 17:02:19,945 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-20 17:02:20,148 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-20 17:02:20,149 - __main__ - INFO - Gewicht: 2812.5
+2026-02-20 17:02:20,150 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:02:20,638 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-20 17:02:20,639 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-20 17:02:21,121 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-20 17:02:21,122 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-20 17:02:21,601 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-20 17:02:21,601 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-20 17:02:21,923 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-02-20 17:02:21,925 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-02-20 17:02:22,689 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 17:02:25,267 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:25,274 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-20 17:02:25,275 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'abmessung': '0 x 0 x 0', 'success': False, 'error': 'Objekt zu flach: -5827.0 mm'}
+2026-02-20 17:02:25,276 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Objekt zu flach: -5827.0 mm
+2026-02-20 17:02:25,277 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:02:25,278 - __main__ - INFO - Alle Tasks fertig
+2026-02-20 17:02:27,683 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:02:30,065 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:02:30,748 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:02:34,412 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-02-20 17:02:37,576 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-02-20 17:02:37,576 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-02-20 17:02:37,576 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:02:37,578 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:37,683 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:39,679 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:02:39,680 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:39,789 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:39,789 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-02-20 17:02:39,790 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-02-20 17:02:39,791 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-02-20 17:02:39,791 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:02:39,792 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:39,899 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:45,470 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:02:45,471 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:02:45,573 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:00,687 - __main__ - INFO - Wiederhole Bild 4
+2026-02-20 17:03:00,688 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:03:00,689 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:00,797 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:06,287 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:03:06,288 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:06,396 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:10,457 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:03:10,483 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:10,589 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-20 17:03:10,590 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-20 17:03:10,809 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-20 17:03:10,810 - __main__ - INFO - Gewicht: 2906.25
+2026-02-20 17:03:10,812 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:03:11,330 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-20 17:03:11,330 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-20 17:03:11,892 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-20 17:03:11,892 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-20 17:03:12,388 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-20 17:03:12,388 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-20 17:03:12,670 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-02-20 17:03:12,670 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-02-20 17:03:13,403 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 17:03:14,758 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:14,765 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-20 17:03:14,765 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'abmessung': '0 x 0 x 0', 'success': False, 'error': 'Objekt zu flach: -5827.0 mm'}
+2026-02-20 17:03:14,766 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Objekt zu flach: -5827.0 mm
+2026-02-20 17:03:14,766 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:03:14,767 - __main__ - INFO - Alle Tasks fertig
+2026-02-20 17:03:16,984 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:03:22,696 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:03:23,909 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:03:24,578 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:03:25,117 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:03:25,721 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:03:41,097 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:03:41,097 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-02-20 17:03:41,688 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:03:45,999 - __main__ - INFO - Wiederhole Bild 4
+2026-02-20 17:03:46,000 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-02-20 17:03:46,001 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:46,102 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:51,595 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-02-20 17:03:51,596 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:51,701 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:56,964 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:03:56,979 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:03:57,099 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-20 17:03:57,099 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-20 17:03:57,301 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-20 17:03:57,302 - __main__ - INFO - Gewicht: 2953.125
+2026-02-20 17:03:57,302 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:03:57,783 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-20 17:03:57,783 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-20 17:03:58,270 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-20 17:03:58,271 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-20 17:03:58,787 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-20 17:03:58,787 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-20 17:03:59,071 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9010800001757
+2026-02-20 17:03:59,099 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9010800001757
+2026-02-20 17:03:59,100 - __main__ - INFO - Bild 3: 2 Barcode(s) erkannt
+2026-02-20 17:03:59,101 - __main__ - INFO - Insgesamt 2 Barcodes in 4 Bildern erkannt
+2026-02-20 17:03:59,104 - __main__ - INFO - Ergebnis von barcode erhalten: Typ=<class 'dict'>
+2026-02-20 17:03:59,106 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9010800001757'...
+2026-02-20 17:03:59,106 - __main__ - INFO - Barcode gespeichert: 9010800001757, selected=True
+2026-02-20 17:03:59,107 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:03:59,107 - __main__ - INFO - Ergebnis von barcode erhalten: Typ=<class 'dict'>
+2026-02-20 17:03:59,108 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9010800001757'...
+2026-02-20 17:03:59,109 - __main__ - INFO - Barcode gespeichert: 9010800001757, selected=True
+2026-02-20 17:03:59,109 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:03:59,852 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 17:04:02,418 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:04:02,430 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-02-20 17:04:02,432 - __main__ - INFO - Volumendaten erhalten: {'volume': 0.0, 'abmessung': '0 x 0 x 0', 'success': False, 'error': 'Objekt zu flach: -5827.0 mm'}
+2026-02-20 17:04:02,432 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Objekt zu flach: -5827.0 mm
+2026-02-20 17:04:02,433 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:04:02,435 - __main__ - INFO - Alle Tasks fertig
+2026-02-20 17:04:07,388 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:04:16,507 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:04:19,537 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:04:24,945 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:04:25,458 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:04:25,811 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:04:26,150 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:04:26,380 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-02-20 17:04:26,763 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-02-20 17:04:26,764 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-02-20 17:04:26,843 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-02-20 17:04:26,856 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-02-20 17:04:26,956 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-02-20 17:04:26,957 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-02-20 17:04:27,177 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-02-20 17:04:27,178 - __main__ - INFO - Gewicht: 2976.562
+2026-02-20 17:04:27,178 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-02-20 17:04:27,686 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-02-20 17:04:27,686 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-02-20 17:04:28,282 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-02-20 17:04:28,282 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-02-20 17:04:28,790 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-02-20 17:04:28,790 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-02-20 17:04:29,042 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9010800001757
+2026-02-20 17:04:29,074 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9010800001757
+2026-02-20 17:04:29,076 - __main__ - INFO - Bild 3: 2 Barcode(s) erkannt
+2026-02-20 17:04:29,076 - __main__ - INFO - Insgesamt 2 Barcodes in 4 Bildern erkannt
+2026-02-20 17:04:29,802 - workers.Tiefenkamera_Messung_02 - INFO - Intrinsics geladen: fx=797.57, fy=796.90, cx=620.93, cy=388.75
+2026-02-20 17:04:32,329 - workers.Tiefenkamera_Messung_02 - WARNING - Lichtsteuerung fehlgeschlagen: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
