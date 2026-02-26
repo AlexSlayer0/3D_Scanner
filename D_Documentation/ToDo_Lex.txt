@@ -1,0 +1,21 @@
+To do
+- Grundlagen
+	- Twisted Pair bei Differential Pair
+	- Abschirmung bei Differential Pair
+	- Differentielle Filter
+	- Kameras Grundlagen
+	- Wiegung Grundlagen
+	- CAD
+
+
+- Praktische Umsetzung
+	- Projektplanung genauer
+	- Bauteilauswahl
+		- Tiefenkameras weiter + Hub
+		- Summierung
+	- Custom Altium Library genauer
+	- 3D Druck
+	- Gehäuse Planung
+	- Box Bau
+	- Gehäusemontage
+		- Verkabelung
