@@ -2,37 +2,29 @@ To do
 
 \- Grundlagen
 
-&nbsp;	- Differentielle Filter
-
-&nbsp;	- Kameras Grundlagen
-
-&nbsp;	**- Wiegung Grundlagen**
+ 	- Kameras Grundlagen
 
 
 
 \- Praktische Umsetzung
 
-&nbsp;	**- Projektplanung genauer**
+ 	**- Projektplanung genauer**
 
-&nbsp;	- Bauteilauswahl
+ 	- Bauteilauswahl
 
-&nbsp;		- Tiefenkameras weiter + Hub
+ 		- Tiefenkameras weiter + Hub
 
-&nbsp;		- Summierung
+ 	- Custom Altium Library genauer
 
-&nbsp;	- Custom Altium Library genauer
+ 	- Fertigungsunterlagen
 
-&nbsp;	- Fertigungsunterlagen
+ 	- 3D Druck
 
-&nbsp;	- 3D Druck
+ 	- Gehäuse Planung
 
-&nbsp;	- Gehäuse Planung
+ 	**- Box Bau**
 
-&nbsp;	**- Box Bau**
+ 	**- Gehäusemontage**
 
-&nbsp;	**- Gehäusemontage**
-
-&nbsp;		- Verkabelung
-
-
+ 		- Verkabelung
 
