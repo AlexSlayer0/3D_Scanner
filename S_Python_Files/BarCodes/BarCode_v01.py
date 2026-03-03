@@ -5,12 +5,12 @@ from pathlib import Path
 from ultralytics import YOLO
 from pyzbar.pyzbar import decode
 
-USE_CAMERA = True  # oder False
+USE_CAMERA = False  # oder False
 
 if USE_CAMERA:
     INPUT_DIR = cv2.VideoCapture(0)
 else:
-    INPUT_DIR = Path("GUI_Anzeige")
+    INPUT_DIR = Path("ParcelBar")  # <--- hier den Pfad zum Bilderordner anpassen
 
 
 
@@ -45,6 +45,7 @@ def try_decode(img_np):
 
 # --- Decodierung einer ROI mit allen Vorverarbeitungen ---
 def process_roi(roi, img_name):
+    global decodiert
     preprocess_methods = {
         "orig": lambda x: x,
         "unsharp": unsharp,
@@ -65,18 +66,23 @@ def process_roi(roi, img_name):
                 rotated = rotate(scaled, angle)
                 dec = try_decode(rotated)
                 if dec:
-                    #print(f"\n✅ {img_name} erkannt! "
+                    print(f"\n✅ {img_name} erkannt! ")
                     #      f"({pname}, scale={s}, rot={angle}°)")
                     for d in dec:
                         val = d.data.decode("utf-8", errors="ignore")
-                        #print(val)
+                        print(val)
                         #print(d.type)
+
+                        decodiert += 1
                     return True
-    #print(f"\n❌ {img_name} kein Barcode erkannt (alle Varianten getestet)")
+                else:
+                    print(f"\n❌ {img_name} kein Barcode erkannt (alle Varianten getestet)")
     return False
 
 # --- Alle Bilder im Ordner ---
 def main():
+    global decodiert
+
     model = YOLO("YOLOV8s_Barcode_Detection.pt")
     
     bilder = [f for f in INPUT_DIR.iterdir()
@@ -88,8 +94,7 @@ def main():
         #print(f"Keine passenden Bilder gefunden in {INPUT_DIR}")
         return
 
-    gesamt, erkannt = 0, 0
-
+    gesamt, erkannt, decodiert = 0, 0, 0
     for img_path in sorted(bilder):
         gesamt += 1
         img = cv2.imread(str(img_path))
@@ -111,8 +116,11 @@ def main():
                 erkannt += 1
                 break  # Nur ein Treffer pro Bild nötig
            
-    quote = (erkannt / gesamt * 100) if gesamt > 0 else 0
-    #print(f"\nTrefferquote: {erkannt}/{gesamt} erkannt ({quote:.2f} %)")
+    quote_erkannt = (erkannt / gesamt * 100) if gesamt > 0 else 0
+    quote_decodiert = (decodiert / erkannt * 100) if erkannt > 0 else 0
+
+    print(f"\nErkennungs Trefferquote: {erkannt}/{gesamt} erkannt ({quote_erkannt:.2f} %)")
+    print(f"Anzahl decodierte Barcodes: {decodiert}/{erkannt} erkannt ({quote_decodiert:.2f} %)")
 
 
 if __name__ == "__main__":

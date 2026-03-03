@@ -20,8 +20,7 @@ class BarcodeDetector:
             logger.info(f"YOLO-Modell geladen von {model_path}")
         except Exception as e:
             logger.error(f"Fehler beim Laden des YOLO-Modells: {e}")
-            raise  # Wichtiger: Fehler weitergeben statt None zurückzugeben
-        
+            raise 
         self.detected_barcodes: List[Dict[str, Any]] = []
         
     def detect_barcodes_in_image(self, image: np.ndarray, image_index: int = 0, image_name: str = "") -> List[Dict[str, Any]]:

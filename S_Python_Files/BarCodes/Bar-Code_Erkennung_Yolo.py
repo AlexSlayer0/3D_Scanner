@@ -49,8 +49,8 @@ total_found = 0
 total_decoded = 0
 
 model = YOLO("YOLOV8s_Barcode_Detection.pt")
-folder = "InventBar"
-#folder = "ParcelBar"
+#folder = "InventBar"
+folder = "ParcelBar"
 images = [f for f in os.listdir(folder) if f.lower().endswith((".jpg", ".png"))]
 
 # --- Alle Dateien durchlaufen ---
@@ -107,6 +107,7 @@ for img_file in images:
 if total_gt > 0:
     percent_found = total_found / total_gt * 100
     percent_decoded = total_decoded / total_gt * 100
-    print(f"\nGesamt: erkannt {total_found}/{total_gt} ({percent_found:.2f}%), decodiert {total_decoded}/{total_gt} ({percent_decoded:.2f}%)")
+    print(f"\nGesamt: erkannt {total_found}/{total_gt} ({percent_found:.2f}%)")
+    print(f"Gesamt: decodiert {total_decoded}/{total_gt} ({percent_decoded:.2f}%)")
 else:
     print("Keine Ground-Truth Boxen gefunden.")
