@@ -114,20 +114,17 @@ class TranslationManager:
                 "instruction3": ("Maximale Größe: 30x30x30 cm", "Maximum size: 30x30x30 cm", "Dimensione massima: 30x30x30 cm"),
                 "instruction4": ("Maximales Gewicht: 20 kg", "Maximum weight: 20 kg", "Peso massimo: 20 kg"),
                 
-                # Buttons
                 "scan_btn": ("Scan Starten", "Start Scan", "Avvia Scan"),
                 "save_btn": ("Lokal speichern", "Save Locally", "Salva localmente"),
                 "quit_btn": ("Programm beenden", "Quit Program", "Esci dal Programma"),
-                
-                # Status-Buttons
                 "check_camera": ("Kamera prüfen", "Check Camera", "Controlla Fotocamera"),
                 "check_light": ("Beleuchtung prüfen", "Check Lighting", "Controlla Illuminazione"),
                 "tara_scale": ("Waage tarieren", "Tare Scale", "Taratura Bilancia"),
                 "check_storage": ("Speicher prüfen", "Check Storage", "Controlla Memoria"),
                 
                 # Status-Werte
-                "ready": ("Bereit", "Ready", "Pronto"),
-                "active": ("Aktiv", "Active", "Attivo"),
+                "ready": ("Bereit", "Ready", "Pronto"), # Noch Platzhalter
+                "active": ("Aktiv", "Active", "Attivo"), # Noch platzhalter
                 "calibrated": ("Kalibriert", "Calibrated", "Calibrato"),
                 "connected": ("Verbunden", "Connected", "Connesso"),
                 "available": ("Verfügbar", "Available", "Disponibile"),
@@ -2271,7 +2268,7 @@ class FullscreenApp(QMainWindow):
 
                 # Falls keine ausgewählt (weil alle Checkboxen deaktiviert), dann alle verwenden (Fallback)
                 if not selected_barcodes:
-                    logger.warning("Kein Barcode ausgewählt – alle werden exportiert.")
+                    logger.warning("Kein Barcode ausgewählt - alle werden exportiert.")
                     selected_barcodes = self.all_barcodes
 
                 ean_codes = []
@@ -2380,10 +2377,10 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
     def go_next(self):
         """Geht zur nächsten Seite"""
         idx = self.stack.currentIndex()
-        logger.info(f"go_next: Aktuelle Seite {idx}, scan_start={self.scan_start}")
+        #logger.info(f"go_next: Aktuelle Seite {idx}, scan_start={self.scan_start}") # Debug Gründe
         
         if idx >= self.stack.count() - 1:
-            logger.info("Bereits auf letzter Seite")
+            #logger.info("Bereits auf letzter Seite") # Debug Gründe
             return
         
         # Von Startseite (Index 0) zu Foto-Auswahl (Index 1)
@@ -2560,7 +2557,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         self.worker = ParallelWorker(self.images, self.keep)
         self.worker.output_received.connect(self.handle_output)
         self.worker.progress_updated.connect(self.update_progress_bar)
-        self.worker.finished.connect(lambda: logger.info("Alle Tasks fertig"))
+        self.worker.finished.connect(lambda: logger.info("Alle Tasks fertig")) #Debug Gründe
         self.worker.start()
 
     def update_progress_bar(self, value: int):
@@ -2570,7 +2567,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
     def handle_output(self, script_name: str, data: Any):
         """Verarbeitet die Ergebnisse der Worker-Threads mit Barcode-Speicherung"""
-        logger.info(f"Ergebnis von {script_name} erhalten: Typ={type(data)}")
+        # logger.info(f"Ergebnis von {script_name} erhalten: Typ={type(data)}") #Debug Gründe
 
         if script_name == "barcode":
             logger.info(f"Barcode-Daten empfangen: {str(data)[:40]}...")
@@ -2638,12 +2635,9 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             logger.info(f"Gewicht: {data}")
         
         elif script_name == "volume":
-            if isinstance(data, dict):
-                logger.info(f"Volumendaten erhalten: {data}")
-                
+            if isinstance(data, dict):                
                 # Speichere die 3D-Abmessungen
                 if data.get("success"):
-                    print("Hallaidisakjdhjkasgdsflkhadkjfkj")
 
                     print(data.get("abmessung", "0 x 0 x 0"))
                     self.abmessung = data.get("abmessung", "0 x 0 x 0")
@@ -2655,7 +2649,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
                         
                     logger.info(f"3D-Abmessungen: {self.abmessung}")
                 else:
-                    logger.warning(f"Volumenmessung fehlgeschlagen: {data.get('error')}")
+                    logger.warning(f"Volumenmessung fehlgeschlagen: {data.get()}")
             else:
                 logger.error(f"Unerwartetes Format für Volumenmessung: {type(data)}")
 

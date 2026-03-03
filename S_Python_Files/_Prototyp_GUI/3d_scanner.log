@@ -5734,3 +5734,150 @@ NameError: name 'ean_codes' is not defined
 2026-02-23 20:53:41,318 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
 2026-02-23 20:53:48,911 - __main__ - INFO - Sprache geändert zu: it
 2026-02-23 20:53:56,214 - __main__ - INFO - Programm wird beendet
+2026-03-03 20:53:40,789 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-03 20:53:42,996 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-03 20:53:42,996 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-03-03 20:53:45,052 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-03-03 20:53:45,052 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-03 20:53:45,053 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-03 20:53:45,054 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:45,166 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:46,744 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-03 20:53:46,744 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:46,847 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:46,847 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-03-03 20:53:46,847 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-03-03 20:53:46,849 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-03-03 20:53:46,850 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-03 20:53:46,851 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:46,954 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:52,521 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-03 20:53:52,522 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:52,638 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:56,207 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-03-03 20:53:58,588 - __main__ - INFO - Wiederhole Bild 1
+2026-03-03 20:53:58,589 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-03 20:53:58,590 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:53:58,697 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:54:00,614 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-03 20:54:00,614 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:54:00,716 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:54:00,717 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-03-03 20:54:20,412 - __main__ - INFO - Wiederhole Bild 4
+2026-03-03 20:54:20,412 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-03 20:54:20,413 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:54:20,513 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:54:26,101 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-03 20:54:26,105 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:54:26,213 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 20:54:37,146 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-03-03 20:54:37,228 - workers.distanz_meassure03 - INFO - === Objektvermessung mit OAK-Kamera gestartet ===
+2026-03-03 20:54:37,238 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-03 20:54:37,240 - workers.distanz_meassure03 - INFO - Aktiven Index 1 aus Datei verwendet.
+2026-03-03 20:54:37,240 - workers.distanz_meassure03 - INFO - Kalibrierung fertig geladen
+2026-03-03 20:54:37,240 - workers.distanz_meassure03 - INFO - --- Messmodus gestartet ---
+2026-03-03 20:54:37,511 - __main__ - INFO - Ergebnis von weight erhalten: Typ=<class 'float'>
+2026-03-03 20:54:37,513 - __main__ - INFO - Gewicht: 1500.0
+2026-03-03 20:54:37,514 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-03 20:54:38,682 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-03 20:54:38,683 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-03-03 20:54:39,274 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-03 20:54:39,274 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-03-03 20:54:39,862 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-03 20:54:39,862 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-03-03 20:54:39,862 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 622.0 mm
+2026-03-03 20:54:39,866 - workers.distanz_meassure03 - WARNING - 3 Objekte in ROI. Verwende das größte.
+2026-03-03 20:54:39,868 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 47.3 x 111.9 x 50.0 mm
+2026-03-03 20:54:39,869 - workers.distanz_meassure03 - INFO -   Volumen: 264.7 cm³
+2026-03-03 20:54:40,465 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-03 20:54:40,466 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-03-03 20:54:41,251 - __main__ - INFO - Ergebnis von volume erhalten: Typ=<class 'dict'>
+2026-03-03 20:54:41,252 - __main__ - INFO - Volumendaten erhalten: {'volume': np.float64(0.2646918934513879), 'abmessung': '47.3 x 111.9 x 50.0', 'success': True, 'depth_frame': array([[0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0],
+       ...,
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0]], shape=(400, 640), dtype=uint16)}
+2026-03-03 20:54:41,254 - __main__ - INFO - 3D-Abmessungen: 47.3 x 111.9 x 50.0
+2026-03-03 20:54:41,254 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-03 20:54:41,414 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-03 20:54:41,414 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-03 20:54:41,419 - __main__ - INFO - Alle Tasks fertig
+2026-03-03 20:55:06,273 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-03-03 20:55:27,605 - __main__ - INFO - Sprache geändert zu: it
+2026-03-03 20:55:28,376 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-03 20:55:30,390 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-03-03 20:55:36,089 - __main__ - INFO - Sprache geändert zu: de
+2026-03-03 20:55:37,127 - __main__ - INFO - Sprache geändert zu: de
+2026-03-03 20:55:44,709 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-03 20:55:47,459 - __main__ - INFO - Programm wird beendet
+2026-03-03 21:02:22,825 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-03 21:02:25,085 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-03 21:02:25,086 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-03-03 21:02:26,786 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-03-03 21:02:26,788 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-03 21:02:26,788 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-03 21:02:26,789 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:02:26,893 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:02:28,820 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-03 21:02:28,821 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:02:28,935 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:02:28,937 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-03-03 21:02:28,937 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-03-03 21:02:28,938 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-03-03 21:02:28,939 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-03 21:02:28,940 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:02:29,045 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:02:34,582 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-03 21:02:34,583 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:02:34,686 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:02:38,576 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
+2026-03-03 21:02:38,592 - workers.distanz_meassure03 - INFO - === Objektvermessung mit OAK-Kamera gestartet ===
+2026-03-03 21:02:38,593 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-03 21:02:38,597 - workers.distanz_meassure03 - INFO - Aktiven Index 1 aus Datei verwendet.
+2026-03-03 21:02:38,597 - workers.distanz_meassure03 - INFO - Kalibrierung fertig geladen
+2026-03-03 21:02:38,598 - workers.distanz_meassure03 - INFO - --- Messmodus gestartet ---
+2026-03-03 21:02:38,906 - __main__ - INFO - Gewicht: 1500.0
+2026-03-03 21:02:38,909 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-03 21:02:39,130 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-03 21:02:39,131 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-03-03 21:02:39,612 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-03 21:02:39,612 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-03-03 21:02:40,118 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-03 21:02:40,119 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-03-03 21:02:40,715 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-03 21:02:40,716 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-03-03 21:02:41,168 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-03 21:02:41,168 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-03 21:02:41,306 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 626.0 mm
+2026-03-03 21:02:41,308 - workers.distanz_meassure03 - WARNING - 5 Objekte in ROI. Verwende das größte.
+2026-03-03 21:02:41,309 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 31.7 x 51.1 x 46.0 mm
+2026-03-03 21:02:41,309 - workers.distanz_meassure03 - INFO -   Volumen: 74.5 cm³
+2026-03-03 21:02:42,526 - __main__ - INFO - 3D-Abmessungen: 31.7 x 51.1 x 46.0
+2026-03-03 21:02:42,527 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-03 21:02:42,528 - __main__ - INFO - Alle Tasks fertig
+2026-03-03 21:02:44,992 - __main__ - INFO - go_next: Aktuelle Seite 2, scan_start=False
+2026-03-03 21:02:56,162 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-03 21:02:56,973 - __main__ - INFO - Programm wird beendet
+2026-03-03 21:04:05,430 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-03 21:04:07,629 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-03 21:04:07,631 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: True
+2026-03-03 21:04:08,985 - __main__ - INFO - go_next: Aktuelle Seite 0, scan_start=False
+2026-03-03 21:04:08,986 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-03 21:04:08,986 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-03 21:04:08,987 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:04:09,094 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:04:11,024 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-03 21:04:11,024 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:04:11,132 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:04:11,132 - __main__ - INFO - Bild erfolgreich von Kamera 0 aufgenommen
+2026-03-03 21:04:11,132 - __main__ - WARNING - Kamera 1 nicht verfügbar
+2026-03-03 21:04:11,133 - __main__ - WARNING - Kamera 2 nicht verfügbar
+2026-03-03 21:04:11,134 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-03 21:04:11,134 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:04:11,242 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:04:16,722 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-03 21:04:16,723 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:04:16,837 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-03 21:04:19,502 - __main__ - INFO - go_next: Aktuelle Seite 1, scan_start=True
