@@ -5,5 +5,7 @@
     "COLOR_TOLERANCE": 25,
     "MIN_AREA": 25,
     "GROUND_TOLERANCE_MM": 10,
-    "active_z_median_index": 2
+    "active_z_median_index": 1,
+    "roi_offset_x": 20,
+    "roi_offset_y": 0
 }

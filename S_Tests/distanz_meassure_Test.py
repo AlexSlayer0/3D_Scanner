@@ -26,6 +26,8 @@ DEFAULT_MIN_AREA = 25
 FALLBACK_FOCAL_LENGTH_PX = 580
 DEFAULT_GROUND_TOLERANCE_MM = 5
 DEFAULT_HUE_TOLERANCE = 5
+DEFAULT_OFFSET_X = 20
+DEFAULT_OFFSET_Y = 0
 
 def load_calibration():
     if not os.path.exists(CALIB_FILE):
@@ -37,7 +39,9 @@ def load_calibration():
             "COLOR_TOLERANCE": DEFAULT_COLOR_TOLERANCE,
             "MIN_AREA": DEFAULT_MIN_AREA,
             "ground_tolerance_mm": DEFAULT_GROUND_TOLERANCE_MM,
-            "hue_tolerance": DEFAULT_HUE_TOLERANCE
+            "hue_tolerance": DEFAULT_HUE_TOLERANCE,
+            "roi_offset_x": DEFAULT_OFFSET_X,
+            "roi_offset_y": DEFAULT_OFFSET_Y
         }
 
     try:
@@ -48,12 +52,16 @@ def load_calibration():
             "COLOR_TOLERANCE": data.get("COLOR_TOLERANCE", DEFAULT_COLOR_TOLERANCE),
             "MIN_AREA": data.get("MIN_AREA", DEFAULT_MIN_AREA),
             "ground_tolerance_mm": data.get("GROUND_TOLERANCE_MM", DEFAULT_GROUND_TOLERANCE_MM),
-            "hue_tolerance": data.get("HUE_TOLERANCE", DEFAULT_HUE_TOLERANCE)
+            "hue_tolerance": data.get("HUE_TOLERANCE", DEFAULT_HUE_TOLERANCE),
+            "roi_offset_x": data.get("roi_offset_x", DEFAULT_OFFSET_X),
+            "roi_offset_y": data.get("roi_offset_y", DEFAULT_OFFSET_Y)
         }
 
         z_list = data.get("z_median_liste")
         mm_list = data.get("mm_per_pixel_liste")
         focal_list = data.get("focal_length_pix")
+        offset_x = data.get("roi_offset_x", DEFAULT_OFFSET_X)
+        offset_y = data.get("roi_offset_y", DEFAULT_OFFSET_Y)
 
         if z_list and isinstance(z_list, list) and len(z_list) > 0:
             print("Mehrere z_median Werte gefunden:")
@@ -78,21 +86,11 @@ def load_calibration():
                         print("Ungültige Eingabe.")
 
             calib["z_median"] = z_list[selected]
+            calib["mm_per_pixel"] = mm_list[selected]
+            calib["focal_length_pix"] = focal_list[selected]
+            calib["roi_offset_x"] = data.get("roi_offset_x", 0)
+            calib["roi_offset_y"] = data.get("roi_offset_y", 0)
 
-            if mm_list and isinstance(mm_list, list) and len(mm_list) == len(z_list):
-                calib["mm_per_pixel"] = mm_list[selected]
-            else:
-                print("Warnung: mm_per_pixel_liste fehlt oder falsche Länge. Fallback auf Einzelwert.")
-                calib["mm_per_pixel"] = data.get("mm_per_pixel") or data.get("mm_per_pixel_763mm")
-
-            if isinstance(focal_list, list) and len(focal_list) == len(z_list):
-                calib["focal_length_pix"] = focal_list[selected]
-            else:
-                if focal_list is not None and not isinstance(focal_list, list):
-                    calib["focal_length_pix"] = focal_list
-                else:
-                    calib["focal_length_pix"] = FALLBACK_FOCAL_LENGTH_PX
-                    print(f"Warnung: focal_length_pix Liste fehlt. Verwende Fallback {FALLBACK_FOCAL_LENGTH_PX} px.")
         else:
             # Alte Struktur
             calib["z_median"] = data.get("z_median")
@@ -100,15 +98,16 @@ def load_calibration():
             calib["focal_length_pix"] = data.get("focal_length_pix", FALLBACK_FOCAL_LENGTH_PX)
 
         print("Kalibrierung geladen:")
-        if calib["z_median"] is not None:
-            print(f"   z_median = {calib['z_median']:.1f} mm")
-        if calib["mm_per_pixel"] is not None:
-            print(f"   mm_per_pixel = {calib['mm_per_pixel']:.4f} mm/px")
+
+        print(f"   z_median = {calib['z_median']:.1f} mm")
+        print(f"   mm_per_pixel = {calib['mm_per_pixel']:.4f} mm/px")
         print(f"   focal_length_pix = {calib['focal_length_pix']:.1f} px")
         print(f"   COLOR_TOLERANCE = {calib['COLOR_TOLERANCE']}")
         print(f"   MIN_AREA = {calib['MIN_AREA']}")
         print(f"   GROUND_TOLERANCE_MM = {calib['ground_tolerance_mm']} mm")
         print(f"   HUE_TOLERANCE = {calib['hue_tolerance']}")
+        print(f"   ROI Offset X = {calib['roi_offset_x']} px, Y = {calib['roi_offset_y']} px")
+
         return calib
 
     except Exception as e:
@@ -197,7 +196,11 @@ def direct_mode(calib):
         h, w = depth_frame.shape
 
         # ROI in der Mitte (wie im Live-Modus)
-        cx, cy = w // 2, h // 2
+        #cx, cy = w // 2, h // 2 Ohne Offset
+        #Mit Offset - da Linke Kamera, als Mittelpunkt des ROIs ausgehend, muss der Offset hier positiv sein, um die ROI nach rechts zu verschieben, und negativ für eine Verschiebung nach links
+        cx = w // 2 + calib["roi_offset_x"]
+        cy = h // 2 + calib["roi_offset_y"]
+
         half = ROI_SIZE // 2
         x1 = max(0, cx - half)
         y1 = max(0, cy - half)
@@ -344,7 +347,13 @@ def live_mode(calib):
             depth_frame = in_depth.getFrame()          # in mm
 
             h, w = disparity_frame.shape
-            cx, cy = w // 2, h // 2
+            #cx, cy = w // 2, h // 2 #Ohne Offset
+
+            # Mit Offset - da Linke Kamera, als Mittelpunkt des ROIs ausgehend, muss der Offset hier positiv sein, um die ROI nach rechts zu verschieben, und negativ für eine Verschiebung nach links
+            cx = w // 2 + calib["roi_offset_x"]
+            cy = h // 2 + calib["roi_offset_y"]
+
+
             half = ROI_SIZE // 2
             x1 = max(0, cx - half)
             y1 = max(0, cy - half)
@@ -366,6 +375,10 @@ def live_mode(calib):
 
             # ---------- VISUALISIERUNG (blau/weiß) ----------
             vis_img = np.full((h, w, 3), 255, dtype=np.uint8)   # weißer Hintergrund
+
+            # Fadenkreuz in der Mitte
+            cv2.line(vis_img, (cx-10, cy), (cx+10, cy), (0,0,0), 1)
+            cv2.line(vis_img, (cx, cy-10), (cx, cy+10), (0,0,0), 1)
 
             obj_mask = None
             if z_median_mm is not None:
