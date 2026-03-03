@@ -1,4 +1,4 @@
-# workers/BarCode_v03.py - Optimierte Version
+# workers/BarCode_v03.py
 import cv2
 import contextlib
 from PIL import Image

@@ -15,19 +15,25 @@ import depthai as dai
 import numpy as np
 import os
 import json
+import logging
+
+# Logger Setup
+logger = logging.getLogger(__name__)
 
 CALIB_FILE = "distanz_calibration.json"
 ROI_SIZE = 250  # Pixel für die zentrierte ROI
 
 # Standardwerte
-DEFAULT_COLOR_TOLERANCE = 25      # nicht mehr für Segmentierung genutzt, aber für Kompatibilität
+DEFAULT_COLOR_TOLERANCE = 25
 DEFAULT_MIN_AREA = 25
 FALLBACK_FOCAL_LENGTH_PX = 580
 DEFAULT_GROUND_TOLERANCE_MM = 10
+DEFAULT_OFFSET_X = 0
+DEFAULT_OFFSET_Y = 0
 
 def load_calibration():
     if not os.path.exists(CALIB_FILE):
-        print(f"{CALIB_FILE} nicht gefunden. Verwende Standardwerte.")
+        logger.warning(f"{CALIB_FILE} nicht gefunden. Verwende Standardwerte.")
         return {
             "z_median": None,
             "mm_per_pixel": None,
@@ -35,49 +41,45 @@ def load_calibration():
             "COLOR_TOLERANCE": DEFAULT_COLOR_TOLERANCE,
             "MIN_AREA": DEFAULT_MIN_AREA,
             "ground_tolerance_mm": DEFAULT_GROUND_TOLERANCE_MM,
+            "roi_offset_x": DEFAULT_OFFSET_X,
+            "roi_offset_y": DEFAULT_OFFSET_Y,
         }
 
     try:
         with open(CALIB_FILE, "r") as f:
             data = json.load(f)
+        logger.info(f"Kalibrierungsdatei {CALIB_FILE} geladen.")
 
         calib = {
             "COLOR_TOLERANCE": data.get("COLOR_TOLERANCE", DEFAULT_COLOR_TOLERANCE),
             "MIN_AREA": data.get("MIN_AREA", DEFAULT_MIN_AREA),
             "ground_tolerance_mm": data.get("GROUND_TOLERANCE_MM", DEFAULT_GROUND_TOLERANCE_MM),
+            "roi_offset_x": data.get("roi_offset_x", DEFAULT_OFFSET_X),
+            "roi_offset_y": data.get("roi_offset_y", DEFAULT_OFFSET_Y),
         }
 
         z_list = data.get("z_median_liste")
         mm_list = data.get("mm_per_pixel_liste")
         focal_list = data.get("focal_length_pix")
 
-        print("Mehrere z_median Werte gefunden:")
-        for i, z in enumerate(z_list):
-            print(f"  {i}: {z} mm")
+        # for i, z in enumerate(z_list):
+            # logger.info(f"  Index {i}: z_median = {z:.1f} mm")
+        # logger.info(f"{len(z_list)} z_median Werte gefunden.")
 
         active = data.get("active_z_median_index")
         if active is not None and 0 <= active < len(z_list):
             selected = active
-            print(f"Verwende aktiven Index {selected} aus Datei.")
+            logger.info(f"Aktiven Index {selected} aus Datei verwendet.")
         else:
-            while True:
-                try:
-                    sel = input(f"Bitte wählen Sie den gewünschten Index (0-{len(z_list)-1}): ").strip()
-                    if sel == "":
-                        sel = "0"
-                    selected = int(sel)
-                    if 0 <= selected < len(z_list):
-                        break
-                    print(f"Index muss zwischen 0 und {len(z_list)-1} liegen.")
-                except ValueError:
-                    print("Ungültige Eingabe.")
+            selected = 0
+            logger.warning(f"Kein gültiger active_z_median_index. Verwende Index {selected}.")
 
         calib["z_median"] = z_list[selected]
 
         if mm_list and isinstance(mm_list, list) and len(mm_list) == len(z_list):
             calib["mm_per_pixel"] = mm_list[selected]
         else:
-            print("Warnung: mm_per_pixel_liste fehlt oder falsche Länge. Fallback auf Einzelwert.")
+            logger.warning("mm_per_pixel_liste fehlt oder falsche Länge. Fallback auf Einzelwert.")
             calib["mm_per_pixel"] = data.get("mm_per_pixel") or data.get("mm_per_pixel_763mm")
 
         if isinstance(focal_list, list) and len(focal_list) == len(z_list):
@@ -87,22 +89,21 @@ def load_calibration():
                 calib["focal_length_pix"] = focal_list
             else:
                 calib["focal_length_pix"] = FALLBACK_FOCAL_LENGTH_PX
-                print(f"Warnung: focal_length_pix Liste fehlt. Verwende Fallback {FALLBACK_FOCAL_LENGTH_PX} px.")
+                logger.warning(f"focal_length_pix Liste fehlt. Verwende Fallback {FALLBACK_FOCAL_LENGTH_PX} px.")
 
-
-        print("Kalibrierung geladen:")
-        if calib["z_median"] is not None:
-            print(f"   z_median = {calib['z_median']:.1f} mm")
-        if calib["mm_per_pixel"] is not None:
-            print(f"   mm_per_pixel = {calib['mm_per_pixel']:.4f} mm/px")
-        print(f"   focal_length_pix = {calib['focal_length_pix']:.1f} px")
-        print(f"   COLOR_TOLERANCE = {calib['COLOR_TOLERANCE']}")
-        print(f"   MIN_AREA = {calib['MIN_AREA']}")
-        print(f"   GROUND_TOLERANCE_MM = {calib['ground_tolerance_mm']} mm")
+        logger.info("Kalibrierung fertig geladen")
+        #logger.info(f"   z_median = {calib['z_median']:.1f} mm")
+        # logger.info(f"   mm_per_pixel = {calib['mm_per_pixel']:.4f} mm/px")
+        # logger.info(f"   focal_length_pix = {calib['focal_length_pix']:.1f} px")
+        # logger.info(f"   COLOR_TOLERANCE = {calib['COLOR_TOLERANCE']}")
+        # logger.info(f"   MIN_AREA = {calib['MIN_AREA']}")
+        # logger.info(f"   GROUND_TOLERANCE_MM = {calib['ground_tolerance_mm']} mm")
+        # logger.info(f"   ROI Offset X = {calib['roi_offset_x']}")
+        # logger.info(f"   ROI Offset Y = {calib['roi_offset_y']}")
         return calib
 
     except Exception as e:
-        print(f"Fehler beim Lesen von {CALIB_FILE}: {e}")
+        logger.error(f"Fehler beim Lesen von {CALIB_FILE}: {e}")
         return {
             "z_median": None,
             "mm_per_pixel": None,
@@ -110,6 +111,8 @@ def load_calibration():
             "COLOR_TOLERANCE": DEFAULT_COLOR_TOLERANCE,
             "MIN_AREA": DEFAULT_MIN_AREA,
             "ground_tolerance_mm": DEFAULT_GROUND_TOLERANCE_MM,
+            "roi_offset_x": DEFAULT_OFFSET_X,
+            "roi_offset_y": DEFAULT_OFFSET_Y,
         }
 
 def compute_object_size_mm(bbox_px, depth_value_mm, focal_length_px):
@@ -121,12 +124,14 @@ def compute_object_size_mm(bbox_px, depth_value_mm, focal_length_px):
 def direct_mode(calib):
     """Einmalige Messung ohne Benutzerinteraktion - nutzt zentrierte ROI.
        Rückgabe: Dictionary mit Messergebnissen oder Fehlerstatus."""
-    print("\n--- Direkter Messmodus ---")
+    logger.info("--- Messmodus gestartet ---")
     z_median_mm = calib["z_median"]
     focal_length = calib["focal_length_pix"]
     mm_per_pixel = calib["mm_per_pixel"]
     min_area = calib["MIN_AREA"]
     ground_tolerance = calib["ground_tolerance_mm"]
+    offset_x = calib["roi_offset_x"]
+    offset_y = calib["roi_offset_y"]
 
     # Ergebnis-Dictionary vorbereiten
     result = {
@@ -142,7 +147,7 @@ def direct_mode(calib):
 
     if z_median_mm is None:
         err_msg = "Kein z_median aus Kalibrierung vorhanden. Messung nicht möglich."
-        print("Fehler:", err_msg)
+        logger.error(err_msg)
         result["error"] = err_msg
         return result
 
@@ -184,7 +189,6 @@ def direct_mode(calib):
 
     try:
         with dai.Device(pipeline) as device:
-            print("Starte Device für direkte Messung...")
             q_depth = device.getOutputQueue(name="depth", maxSize=4, blocking=False)
             in_depth = q_depth.get()
             depth_frame = in_depth.getFrame()          # in mm
@@ -193,14 +197,20 @@ def direct_mode(calib):
             result["depth_frame"] = depth_frame
 
             h, w = depth_frame.shape
+            #logger.info(f"Bildgröße: {w} x {h}")
 
-            # ROI in der Mitte (wie im Live-Modus)
-            cx, cy = w // 2, h // 2
+            # ROI mit Offset berechnen (Verschiebung relativ zur Bildmitte)
+            cx = w // 2 + offset_x
+            cy = h // 2 + offset_y
             half = ROI_SIZE // 2
             x1 = max(0, cx - half)
             y1 = max(0, cy - half)
             x2 = min(w, cx + half)
             y2 = min(h, cy + half)
+
+            # Prüfen, ob die ROI noch im Bild liegt (wenn nicht, wird sie beschnitten)
+            if x2 - x1 < ROI_SIZE or y2 - y1 < ROI_SIZE:
+                logger.warning("ROI durch Bildrand beschnitten.")
 
             # Nur ROI betrachten
             roi_depth = depth_frame[y1:y2, x1:x2].copy()
@@ -209,11 +219,11 @@ def direct_mode(calib):
             valid_roi = roi_depth[roi_depth > 0]
             if valid_roi.size == 0:
                 err_msg = "Keine gültigen Tiefenwerte in der ROI."
-                print("Fehler:", err_msg)
+                logger.error(err_msg)
                 result["error"] = err_msg
                 return result
             ground_z = np.min(valid_roi)
-            print(f"Grund (min. Tiefe in ROI): {ground_z:.1f} mm")
+            logger.info(f"Grund (min. Tiefe in ROI): {ground_z:.1f} mm")
 
             # 2. Maske für Objekte über Grund (nur ROI)
             obj_mask_roi = (roi_depth < (z_median_mm - ground_tolerance)) & (roi_depth > 0)
@@ -227,13 +237,13 @@ def direct_mode(calib):
 
             if not valid_contours:
                 err_msg = "Kein Objekt über Grund in der ROI gefunden."
-                print("Fehler:", err_msg)
+                logger.error(err_msg)
                 result["error"] = err_msg
                 return result
 
             # 5. Objektauswahl: Wenn mehrere, nimm das mit der größten Fläche
             if len(valid_contours) > 1:
-                print(f"Warnung: {len(valid_contours)} Objekte in ROI. Verwende das größte.")
+                logger.warning(f"{len(valid_contours)} Objekte in ROI. Verwende das größte.")
                 selected_contour = max(valid_contours, key=cv2.contourArea)
             else:
                 selected_contour = valid_contours[0]
@@ -246,7 +256,7 @@ def direct_mode(calib):
             (center_x, center_y), (w_px, h_px), angle = rect
             w_px = abs(w_px)
             h_px = abs(h_px)
-            print(f"Pixelmaße (gedrehte Box): {w_px:.1f} x {h_px:.1f} px")
+            #logger.info(f"Pixelmaße (gedrehte Box): {w_px:.1f} x {h_px:.1f} px")
 
             # 7. Tiefenwerte im gesamten Objekt (nicht nur ROI)
             single_mask = np.zeros_like(depth_frame, dtype=np.uint8)
@@ -261,15 +271,16 @@ def direct_mode(calib):
             if valid_obj.size > 0:
                 depth_median_mm = np.median(valid_obj)
                 width_mm, height_mm = compute_object_size_mm((0, 0, w_px, h_px), depth_median_mm, focal_length)
+                #logger.info(f"Tiefenmedian im Objekt: {depth_median_mm:.1f} mm")
             else:
-                print("Keine automatischen Tiefenwerte im Objekt.")
+                logger.warning("Keine automatischen Tiefenwerte im Objekt.")
                 if mm_per_pixel is not None:
-                    print("Fallback: Berechnung mit mm_per_pixel aus Kalibrierung")
+                    logger.info("Fallback: Berechnung mit mm_per_pixel aus Kalibrierung")
                     width_mm = w_px * mm_per_pixel
                     height_mm = h_px * mm_per_pixel
                 else:
                     err_msg = "Kein Fallback verfügbar. Keine metrischen Maße."
-                    print(err_msg)
+                    logger.error(err_msg)
                     result["error"] = err_msg
                     return result
 
@@ -288,30 +299,30 @@ def direct_mode(calib):
             result["volume"] = volume_cm3
             result["abmessung"] = f"{height_mm:.1f} x {width_mm:.1f} x {hoehe_ueber_grund_obj:.1f}"
 
-            # Ausgabe (optional, kann für Debug bleiben)
-            print("\n*** MESSERGEBNISSE (mm) ***")
-            print(f"  (Tiefenfilter: Tiefe < {z_median_mm - ground_tolerance:.1f} mm)")
-            print(f"\n  Objektmaße (Länge x Breite x Höhe): {height_mm:.1f} x {width_mm:.1f} x {hoehe_ueber_grund_obj:.1f} mm")
-            print(f"  Volumen: {volume_cm3:.1f} cm³")
+            # Ausgabe
+            #logger.info("*** MESSERGEBNISSE (mm) ***")
+            #logger.info(f"  (Tiefenfilter: Tiefe < {z_median_mm - ground_tolerance:.1f} mm)")
+            logger.info(f"  Objektmaße (Länge x Breite x Höhe): {height_mm:.1f} x {width_mm:.1f} x {hoehe_ueber_grund_obj:.1f} mm")
+            logger.info(f"  Volumen: {volume_cm3:.1f} cm³")
 
     except Exception as e:
         err_msg = f"Fehler während der Messung: {str(e)}"
-        print(err_msg)
+        logger.exception(err_msg)  # Loggt auch den Traceback
         result["error"] = err_msg
-        # depth_frame bleibt None oder bereits gesetzt? Im Fehlerfall nicht.
     finally:
         cv2.destroyAllWindows()
-
     return result
+
 
 def main():
     """Hauptfunktion, die von aussen aufgerufen wird.
        Rückgabe: Dictionary mit Messergebnissen."""
-    print("=== Objektvermessung mit OAK-Kamera ===")
+    if not logging.getLogger().handlers:
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logger.info("=== Objektvermessung mit OAK-Kamera gestartet ===")
     calib = load_calibration()
     return direct_mode(calib)
 
 if __name__ == "__main__":
-    # Wenn direkt ausgeführt, die Messung starten und Ergebnis ausgeben.
     res = main()
-    print("\nFINAL RESULT:", res)
+    print(res)

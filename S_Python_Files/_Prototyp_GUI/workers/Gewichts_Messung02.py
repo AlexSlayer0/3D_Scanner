@@ -1,3 +1,5 @@
+# Gewichts_Messung02.py
+
 from operator import index
 import sys
 import time
