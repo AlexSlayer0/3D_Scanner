@@ -10,7 +10,6 @@ import os # Für Dateipfade und Betriebssysteminteraktionen
 import csv # Für CSV-Verarbeitung (SAP-Integration)
 import sys
 import time
-from tkinter import dialog # Für Verzögerungen
 import cv2 # Für Kamerazugriff und Bildverarbeitung
 import json
 import serial # Für Beleuchtung
@@ -31,8 +30,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QIcon, QKeySequence, QShortcut, QMovie, QImage
 from PyQt6.QtCore import Qt, QSize, QThread, pyqtSignal, QTimer
-from torch import layout
-from torch import layout
+
 
 
 # OpenCV-Warnungen reduzieren
@@ -721,12 +719,28 @@ class ParallelWorker(QThread):
             return {"barcodes": []}
     
     def _run_weight_task(self):
-        """Führt Gewichtsmessung durch Wichtig -------------------------- 20 wert erst nehmen durch tiefpassd und somit genau messung durchführen ca. 0.05 s delay dazwischen für stabilisierung der messung"""
+        """Führt die Gewichtsmessung durch.
+        
+        - 20 Messwerte sammeln mit 0,05 s Abstand
+        - Tiefpass (gleitender Mittelwert) glättet die Werte
+        - Aus den letzten 3 Werten Median/Mittelwert für stabiles Ergebnis
+        """
         try:
             import workers.Gewichts_Messung02
-            weight = workers.Gewichts_Messung02.get_weight()
-            if weight is not None:
-                weight = round(weight, 3)
+            
+            raw_values = []
+            for _ in range(20):
+                value = workers.Gewichts_Messung02.get_weight()
+                if value is not None:
+                    raw_values.append(value)
+                time.sleep(0.05)
+            
+            if len(raw_values) < 3:
+                return {"weight": "Undefiniert"}
+
+            # Endwert: Median oder Mittelwert   Letzte 3 Werte auswählen
+            weight = round(float(np.median(raw_values[-3:])), 3)  # Median
+            
             return {"weight": weight}
 
         except ImportError as e:
@@ -735,6 +749,8 @@ class ParallelWorker(QThread):
         except Exception as e:
             logger.error(f"Gewicht Task Fehler: {e}")
             return {"weight": "Undefiniert"}
+        
+
     
     def _process_result(self, task_type: str, result: dict):
         """Verarbeitet Ergebnisse der Tasks"""

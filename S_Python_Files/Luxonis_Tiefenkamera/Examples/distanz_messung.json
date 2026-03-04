@@ -5,5 +5,12 @@
     "min_mm": 722,
     "max_mm": 1040,
     "pixel_count": 56398
+  },
+  {
+    "timestamp": "20260304_185521",
+    "mean_mm": 680.6726473961472,
+    "min_mm": 635,
+    "max_mm": 797,
+    "pixel_count": 51443
   }
 ]

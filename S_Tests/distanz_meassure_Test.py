@@ -287,7 +287,7 @@ def live_mode(calib):
     print("\nLive-Modus gestartet. Drücke:")
     print("   'c' - Objektvermessung durch Klick im blau/weiß Bild")
     print("   'q' - Beenden")
-    print("   (Die ROI-Anzeige mit Höhe über Grund läuft dauerhaft)")
+    print("   (Die ROI-Anzeige mit Hoehe über Grund läuft dauerhaft)")
 
     z_median_mm = calib["z_median"]
     focal_length = calib["focal_length_pix"]
@@ -368,9 +368,9 @@ def live_mode(calib):
             # Höhe über Grund (ROI)
             if z_median_mm is not None and not np.isnan(min_z):
                 hoehe = z_median_mm - min_z
-                text_hoehe = f"Höhe über Grund: {hoehe:.1f} mm"
+                text_hoehe = f"Hoehe ueber Grund: {hoehe:.1f} mm"
             else:
-                text_hoehe = "Höhe über Grund: ---"
+                text_hoehe = "Hoehe ueber Grund: ---"
             text_minz = f"min_z: {min_z:.1f} mm" if not np.isnan(min_z) else "min_z: ---"
 
             # ---------- VISUALISIERUNG (blau/weiß) ----------
