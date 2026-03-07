@@ -1,1 +1,1 @@
-To do\- Praktische Umsetzung 	**- Box Bau** 		- Grafiken 	**- Gehäusemontage** 		- VerkabelungBetriebsanleitungFertigungsunterlagen PDF
+To doKI RechtsschreibüberprüfungBetriebsanleitungFertigungsunterlagen PDFQuellenverzeichnis
