@@ -1,1 +1,1 @@
-To do\- Praktische Umsetzung 	- Fertigungsunterlagen 	- Gehäuse Planung 	**- Box Bau**&nbsp;		- Grafiken 	**- Gehäusemontage** 		- VerkabelungBetriebsanleitung
+To do\- Praktische Umsetzung 	**- Box Bau** 		- Grafiken 	**- Gehäusemontage** 		- VerkabelungBetriebsanleitungFertigungsunterlagen PDF
