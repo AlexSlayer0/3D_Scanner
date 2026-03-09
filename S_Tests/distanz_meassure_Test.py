@@ -13,6 +13,7 @@ Objektvermessung mit OAK-Kamera
 import cv2
 import depthai as dai
 import numpy as np
+import time
 import os
 import json
 import sys                          # für Kommandozeilenargumente
@@ -186,10 +187,13 @@ def direct_mode(calib):
     monoRight.out.link(stereo.right)
     stereo.disparity.link(xout_disparity.input)
     stereo.depth.link(xout_depth.input)
+    
 
     with dai.Device(pipeline) as device:
         print("Starte Device für direkte Messung...")
         q_depth = device.getOutputQueue(name="depth", maxSize=4, blocking=False)
+        time.sleep(2)
+
         in_depth = q_depth.get()
         depth_frame = in_depth.getFrame()          # in mm
 
@@ -337,6 +341,8 @@ def live_mode(calib):
 
         q_disparity = device.getOutputQueue(name="disparity", maxSize=4, blocking=False)
         q_depth = device.getOutputQueue(name="depth", maxSize=4, blocking=False)
+        time.sleep(2)
+
 
         max_disp = stereo.initialConfig.getMaxDisparity()
 

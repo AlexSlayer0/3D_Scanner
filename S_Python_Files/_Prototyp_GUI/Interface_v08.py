@@ -277,7 +277,8 @@ class CameraManager:
         self.debug_single_camera = debug_single_camera
         self.oak_available = False
         self.available_cameras = self._find_cameras()
-        
+        self.usb_camera_indices = self.available_cameras.copy()   # die echten Indizes
+
         # Serielle Verbindung für Blitz-Steuerung initialisieren
         self.serial_port = None
         logger.info(f"Verfügbare Kameras gefunden: {self.available_cameras}, OAK-D2: {self.oak_available}")
@@ -327,27 +328,33 @@ class CameraManager:
             return cv2.CAP_DSHOW
         return cv2.CAP_V4L2  # Besser für Linux
 
+    
     def _find_cameras(self) -> List[int]:
-        """Findet verfügbare Kameras"""
-        available: List[int] = []
+        """Findet alle Video-Devices, die ein Bild liefern, und gibt deren Indizes zurück."""
+        available = []
         backend = self._get_camera_backend()
-        
-        for i in range(CONFIG.NUM_CAMERAS-1):  # Letzte Kamera ist OAK-D2
+        # Prüfe einen greroßen Bereich (z. B. 0..9), wegen Metadaten und videodaten
+        for i in range(10):
             try:
                 cap = cv2.VideoCapture(i, backend)
                 if cap.isOpened():
+                    # Versuche einen Frame zu lesen & nur dann gilt die Kamera als verfügbar
                     ret, _ = cap.read()
                     if ret:
                         available.append(i)
+                        logger.debug(f"Kamera {i} verfügbar und liefert Bild")
+                    else:
+                        logger.debug(f"Kamera {i} geöffnet, aber erster Frame fehlgeschlagen")
                     cap.release()
                 else:
                     cap.release()
             except Exception as e:
                 logger.warning(f"Fehler beim Zugriff auf Kamera {i}: {e}")
-        
-        # OAK-D2 prüfen
+    
+        # OAK-D2 separat prüfen (bleibt unverändert)
         self._check_oak_availability()
-        
+    
+        logger.info(f"Verfügbare USB-Kameras (Indizes): {available}")
         return available
     
     def _check_oak_availability(self):
@@ -443,66 +450,48 @@ class CameraManager:
                    (255, 255, 255), 2)
         return img
 
+    
     def take_picture(self, camera_id: int) -> np.ndarray:
-        """Nimmt ein Bild mit der angegebenen Kamera auf"""
-        
-        # Spezialfall: OAK-D2 (letzte Kamera) - hat eigene Lichtsteuerung
-        if camera_id == CONFIG.NUM_CAMERAS - 1:  # Letzte Kamera ist OAK-D2
+        # Spezialfall OAK-D2
+        if camera_id == CONFIG.NUM_CAMERAS - 1:
             if self.oak_available:
-                oak_img = self._take_oak_picture()  # Licht wird hier gesteuert
+                oak_img = self._take_oak_picture()
                 if oak_img is not None:
                     return oak_img
-                else:
-                    logger.warning(f"OAK-D2 Bildaufnahme fehlgeschlagen")
-                    return self._make_placeholder(camera_id)
-            else:
-                logger.warning(f"OAK-D2 nicht verfügbar")
-                return self._make_placeholder(camera_id)
-        
-        # Normale USB-Kameras - mit Licht
-        if camera_id not in self.available_cameras:
-            logger.warning(f"Kamera {camera_id} nicht verfügbar")
             return self._make_placeholder(camera_id)
-        
-        # Licht für USB-Kamera einschalten
+
+        # USB-Kameras: logical index -> real device index
+        if camera_id >= len(self.usb_camera_indices):
+            logger.warning(f"Kamera-Index {camera_id} nicht verfügbar (nur {len(self.usb_camera_indices)} USB-Kameras)")
+            return self._make_placeholder(camera_id)
+    
+        real_index = self.usb_camera_indices[camera_id]
+    
+        # Licht einschalten, aufnehmen, etc. (wie bisher, aber mit real_index)
         self._control_light(True)
-        time.sleep(0.3)  # Kurze Pause für Licht-Stabilisierung
-        
-        backend = self._get_camera_backend()
-        
+        time.sleep(0.3)
         try:
-            cap = cv2.VideoCapture(camera_id, backend)
+            cap = cv2.VideoCapture(real_index, self._get_camera_backend())
             if not cap.isOpened():
-                logger.error(f"Kamera {camera_id} konnte nicht geöffnet werden")
+                logger.error(f"Kamera {real_index} (logisch {camera_id}) konnte nicht geöffnet werden")
                 cap.release()
-                self._control_light(False)  # Licht ausschalten bei Fehler
+                self._control_light(False)
                 return self._make_placeholder(camera_id)
-            
-            # Kurze Verzögerung für Kamera-Initialisierung
-            time.sleep(0.2)
-            
-            # Bild mit erhöhter Belichtung für Blitz
-            cap.set(cv2.CAP_PROP_EXPOSURE, 0.1)  # Kurze Belichtung
+        
+            cap.set(cv2.CAP_PROP_EXPOSURE, 0.1)
             ret, frame = cap.read()
             cap.release()
-            
-            # Licht nach Aufnahme ausschalten
             self._control_light(False)
-            
+        
             if ret:
-                logger.info(f"Bild erfolgreich von Kamera {camera_id} aufgenommen")
+                logger.info(f"Bild von Kamera {real_index} (logisch {camera_id}) aufgenommen")
                 return frame
             else:
-                logger.error(f"Bildaufnahme von Kamera {camera_id} fehlgeschlagen")
+                logger.error(f"Bildaufnahme von Kamera {real_index} fehlgeschlagen")
                 return self._make_placeholder(camera_id)
-                
         except Exception as e:
-            logger.error(f"Fehler bei Bildaufnahme von Kamera {camera_id}: {e}")
-            # Sicherheitshalber Licht ausschalten
-            try:
-                self._control_light(False)
-            except:
-                pass
+            logger.error(f"Fehler bei Bildaufnahme: {e}")
+            self._control_light(False)
             return self._make_placeholder(camera_id)
 
     def take_all_pictures(self) -> List[np.ndarray]:
@@ -2797,22 +2786,9 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
         def check_and_close():
             # Test für USB-Kameras
-            usb_count = 0
-            for i in range(CONFIG.NUM_CAMERAS-1):
-                try:
-                    cap = cv2.VideoCapture(i, cv2.CAP_V4L2)
-                    if cap.isOpened():
-                        cap.release()
-                        usb_count += 1
-                except:
-                    pass
-
-            oak = False
-            try:
-                verfügbar = len(dai.Device.getAllAvailableDevices()) > 0
-                oak = verfügbar
-            except:
-                pass
+            usb_indices = self.camera._find_cameras()
+            usb_count = len(usb_indices)
+            oak = self.camera.oak_available              
 
             dialog.accept()
 

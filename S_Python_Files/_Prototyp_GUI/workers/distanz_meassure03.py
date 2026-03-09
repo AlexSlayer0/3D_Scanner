@@ -15,6 +15,7 @@ import depthai as dai
 import numpy as np
 import os
 import json
+import time
 import logging
 
 # Logger Setup
@@ -190,7 +191,10 @@ def direct_mode(calib):
     try:
         with dai.Device(pipeline) as device:
             q_depth = device.getOutputQueue(name="depth", maxSize=4, blocking=False)
-            in_depth = q_depth.get()
+            
+            time.sleep(2) # warte auf konstantes Tiefen frame
+            
+            in_depth = q_depth.get()            
             depth_frame = in_depth.getFrame()          # in mm
 
             # Tiefenframe für eventuelle Visualisierung merken
