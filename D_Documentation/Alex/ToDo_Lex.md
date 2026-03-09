@@ -2,21 +2,11 @@ To do
 
 
 
-\- Praktische Umsetzung
-
- 	**- Projektplanung genauer**
-
- 	- Fertigungsunterlagen
-
- 	- Gehäuse Planung
-
- 	**- Box Bau**
-
- 	**- Gehäusemontage**
-
- 		- Verkabelung
 
 
+KI Rechtsschreibüberprüfung
 
 Betriebsanleitung
+
+Quellenverzeichnis
 
