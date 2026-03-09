@@ -2222,7 +2222,7 @@ class FullscreenApp(QMainWindow):
                     logger.info(f"Neue CSV-Datei erstellt: {csv_datei}")
                 
                 # 8. Alle Bilder speichern und Pfade merken
-                image_names = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
+                image_names = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"] # Vielleicht später anpassen oder erweitern
                 bild_pfade = {}
     
                 for idx, img in enumerate(self.images):
@@ -2665,7 +2665,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
                         
                     logger.info(f"3D-Abmessungen: {self.abmessung}")
                 else:
-                    logger.warning(f"Volumenmessung fehlgeschlagen: {data.get()}")
+                    logger.warning(f"Volumenmessung fehlgeschlagen: {data.get('message', 'Keine Fehlermeldung')}")
             else:
                 logger.error(f"Unerwartetes Format für Volumenmessung: {type(data)}")
 
