@@ -2,8 +2,7 @@
 """=======TODO-Liste v0.8=======
 SAP-Integration                 (Platzhalter-Button/optional)
 Lokal speichern Integration     (Formatierung?)
-4k bild wird nach wiederholung nicht richtig beim kamera manager aktualisiert nach einem scan und dann wieederholt.
-Licht passt
+Neu beginnen nicht message auf datenverlust sondern direkt zurück zur startseite (mit bestätigung)
 ================================"""
 
 import os # Für Dateipfade und Betriebssysteminteraktionen
@@ -113,7 +112,7 @@ class TranslationManager:
                 "instruction4": ("Maximales Gewicht: 20 kg", "Maximum weight: 20 kg", "Peso massimo: 20 kg"),
                 
                 "scan_btn": ("Scan Starten", "Start Scan", "Avvia Scan"),
-                "save_btn": ("Lokal speichern", "Save Locally", "Salva localmente"),
+                "instruction_btn": ("Anweisungen", "Instructions", "Istruzioni"),
                 "quit_btn": ("Programm beenden", "Quit Program", "Esci dal Programma"),
                 "check_camera": ("Kamera prüfen", "Check Camera", "Controlla Fotocamera"),
                 "check_light": ("Beleuchtung prüfen", "Check Lighting", "Controlla Illuminazione"),
@@ -208,6 +207,10 @@ class TranslationManager:
                 # Datenverlust
                 "data_loss_confirm": ("Datenverlust bestätigen", "Confirm Data Loss", "Conferma Perdita Dati"),
                 "data_loss_message": ("Möchten Sie wirklich zurück zur Startseite? Alle erfassten Daten gehen verloren.", "Do you really want to go back to the start page? All captured data will be lost.", "Vuoi davvero tornare alla pagina iniziale? Tutti i dati acquisiti saranno persi."),
+                
+                # Daten gespeichert zurück zur Startseite
+                "data_saved_confirm": ("Daten gespeichert", "Data Saved", "Dati Salvati"),
+                "data_saved_message": ("Die Daten wurden erfolgreich gespeichert. Möchten Sie wirklich zurück zur Startseite? ", "The data has been saved successfully. Do you really want to go back to the start page?", "I dati sono stati salvati con successo. Vuoi davvero tornare alla pagina iniziale?"),
                 
                 # Scan-Status
                 "scan_aborted_title": ("Scan abgebrochen", "Scan Aborted", "Scansione Annullata"),
@@ -775,9 +778,9 @@ class FullscreenApp(QMainWindow):
         self.port = CONFIG.USB0
         self.baudrate = CONFIG.BAURATE
         
-        import workers.Gewichts_Messung02
-        workers.Gewichts_Messung02.init_adc()
-        workers.Gewichts_Messung02.tara()
+        # import workers.Gewichts_Messung02
+        # workers.Gewichts_Messung02.init_adc()
+        # workers.Gewichts_Messung02.tara()
 
         # Datenvariablen
         self.abmessung: Optional[str] = None
@@ -789,10 +792,12 @@ class FullscreenApp(QMainWindow):
         self.image_labels: List[Optional[QLabel]] = [None] * CONFIG.NUM_CAMERAS
         self.final_images: List[Optional[np.ndarray]] = [None] * CONFIG.NUM_CAMERAS
         self.final_image_labels: List[Optional[QLabel]] = [None] * CONFIG.NUM_CAMERAS
-
         self.keep: List[bool] = [True] * CONFIG.NUM_CAMERAS
-        self.scan_start = False
+        
         self.bilder_namen = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
+
+        self.scan_start = False
+        self.data_saved = False
 
         # GUI Setup
         self._setup_ui()
@@ -872,7 +877,7 @@ class FullscreenApp(QMainWindow):
         self.language = language
         self.load_pages()
         self.update_buttons()
-        logger.info(f"Sprache geändert zu: {language}")
+        #logger.info(f"Sprache geändert zu: {language}") # Debug-Info
 
     def create_flag_button(self, flag_file: str, language_code: str) -> QToolButton:
         """Erstellt einen Sprachumschalt-Button"""
@@ -1048,7 +1053,7 @@ class FullscreenApp(QMainWindow):
         button_layout.setSpacing(20)
         
         scan_btn = QPushButton(self.translator.get_text(self.language, "start", "scan_btn"))
-        save_btn = QPushButton(self.translator.get_text(self.language, "start", "save_btn"))
+        instruction_btn = QPushButton(self.translator.get_text(self.language, "start", "instruction_btn"))
         
         # Scan-Button - Primäre Aktion
         scan_btn.setStyleSheet("""
@@ -1070,8 +1075,8 @@ class FullscreenApp(QMainWindow):
             }
         """)
         
-        # Save-Button - Sekundäre Aktion
-        save_btn.setStyleSheet("""
+        # Instruction-Button - Sekundäre Aktion
+        instruction_btn.setStyleSheet("""
             QPushButton {
                 font-size: 18px;
                 font-weight: 600;
@@ -1091,11 +1096,12 @@ class FullscreenApp(QMainWindow):
             }
         """)
         
-        for btn in [scan_btn, save_btn]:
+        for btn in [scan_btn, instruction_btn]:
             btn.setFixedHeight(55)
             button_layout.addWidget(btn)
 
         scan_btn.clicked.connect(self.go_next)
+        instruction_btn.clicked.connect(self.show_instructions)
         left_layout.addWidget(button_widget)
 
         return left_column
@@ -1683,11 +1689,16 @@ class FullscreenApp(QMainWindow):
 
     def rebeginn_application(self):
         """Startet die Anwendung von der Startseite neu"""
-        if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_loss_confirm"), 
-                                          self.translator.get_text(self.language, "messagebox", "data_loss_message"),
-                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
-            return
-        
+        if self.data_saved:
+            if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_saved_confirm"), 
+                                    self.translator.get_text(self.language, "messagebox", "data_saved_message"),
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
+                return
+        else:
+            if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_loss_confirm"), 
+                                    self.translator.get_text(self.language, "messagebox", "data_loss_message"),
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
+                return
         self.clear_image_memory()
 
 
@@ -1699,6 +1710,8 @@ class FullscreenApp(QMainWindow):
         self.final_images = [None] * CONFIG.NUM_CAMERAS
         self.keep = [True] * CONFIG.NUM_CAMERAS
         self.scan_start = False
+        self.data_saved = False
+
         self.all_barcodes = []
         self.load_pages()
         self.stack.setCurrentIndex(0)
@@ -2335,6 +2348,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             
             QMessageBox.information(self, "Scan gespeichert", success_msg)
             logger.info(f"Scan {scan_timestamp} zu {csv_datei} hinzugefügt")
+            self.data_saved = True  # Flag setzen, dass Daten gespeichert wurden
             
             # 15. Optional: CSV-Datei öffnen (nur bei erstem Scan des Tages)
             try:
@@ -2518,6 +2532,13 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         cancel_btn.clicked.connect(cancel_loading)
         
         self.loading_dialog.exec()
+
+    def show_instructions(self):
+        """Zeigt die Anweisungen im Startseiten-Label an"""
+        pass
+
+
+
 
     def update_buttons(self):
         """Aktualisiert die Sichtbarkeit der Navigationsbuttons"""
