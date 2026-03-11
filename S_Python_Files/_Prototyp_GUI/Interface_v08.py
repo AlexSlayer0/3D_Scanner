@@ -309,6 +309,15 @@ class CameraManager:
     
     def _control_light(self, state: bool):
         """Steuert die Beleuchtung für OAK-D2 Aufnahmen"""
+        ''' Mögliche Commands:
+        
+            case '1': Blitz(1); break;
+            case '2': Blitz(2); break;
+            case '3': Blitz(3); break;
+            case '4': Strip_On(); break;
+            case 'a': All_ON(); break;
+            case '0': All_OFF(); break;
+        '''
         try:
             if state:
                 logger.info("Licht für Aufnahme einschalten...")
@@ -756,6 +765,7 @@ class FullscreenApp(QMainWindow):
 
         # Initialisierung
         self.camera = CameraManager(debug_single_camera=False)
+        self.control_light = self.camera._control_light # Direkt die Methode für Lichtsteuerung verwenden
         self.translator = TranslationManager()
         self.language = CONFIG.DEFAULT_LANGUAGE
         self.Explorer_Structure = CONFIG.GUI_RESOURCES_PATH
@@ -1221,15 +1231,15 @@ class FullscreenApp(QMainWindow):
         logger.info(f"Wiederhole Bild {idx+1}")
         self.scan_start = True
         new_img = self.camera.take_picture(idx)
-        light_control = self.camera._control_light
-        light_control(True)  # Licht für die Aufnahme einschalten
+
+        self.control_light(True)  # Licht für die Aufnahme einschalten
         time.sleep(0.5)  # Kurze Verzögerung, damit die Kamera Zeit hat, sich anzupassen
         if new_img is not None:
             self.images[idx] = new_img
             pixmap = self.convert_to_pixmap(new_img)
             self.image_labels[idx].setPixmap(pixmap)
             self.keep[idx] = True
-        light_control(False)  # Licht nach der Aufnahme ausschalten
+        self.control_light(False)  # Licht nach der Aufnahme ausschalten
 
     def discard_image(self, idx: int):
         """Verwirft ein Bild"""
@@ -2860,34 +2870,9 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
     def check_light(self):
         try:
-            ser = serial.Serial(self.port, self.baudrate, timeout=1)
-            time.sleep(2)  # Warten, bis der Serial Port nach dem öffnen bereit ist
-
-            def send_command(command):
-                full_command = command + "\n"
-                ser.write(full_command.encode('utf-8'))
-                time.sleep(0.1)  # Kurze Pause zur Verarbeitung
-
-            # Schritt 1: In den Change-Modus wechseln
-            send_command("Change")
-
-            ''' Mögliche Commands:
-        
-            case '1': Blitz(1); break;
-            case '2': Blitz(2); break;
-            case '3': Blitz(3); break;
-            case '4': Strip_On(); break;
-            case 'a': All_ON(); break;
-            case '0': All_OFF(); break;
-            '''
-        
-            send_command("a")
-            time.sleep(1)  # Kurze Pause zur Verarbeitung
-
-            send_command("Change")
-            send_command("0")
-
-            ser.close()
+            self.control_light(True)  # Licht für die Aufnahme einschalten
+            time.sleep(5)  # Verzögerung, damit die Kamera Zeit hat, sich anzupassen
+            self.control_light(False)  # Licht nach der Aufnahme ausschalten
         except Exception as e:
             logger.warning(f"Fehler: {e}")
 
@@ -2999,8 +2984,6 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             QMessageBox.warning(self, texts['storage_error_title'][lang_idx], 
                             f"{texts['storage_error_message'][lang_idx]}\n{str(e)}")
             
-
-
     def keyPressEvent(self, event):
         """Behandelt Tastatureingaben"""
         if event.key() == Qt.Key.Key_Left:
@@ -3011,6 +2994,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             self.toggle_fullscreen()
         else:
             super().keyPressEvent(event)
+
 
 if __name__ == "__main__":
     logger.info("3D-Scanner wird gestartet...")
