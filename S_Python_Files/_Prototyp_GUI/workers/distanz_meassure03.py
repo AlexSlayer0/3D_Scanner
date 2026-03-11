@@ -297,10 +297,10 @@ def direct_mode(calib):
 
             # 10. Ergebnis zusammenstellen
             result["success"] = True
-            result["length"] = height_mm      # erste Seite als Länge
-            result["width"] = width_mm         # zweite Seite als Breite
-            result["height"] = hoehe_ueber_grund_obj
-            result["volume"] = volume_cm3
+            result["length"]  = height_mm      # erste Seite als Länge
+            result["width"]   = width_mm         # zweite Seite als Breite
+            result["height"]  = hoehe_ueber_grund_obj
+            result["volume"]  = volume_cm3
             result["abmessung"] = f"{height_mm:.1f} x {width_mm:.1f} x {hoehe_ueber_grund_obj:.1f}"
 
             # Ausgabe
