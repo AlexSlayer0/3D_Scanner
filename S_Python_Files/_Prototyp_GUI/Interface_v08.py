@@ -320,13 +320,13 @@ class CameraManager:
         '''
         try:
             if state:
-                logger.info("Licht für Aufnahme einschalten...")
+                logger.info("Licht ein")
                 self._send_command("Change")
                 time.sleep(0.1)
                 self._send_command("a")  # Alles an
                 time.sleep(0.5)  # Kurze Pause für Licht-Stabilisierung
             else:
-                logger.info("Licht nach Aufnahme ausschalten...")
+                logger.info("Licht aus")
                 self._send_command("Change")
                 time.sleep(0.1)
                 self._send_command("0")  # Alles aus
@@ -551,7 +551,7 @@ class DetectionManager:
                     continue
                 
                 img_name = image_names[idx] if idx < len(image_names) else f"Bild_{idx}"
-                logger.info(f"Analysiere Bild {idx} ({img_name}) auf Barcodes...")
+                #logger.info(f"Analysiere Bild {idx} ({img_name}) auf Barcodes...")
                 
                 try:
                     # Erkenne Barcodes in diesem Bild
@@ -2654,7 +2654,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             else:
                 self.gewicht = data
             
-            logger.info(f"Gewicht: {data}")
+            logger.info(f"Gewicht: {data} {self.translator.get_text(self.language, 'overview', 'kg')}")
         
         elif script_name == "volume":
             if isinstance(data, dict):                
