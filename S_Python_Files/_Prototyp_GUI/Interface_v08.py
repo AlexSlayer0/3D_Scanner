@@ -1619,7 +1619,7 @@ class FullscreenApp(QMainWindow):
         start_page = self.create_start_page()
         self.stack.addWidget(start_page)
 
-        # Gemeinsame Seitenstruktur für alle Sprachen
+        # Gemeinsame Seitenstruktur
         page_configs = {
             "photo": {
                 "title_key": "photo",
@@ -1682,9 +1682,8 @@ class FullscreenApp(QMainWindow):
         # Garbage Collector manuell aufrufen
         import gc
         gc.collect()
-        
         logger.debug("Bildspeicher explizit freigegeben")
-
+        
 
     def rebeginn_application(self):
         """Startet die Anwendung von der Startseite neu"""
@@ -1698,25 +1697,22 @@ class FullscreenApp(QMainWindow):
                                     self.translator.get_text(self.language, "messagebox", "data_loss_message"),
             QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
                 return
+
         self.clear_image_memory()
 
+        self.abmessung = None
+        self.gewicht = None
+        self.barcode = None
+        self.barcode_type = None
+        self.images = [None] * CONFIG.NUM_CAMERAS
+        self.image_labels = [None] * CONFIG.NUM_CAMERAS
+        self.final_images = [None] * CONFIG.NUM_CAMERAS
+        self.keep = [True] * CONFIG.NUM_CAMERAS
 
-        self.abmessung: Optional[str] = None
-        self.gewicht: Optional[str] = None
-        self.barcode: Optional[str] = None
-        self.barcode_type: Optional[str] = None
-        self.images: List[Optional[np.ndarray]] = [None] * CONFIG.NUM_CAMERAS
-        self.image_labels: List[Optional[QLabel]] = [None] * CONFIG.NUM_CAMERAS
-        self.final_images: List[Optional[np.ndarray]] = [None] * CONFIG.NUM_CAMERAS
-        self.keep: List[bool] = [True] * CONFIG.NUM_CAMERAS
-        self.scan_start: bool = False
-        self.data_saved: bool = False
+        self.scan_start = False
+        self.data_saved = False
 
-
-        self.scan_start: bool = False
-        self.data_saved: bool = False
-
-        self.all_barcodes: List[Dict[str, Any]] = []
+        self.all_barcodes = []
         self.load_pages()
         self.stack.setCurrentIndex(0)
         self.update_buttons()
