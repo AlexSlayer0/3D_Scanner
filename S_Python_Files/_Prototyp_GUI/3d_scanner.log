@@ -6518,3 +6518,33 @@ RuntimeError: No available devices
 2026-03-10 12:14:34,855 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
 2026-03-10 12:15:29,631 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
 2026-03-10 12:15:33,425 - __main__ - INFO - Programm wird beendet
+2026-03-11 14:11:18,864 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-11 14:11:19,014 - __main__ - WARNING - Serielle Verbindung konnte nicht geöffnet werden: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:11:20,568 - __main__ - INFO - USB-Kameras gefunden: [0], OAK-D2: False
+2026-03-11 14:12:22,038 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-11 14:12:23,952 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-11 14:12:23,953 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-11 14:12:23,953 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-11 14:12:25,281 - __main__ - INFO - Programm wird beendet
+2026-03-11 14:28:17,953 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-11 14:28:19,838 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-11 14:28:19,840 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-11 14:28:19,840 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-11 14:28:21,331 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-11 14:28:21,331 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-11 14:28:21,332 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:28:21,446 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:28:22,674 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-11 14:28:22,676 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-11 14:28:22,687 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-11 14:28:22,689 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-11 14:28:22,690 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:28:22,801 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:28:43,050 - __main__ - INFO - Wiederhole Bild 3
+2026-03-11 14:28:43,054 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-11 14:28:43,056 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-11 14:28:43,056 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:28:43,165 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:28:44,184 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-11 14:28:44,185 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:28:44,291 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)

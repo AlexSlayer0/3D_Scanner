@@ -356,7 +356,6 @@ class CameraManager:
     
         # OAK-D2 separat prüfen (bleibt unverändert)
         self._check_oak_availability()
-    
         logger.info(f"Verfügbare USB-Kameras (Indizes): {available}")
         return available
     
@@ -375,10 +374,6 @@ class CameraManager:
 
     def _take_oak_picture(self) -> Optional[np.ndarray]:
         try:
-            # Licht einschalten
-            self._control_light(True)
-            time.sleep(0.3)  # Kurze Stabilisierung
-
             # Pipeline erstellen
             pipeline = dai.Pipeline()
 
@@ -410,7 +405,7 @@ class CameraManager:
                 control_queue = device.getInputQueue("control")
 
                 # Kurze Wartezeit für Autofokus
-                time.sleep(2)
+                time.sleep(4)
 
                 # Bildaufnahme auslösen
                 ctrl = dai.CameraControl()
@@ -427,9 +422,6 @@ class CameraManager:
                         break
                     time.sleep(0.1)
 
-                # Licht ausschalten (erfolgreich oder nicht)
-                self._control_light(False)
-
                 if frame is None:
                     logger.error("OAK-D2: Kein Bild innerhalb von 5 Sekunden empfangen")
                     return None
@@ -439,20 +431,9 @@ class CameraManager:
 
         except Exception as e:
             # Licht im Fehlerfall ebenfalls ausschalten
-            self._control_light(False)
             logger.error(f"OAK-D2 Fehler: {e}")
             return None
         
-        
-    def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
-        """Erstellt ein Platzhalterbild für fehlende Kameras"""
-        img = np.zeros((CONFIG.IMAGE_HEIGHT, CONFIG.IMAGE_WIDTH, 3), dtype=np.uint8)
-        text = f"Kamera {camera_id} nicht verfügbar" if camera_id >= 0 else "BILD NICHT AUFGENOMMEN"
-        cv2.putText(img, text, 
-                   (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 
-                   (255, 255, 255), 2)
-        return img
-
     
     def take_picture(self, camera_id: int) -> np.ndarray:
         # Spezialfall OAK-D2
@@ -469,22 +450,17 @@ class CameraManager:
             return self._make_placeholder(camera_id)
     
         real_index = self.usb_camera_indices[camera_id]
-    
-        # Licht einschalten, aufnehmen, etc. (wie bisher, aber mit real_index)
-        self._control_light(True)
-        time.sleep(0.3)
+
         try:
             cap = cv2.VideoCapture(real_index, self._get_camera_backend())
             if not cap.isOpened():
                 logger.error(f"Kamera {real_index} (logisch {camera_id}) konnte nicht geöffnet werden")
                 cap.release()
-                self._control_light(False)
                 return self._make_placeholder(camera_id)
         
             cap.set(cv2.CAP_PROP_EXPOSURE, 0.1)
             ret, frame = cap.read()
             cap.release()
-            self._control_light(False)
         
             if ret:
                 logger.info(f"Bild von Kamera {real_index} (logisch {camera_id}) aufgenommen")
@@ -494,12 +470,12 @@ class CameraManager:
                 return self._make_placeholder(camera_id)
         except Exception as e:
             logger.error(f"Fehler bei Bildaufnahme: {e}")
-            self._control_light(False)
             return self._make_placeholder(camera_id)
 
     def take_all_pictures(self) -> List[np.ndarray]:
         """Nimmt Bilder von allen Kameras auf"""
         images: List[np.ndarray] = []
+        self._control_light(True)  # Licht vor allen Aufnahmen einschalten
         
         # Für alle Kameras wird Licht automatisch in take_picture() gesteuert
         if self.debug_single_camera:
@@ -514,11 +490,21 @@ class CameraManager:
         else:
             # Normal: Jede Kamera macht ein Bild
             for i in range(CONFIG.NUM_CAMERAS):
-                img = self.take_picture(i)  # Licht wird für jede Kamera separat gesteuert
+                img = self.take_picture(i)
                 images.append(img)
         
+        self._control_light(False)  # Sicherstellen, dass Licht aus ist
         return images
     
+    def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
+        """Erstellt ein Platzhalterbild für fehlende Kameras"""
+        img = np.zeros((CONFIG.IMAGE_HEIGHT, CONFIG.IMAGE_WIDTH, 3), dtype=np.uint8)
+        text = f"Kamera {camera_id} nicht verfuegbar" if camera_id >= 0 else "BILD NICHT AUFGENOMMEN"
+        cv2.putText(img, text, 
+                   (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 
+                   (255, 255, 255), 2)
+        return img
+
     def close(self):
         """Schließt alle Ressourcen"""
         if self.serial_port:
@@ -530,8 +516,7 @@ class CameraManager:
                 logger.info("Serielle Verbindung geschlossen")
             except Exception as e:
                 logger.warning(f"Fehler beim Schließen der seriellen Verbindung: {e}")
-                
-                
+
 
 # ==================== Detection Manager ====================
 class DetectionManager:
@@ -1236,11 +1221,15 @@ class FullscreenApp(QMainWindow):
         logger.info(f"Wiederhole Bild {idx+1}")
         self.scan_start = True
         new_img = self.camera.take_picture(idx)
+        light_control = self.camera._control_light
+        light_control(True)  # Licht für die Aufnahme einschalten
+        time.sleep(0.5)  # Kurze Verzögerung, damit die Kamera Zeit hat, sich anzupassen
         if new_img is not None:
             self.images[idx] = new_img
             pixmap = self.convert_to_pixmap(new_img)
             self.image_labels[idx].setPixmap(pixmap)
             self.keep[idx] = True
+        light_control(False)  # Licht nach der Aufnahme ausschalten
 
     def discard_image(self, idx: int):
         """Verwirft ein Bild"""
@@ -1702,17 +1691,22 @@ class FullscreenApp(QMainWindow):
         self.clear_image_memory()
 
 
-        self.abmessung = None
-        self.gewicht = None
-        self.barcode = None
-        self.barcode_type = None
-        self.images = [None] * CONFIG.NUM_CAMERAS
-        self.final_images = [None] * CONFIG.NUM_CAMERAS
-        self.keep = [True] * CONFIG.NUM_CAMERAS
-        self.scan_start = False
-        self.data_saved = False
+        self.abmessung: Optional[str] = None
+        self.gewicht: Optional[str] = None
+        self.barcode: Optional[str] = None
+        self.barcode_type: Optional[str] = None
+        self.images: List[Optional[np.ndarray]] = [None] * CONFIG.NUM_CAMERAS
+        self.image_labels: List[Optional[QLabel]] = [None] * CONFIG.NUM_CAMERAS
+        self.final_images: List[Optional[np.ndarray]] = [None] * CONFIG.NUM_CAMERAS
+        self.keep: List[bool] = [True] * CONFIG.NUM_CAMERAS
+        self.scan_start: bool = False
+        self.data_saved: bool = False
 
-        self.all_barcodes = []
+
+        self.scan_start: bool = False
+        self.data_saved: bool = False
+
+        self.all_barcodes: List[Dict[str, Any]] = []
         self.load_pages()
         self.stack.setCurrentIndex(0)
         self.update_buttons()
