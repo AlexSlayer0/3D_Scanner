@@ -6898,3 +6898,45 @@ RuntimeError: No available devices
 2026-03-11 14:46:18,333 - __main__ - INFO - Alle Tasks fertig
 2026-03-11 14:46:30,578 - __main__ - INFO - Anwendung wurde neu gestartet
 2026-03-11 14:46:31,722 - __main__ - INFO - Programm wird beendet
+2026-03-11 14:50:38,697 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-11 14:50:40,999 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-11 14:50:40,999 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-11 14:50:41,001 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-11 14:50:42,362 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-11 14:50:42,363 - __main__ - INFO - Licht für Aufnahme einschalten...
+2026-03-11 14:50:42,364 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:50:42,468 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:50:44,091 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-11 14:50:44,093 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-11 14:50:44,093 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-11 14:50:44,094 - __main__ - INFO - Licht nach Aufnahme ausschalten...
+2026-03-11 14:50:44,096 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:50:44,205 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-11 14:50:44,603 - workers.distanz_meassure03 - INFO - === Objektvermessung mit OAK-Kamera gestartet ===
+2026-03-11 14:50:44,603 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-11 14:50:44,605 - workers.distanz_meassure03 - INFO - Aktiven Index 2 aus Datei verwendet.
+2026-03-11 14:50:44,605 - workers.distanz_meassure03 - INFO - Kalibrierung fertig geladen
+2026-03-11 14:50:44,607 - workers.distanz_meassure03 - INFO - --- Messmodus gestartet ---
+2026-03-11 14:50:48,684 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-11 14:50:48,685 - __main__ - INFO - Analysiere Bild 0 (iso_Bild) auf Barcodes...
+2026-03-11 14:50:49,132 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-11 14:50:49,133 - __main__ - INFO - Analysiere Bild 1 (top_Bild) auf Barcodes...
+2026-03-11 14:50:49,141 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+Traceback (most recent call last):
+  File "c:\Users\grane\Felix_Schule\Diplomarbeit\3D_Scanner\S_Python_Files\_Prototyp_GUI\workers\distanz_meassure03.py", line 192, in direct_mode
+    with dai.Device(pipeline) as device:
+RuntimeError: No available devices
+2026-03-11 14:50:49,154 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-11 14:50:49,154 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-11 14:50:49,310 - workers.BarCode_v03 - ERROR - Fehler bei Barcode-Erkennung Bild 1: local variable 'x2' referenced before assignment
+2026-03-11 14:50:49,310 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-11 14:50:49,310 - __main__ - INFO - Analysiere Bild 2 (right_Bild) auf Barcodes...
+2026-03-11 14:50:49,491 - workers.BarCode_v03 - ERROR - Fehler bei Barcode-Erkennung Bild 2: local variable 'x2' referenced before assignment
+2026-03-11 14:50:49,491 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-11 14:50:49,491 - __main__ - INFO - Analysiere Bild 3 (behind_Bild) auf Barcodes...
+2026-03-11 14:50:49,671 - workers.BarCode_v03 - ERROR - Fehler bei Barcode-Erkennung Bild 3: local variable 'x2' referenced before assignment
+2026-03-11 14:50:49,671 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-11 14:50:49,673 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-11 14:50:52,607 - __main__ - INFO - Gewicht: 2.999994
+2026-03-11 14:50:52,609 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-11 14:50:52,610 - __main__ - INFO - Alle Tasks fertig

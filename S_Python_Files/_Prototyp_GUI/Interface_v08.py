@@ -585,6 +585,7 @@ class DetectionManager:
             logger.error(f"Fehler in run_barcode_detection: {e}")
             return []
 
+# ==================== Parallel Worker ====================
 class ParallelWorker(QThread):   
     output_received = pyqtSignal(str, object)  # (task_name, result)
     progress_updated = pyqtSignal(int)  # Fortschritt in %
@@ -605,7 +606,6 @@ class ParallelWorker(QThread):
         """Aktualisiert den Fortschritt"""
         self.progress += increment
         self.progress_updated.emit(self.progress)
-
 
 
     def run(self):  # Einfügen
@@ -706,7 +706,6 @@ class ParallelWorker(QThread):
     
     def _run_weight_task(self):
         """Führt die Gewichtsmessung durch.
-        
         - 20 Messwerte sammeln mit 0,05 s Abstand
         - Tiefpass (gleitender Mittelwert) glättet die Werte
         - Aus den letzten 3 Werten Median/Mittelwert für stabiles Ergebnis
@@ -724,9 +723,9 @@ class ParallelWorker(QThread):
             if len(raw_values) < 3:
                 return {"weight": "Undefiniert"}
 
-            # Endwert: Median oder Mittelwert   Letzte 3 Werte auswählen
+            # Endwert: Median von den letzten 3 Werten auswählen
             weight = round(float(np.median(raw_values[-3:])), 3)  # Median
-            
+            weight = weight/1000  # g zu kg umrechnen
             return {"weight": weight}
 
         except ImportError as e:
@@ -737,7 +736,6 @@ class ParallelWorker(QThread):
             return {"weight": "Undefiniert"}
         
 
-    
     def _process_result(self, task_type: str, result: dict):
         """Verarbeitet Ergebnisse der Tasks"""
         if task_type == "barcode":
@@ -749,8 +747,6 @@ class ParallelWorker(QThread):
             self.output_received.emit("weight", weight)
         elif task_type == "volume":
             self.output_received.emit("volume", result)
-
-
 
 
 
