@@ -2,8 +2,7 @@
 """=======TODO-Liste v0.8=======
 SAP-Integration                 (Platzhalter-Button/optional)
 Lokal speichern Integration     (Formatierung?)
-4k bild wird nach wiederholung nicht richtig beim kamera manager aktualisiert nach einem scan und dann wieederholt.
-Licht passt
+Neu beginnen nicht message auf datenverlust sondern direkt zurück zur startseite (mit bestätigung)
 ================================"""
 
 import os # Für Dateipfade und Betriebssysteminteraktionen
@@ -113,7 +112,7 @@ class TranslationManager:
                 "instruction4": ("Maximales Gewicht: 20 kg", "Maximum weight: 20 kg", "Peso massimo: 20 kg"),
                 
                 "scan_btn": ("Scan Starten", "Start Scan", "Avvia Scan"),
-                "save_btn": ("Lokal speichern", "Save Locally", "Salva localmente"),
+                "instruction_btn": ("Anweisungen", "Instructions", "Istruzioni"),
                 "quit_btn": ("Programm beenden", "Quit Program", "Esci dal Programma"),
                 "check_camera": ("Kamera prüfen", "Check Camera", "Controlla Fotocamera"),
                 "check_light": ("Beleuchtung prüfen", "Check Lighting", "Controlla Illuminazione"),
@@ -208,6 +207,10 @@ class TranslationManager:
                 # Datenverlust
                 "data_loss_confirm": ("Datenverlust bestätigen", "Confirm Data Loss", "Conferma Perdita Dati"),
                 "data_loss_message": ("Möchten Sie wirklich zurück zur Startseite? Alle erfassten Daten gehen verloren.", "Do you really want to go back to the start page? All captured data will be lost.", "Vuoi davvero tornare alla pagina iniziale? Tutti i dati acquisiti saranno persi."),
+                
+                # Daten gespeichert zurück zur Startseite
+                "data_saved_confirm": ("Daten gespeichert", "Data Saved", "Dati Salvati"),
+                "data_saved_message": ("Die Daten wurden erfolgreich gespeichert. Möchten Sie wirklich zurück zur Startseite? ", "The data has been saved successfully. Do you really want to go back to the start page?", "I dati sono stati salvati con successo. Vuoi davvero tornare alla pagina iniziale?"),
                 
                 # Scan-Status
                 "scan_aborted_title": ("Scan abgebrochen", "Scan Aborted", "Scansione Annullata"),
@@ -306,15 +309,24 @@ class CameraManager:
     
     def _control_light(self, state: bool):
         """Steuert die Beleuchtung für OAK-D2 Aufnahmen"""
+        ''' Mögliche Commands:
+        
+            case '1': Blitz(1); break;
+            case '2': Blitz(2); break;
+            case '3': Blitz(3); break;
+            case '4': Strip_On(); break;
+            case 'a': All_ON(); break;
+            case '0': All_OFF(); break;
+        '''
         try:
             if state:
-                logger.info("Licht für Aufnahme einschalten...")
+                logger.info("Licht ein")
                 self._send_command("Change")
                 time.sleep(0.1)
                 self._send_command("a")  # Alles an
                 time.sleep(0.5)  # Kurze Pause für Licht-Stabilisierung
             else:
-                logger.info("Licht nach Aufnahme ausschalten...")
+                logger.info("Licht aus")
                 self._send_command("Change")
                 time.sleep(0.1)
                 self._send_command("0")  # Alles aus
@@ -353,7 +365,6 @@ class CameraManager:
     
         # OAK-D2 separat prüfen (bleibt unverändert)
         self._check_oak_availability()
-    
         logger.info(f"Verfügbare USB-Kameras (Indizes): {available}")
         return available
     
@@ -372,10 +383,6 @@ class CameraManager:
 
     def _take_oak_picture(self) -> Optional[np.ndarray]:
         try:
-            # Licht einschalten
-            self._control_light(True)
-            time.sleep(0.3)  # Kurze Stabilisierung
-
             # Pipeline erstellen
             pipeline = dai.Pipeline()
 
@@ -407,7 +414,7 @@ class CameraManager:
                 control_queue = device.getInputQueue("control")
 
                 # Kurze Wartezeit für Autofokus
-                time.sleep(2)
+                time.sleep(4)
 
                 # Bildaufnahme auslösen
                 ctrl = dai.CameraControl()
@@ -424,9 +431,6 @@ class CameraManager:
                         break
                     time.sleep(0.1)
 
-                # Licht ausschalten (erfolgreich oder nicht)
-                self._control_light(False)
-
                 if frame is None:
                     logger.error("OAK-D2: Kein Bild innerhalb von 5 Sekunden empfangen")
                     return None
@@ -436,20 +440,9 @@ class CameraManager:
 
         except Exception as e:
             # Licht im Fehlerfall ebenfalls ausschalten
-            self._control_light(False)
             logger.error(f"OAK-D2 Fehler: {e}")
             return None
         
-        
-    def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
-        """Erstellt ein Platzhalterbild für fehlende Kameras"""
-        img = np.zeros((CONFIG.IMAGE_HEIGHT, CONFIG.IMAGE_WIDTH, 3), dtype=np.uint8)
-        text = f"Kamera {camera_id} nicht verfügbar" if camera_id >= 0 else "BILD NICHT AUFGENOMMEN"
-        cv2.putText(img, text, 
-                   (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 
-                   (255, 255, 255), 2)
-        return img
-
     
     def take_picture(self, camera_id: int) -> np.ndarray:
         # Spezialfall OAK-D2
@@ -466,22 +459,17 @@ class CameraManager:
             return self._make_placeholder(camera_id)
     
         real_index = self.usb_camera_indices[camera_id]
-    
-        # Licht einschalten, aufnehmen, etc. (wie bisher, aber mit real_index)
-        self._control_light(True)
-        time.sleep(0.3)
+
         try:
             cap = cv2.VideoCapture(real_index, self._get_camera_backend())
             if not cap.isOpened():
                 logger.error(f"Kamera {real_index} (logisch {camera_id}) konnte nicht geöffnet werden")
                 cap.release()
-                self._control_light(False)
                 return self._make_placeholder(camera_id)
         
             cap.set(cv2.CAP_PROP_EXPOSURE, 0.1)
             ret, frame = cap.read()
             cap.release()
-            self._control_light(False)
         
             if ret:
                 logger.info(f"Bild von Kamera {real_index} (logisch {camera_id}) aufgenommen")
@@ -491,12 +479,12 @@ class CameraManager:
                 return self._make_placeholder(camera_id)
         except Exception as e:
             logger.error(f"Fehler bei Bildaufnahme: {e}")
-            self._control_light(False)
             return self._make_placeholder(camera_id)
 
     def take_all_pictures(self) -> List[np.ndarray]:
         """Nimmt Bilder von allen Kameras auf"""
         images: List[np.ndarray] = []
+        self._control_light(True)  # Licht vor allen Aufnahmen einschalten
         
         # Für alle Kameras wird Licht automatisch in take_picture() gesteuert
         if self.debug_single_camera:
@@ -511,11 +499,21 @@ class CameraManager:
         else:
             # Normal: Jede Kamera macht ein Bild
             for i in range(CONFIG.NUM_CAMERAS):
-                img = self.take_picture(i)  # Licht wird für jede Kamera separat gesteuert
+                img = self.take_picture(i)
                 images.append(img)
         
+        self._control_light(False)  # Sicherstellen, dass Licht aus ist
         return images
     
+    def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
+        """Erstellt ein Platzhalterbild für fehlende Kameras"""
+        img = np.zeros((CONFIG.IMAGE_HEIGHT, CONFIG.IMAGE_WIDTH, 3), dtype=np.uint8)
+        text = f"Kamera {camera_id} nicht verfuegbar" if camera_id >= 0 else "BILD NICHT AUFGENOMMEN"
+        cv2.putText(img, text, 
+                   (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 
+                   (255, 255, 255), 2)
+        return img
+
     def close(self):
         """Schließt alle Ressourcen"""
         if self.serial_port:
@@ -527,8 +525,7 @@ class CameraManager:
                 logger.info("Serielle Verbindung geschlossen")
             except Exception as e:
                 logger.warning(f"Fehler beim Schließen der seriellen Verbindung: {e}")
-                
-                
+
 
 # ==================== Detection Manager ====================
 class DetectionManager:
@@ -554,7 +551,7 @@ class DetectionManager:
                     continue
                 
                 img_name = image_names[idx] if idx < len(image_names) else f"Bild_{idx}"
-                logger.info(f"Analysiere Bild {idx} ({img_name}) auf Barcodes...")
+                #logger.info(f"Analysiere Bild {idx} ({img_name}) auf Barcodes...")
                 
                 try:
                     # Erkenne Barcodes in diesem Bild
@@ -588,6 +585,7 @@ class DetectionManager:
             logger.error(f"Fehler in run_barcode_detection: {e}")
             return []
 
+# ==================== Parallel Worker ====================
 class ParallelWorker(QThread):   
     output_received = pyqtSignal(str, object)  # (task_name, result)
     progress_updated = pyqtSignal(int)  # Fortschritt in %
@@ -608,7 +606,6 @@ class ParallelWorker(QThread):
         """Aktualisiert den Fortschritt"""
         self.progress += increment
         self.progress_updated.emit(self.progress)
-
 
 
     def run(self):  # Einfügen
@@ -709,7 +706,6 @@ class ParallelWorker(QThread):
     
     def _run_weight_task(self):
         """Führt die Gewichtsmessung durch.
-        
         - 20 Messwerte sammeln mit 0,05 s Abstand
         - Tiefpass (gleitender Mittelwert) glättet die Werte
         - Aus den letzten 3 Werten Median/Mittelwert für stabiles Ergebnis
@@ -727,9 +723,9 @@ class ParallelWorker(QThread):
             if len(raw_values) < 3:
                 return {"weight": "Undefiniert"}
 
-            # Endwert: Median oder Mittelwert   Letzte 3 Werte auswählen
+            # Endwert: Median von den letzten 3 Werten auswählen
             weight = round(float(np.median(raw_values[-3:])), 3)  # Median
-            
+            weight = weight/1000  # g zu kg umrechnen
             return {"weight": weight}
 
         except ImportError as e:
@@ -740,7 +736,6 @@ class ParallelWorker(QThread):
             return {"weight": "Undefiniert"}
         
 
-    
     def _process_result(self, task_type: str, result: dict):
         """Verarbeitet Ergebnisse der Tasks"""
         if task_type == "barcode":
@@ -755,8 +750,6 @@ class ParallelWorker(QThread):
 
 
 
-
-
 # ==================== Main Application ====================
 class FullscreenApp(QMainWindow):
     """Hauptanwendung für den 3D-Scanner"""
@@ -768,6 +761,7 @@ class FullscreenApp(QMainWindow):
 
         # Initialisierung
         self.camera = CameraManager(debug_single_camera=False)
+        self.control_light = self.camera._control_light # Direkt die Methode für Lichtsteuerung verwenden
         self.translator = TranslationManager()
         self.language = CONFIG.DEFAULT_LANGUAGE
         self.Explorer_Structure = CONFIG.GUI_RESOURCES_PATH
@@ -775,9 +769,9 @@ class FullscreenApp(QMainWindow):
         self.port = CONFIG.USB0
         self.baudrate = CONFIG.BAURATE
         
-        import workers.Gewichts_Messung02
-        workers.Gewichts_Messung02.init_adc()
-        workers.Gewichts_Messung02.tara()
+        # import workers.Gewichts_Messung02
+        # workers.Gewichts_Messung02.init_adc()
+        # workers.Gewichts_Messung02.tara()
 
         # Datenvariablen
         self.abmessung: Optional[str] = None
@@ -789,10 +783,12 @@ class FullscreenApp(QMainWindow):
         self.image_labels: List[Optional[QLabel]] = [None] * CONFIG.NUM_CAMERAS
         self.final_images: List[Optional[np.ndarray]] = [None] * CONFIG.NUM_CAMERAS
         self.final_image_labels: List[Optional[QLabel]] = [None] * CONFIG.NUM_CAMERAS
-
         self.keep: List[bool] = [True] * CONFIG.NUM_CAMERAS
-        self.scan_start = False
+        
         self.bilder_namen = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
+
+        self.scan_start = False
+        self.data_saved = False
 
         # GUI Setup
         self._setup_ui()
@@ -872,7 +868,7 @@ class FullscreenApp(QMainWindow):
         self.language = language
         self.load_pages()
         self.update_buttons()
-        logger.info(f"Sprache geändert zu: {language}")
+        #logger.info(f"Sprache geändert zu: {language}") # Debug-Info
 
     def create_flag_button(self, flag_file: str, language_code: str) -> QToolButton:
         """Erstellt einen Sprachumschalt-Button"""
@@ -1048,7 +1044,7 @@ class FullscreenApp(QMainWindow):
         button_layout.setSpacing(20)
         
         scan_btn = QPushButton(self.translator.get_text(self.language, "start", "scan_btn"))
-        save_btn = QPushButton(self.translator.get_text(self.language, "start", "save_btn"))
+        instruction_btn = QPushButton(self.translator.get_text(self.language, "start", "instruction_btn"))
         
         # Scan-Button - Primäre Aktion
         scan_btn.setStyleSheet("""
@@ -1070,8 +1066,8 @@ class FullscreenApp(QMainWindow):
             }
         """)
         
-        # Save-Button - Sekundäre Aktion
-        save_btn.setStyleSheet("""
+        # Instruction-Button - Sekundäre Aktion
+        instruction_btn.setStyleSheet("""
             QPushButton {
                 font-size: 18px;
                 font-weight: 600;
@@ -1091,11 +1087,12 @@ class FullscreenApp(QMainWindow):
             }
         """)
         
-        for btn in [scan_btn, save_btn]:
+        for btn in [scan_btn, instruction_btn]:
             btn.setFixedHeight(55)
             button_layout.addWidget(btn)
 
         scan_btn.clicked.connect(self.go_next)
+        instruction_btn.clicked.connect(self.show_instructions)
         left_layout.addWidget(button_widget)
 
         return left_column
@@ -1230,11 +1227,15 @@ class FullscreenApp(QMainWindow):
         logger.info(f"Wiederhole Bild {idx+1}")
         self.scan_start = True
         new_img = self.camera.take_picture(idx)
+
+        self.control_light(True)  # Licht für die Aufnahme einschalten
+        time.sleep(0.5)  # Kurze Verzögerung, damit die Kamera Zeit hat, sich anzupassen
         if new_img is not None:
             self.images[idx] = new_img
             pixmap = self.convert_to_pixmap(new_img)
             self.image_labels[idx].setPixmap(pixmap)
             self.keep[idx] = True
+        self.control_light(False)  # Licht nach der Aufnahme ausschalten
 
     def discard_image(self, idx: int):
         """Verwirft ein Bild"""
@@ -1614,7 +1615,7 @@ class FullscreenApp(QMainWindow):
         start_page = self.create_start_page()
         self.stack.addWidget(start_page)
 
-        # Gemeinsame Seitenstruktur für alle Sprachen
+        # Gemeinsame Seitenstruktur
         page_configs = {
             "photo": {
                 "title_key": "photo",
@@ -1677,28 +1678,36 @@ class FullscreenApp(QMainWindow):
         # Garbage Collector manuell aufrufen
         import gc
         gc.collect()
-        
         logger.debug("Bildspeicher explizit freigegeben")
-
+        
 
     def rebeginn_application(self):
         """Startet die Anwendung von der Startseite neu"""
-        if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_loss_confirm"), 
-                                          self.translator.get_text(self.language, "messagebox", "data_loss_message"),
-                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
-            return
-        
-        self.clear_image_memory()
+        if self.data_saved:
+            if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_saved_confirm"), 
+                                    self.translator.get_text(self.language, "messagebox", "data_saved_message"),
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
+                return
+        else:
+            if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_loss_confirm"), 
+                                    self.translator.get_text(self.language, "messagebox", "data_loss_message"),
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
+                return
 
+        self.clear_image_memory()
 
         self.abmessung = None
         self.gewicht = None
         self.barcode = None
         self.barcode_type = None
         self.images = [None] * CONFIG.NUM_CAMERAS
+        self.image_labels = [None] * CONFIG.NUM_CAMERAS
         self.final_images = [None] * CONFIG.NUM_CAMERAS
         self.keep = [True] * CONFIG.NUM_CAMERAS
+
         self.scan_start = False
+        self.data_saved = False
+
         self.all_barcodes = []
         self.load_pages()
         self.stack.setCurrentIndex(0)
@@ -2335,6 +2344,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             
             QMessageBox.information(self, "Scan gespeichert", success_msg)
             logger.info(f"Scan {scan_timestamp} zu {csv_datei} hinzugefügt")
+            self.data_saved = True  # Flag setzen, dass Daten gespeichert wurden
             
             # 15. Optional: CSV-Datei öffnen (nur bei erstem Scan des Tages)
             try:
@@ -2519,6 +2529,13 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         
         self.loading_dialog.exec()
 
+    def show_instructions(self):
+        """Zeigt die Anweisungen im Startseiten-Label an"""
+        pass
+
+
+
+
     def update_buttons(self):
         """Aktualisiert die Sichtbarkeit der Navigationsbuttons"""
         current_index = self.stack.currentIndex()
@@ -2637,7 +2654,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             else:
                 self.gewicht = data
             
-            logger.info(f"Gewicht: {data}")
+            logger.info(f"Gewicht: {data} {self.translator.get_text(self.language, 'overview', 'kg')}")
         
         elif script_name == "volume":
             if isinstance(data, dict):                
@@ -2845,34 +2862,9 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
     def check_light(self):
         try:
-            ser = serial.Serial(self.port, self.baudrate, timeout=1)
-            time.sleep(2)  # Warten, bis der Serial Port nach dem öffnen bereit ist
-
-            def send_command(command):
-                full_command = command + "\n"
-                ser.write(full_command.encode('utf-8'))
-                time.sleep(0.1)  # Kurze Pause zur Verarbeitung
-
-            # Schritt 1: In den Change-Modus wechseln
-            send_command("Change")
-
-            ''' Mögliche Commands:
-        
-            case '1': Blitz(1); break;
-            case '2': Blitz(2); break;
-            case '3': Blitz(3); break;
-            case '4': Strip_On(); break;
-            case 'a': All_ON(); break;
-            case '0': All_OFF(); break;
-            '''
-        
-            send_command("a")
-            time.sleep(1)  # Kurze Pause zur Verarbeitung
-
-            send_command("Change")
-            send_command("0")
-
-            ser.close()
+            self.control_light(True)  # Licht für die Aufnahme einschalten
+            time.sleep(5)  # Verzögerung, damit die Kamera Zeit hat, sich anzupassen
+            self.control_light(False)  # Licht nach der Aufnahme ausschalten
         except Exception as e:
             logger.warning(f"Fehler: {e}")
 
@@ -2984,8 +2976,6 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             QMessageBox.warning(self, texts['storage_error_title'][lang_idx], 
                             f"{texts['storage_error_message'][lang_idx]}\n{str(e)}")
             
-
-
     def keyPressEvent(self, event):
         """Behandelt Tastatureingaben"""
         if event.key() == Qt.Key.Key_Left:
@@ -2996,6 +2986,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             self.toggle_fullscreen()
         else:
             super().keyPressEvent(event)
+
 
 if __name__ == "__main__":
     logger.info("3D-Scanner wird gestartet...")

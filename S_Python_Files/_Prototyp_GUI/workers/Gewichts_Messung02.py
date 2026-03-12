@@ -1,54 +1,47 @@
 # Gewichts_Messung02.py
 
-from operator import index
 import sys
 import time
 import json
 import os
 
-# ==============================
+
+I2C_BUS = 1                 # I2C & MUX (nur Linux)
+MUX_ADDR = 0x70             # MUX-Adresse (typisch 0x70 für TCA9548A)
+mux_channels = [0, 1, 2]    # MUX-Kanäle für die 3 Zellen
+
+# Persistenz: JSON-Datei
+PARAM_FILE = "weight_calibration.json"
+
+# Standardwerte (können durch gespeicherte Werte überschrieben werden)
+DEFAULT_FAKTOREN = [-0.004423, -0.00425, -0.004543]
+DEFAULT_ZERO_OFFSETS = [0.0, 0.0, 0.0]
+
+faktoren = DEFAULT_FAKTOREN.copy()
+zero_offsets = DEFAULT_ZERO_OFFSETS.copy()
+
+
 # Test-Modus für Windows
-# ==============================
 IS_TEST = sys.platform != "linux"
 
-if not IS_TEST:
-    import smbus2
-    from PyNAU7802 import NAU7802
-
-# ==============================
-# I2C & MUX (nur Linux)
-# ==============================
-I2C_BUS = 1
-MUX_ADDR = 0x70
-if not IS_TEST:
-    bus = smbus2.SMBus(I2C_BUS)
-
-# Wir gehen von 3 Zellen aus
 if IS_TEST:
     class DummyADC:
         def begin(self):
             return True
         def getAverage(self, n):
-            # Simuliere einen festen Rohwert für Test
+            # Simuliere die Libary-Funktion, die den Durchschnitt von n Messungen zurückgibt von PyNAU7802
             return 500  # beliebiger Rohwert
     adc_channels = [DummyADC() for _ in range(3)]
 else:
+    import smbus2
+    from PyNAU7802 import NAU7802
+    bus = smbus2.SMBus(I2C_BUS)
+
     adc_channels = [NAU7802() for _ in range(3)]
 
-mux_channels = [0, 1, 2]
+# Liste für vorherige Gewichte (für Glättung)
+gewicht_alt_list = [0.0] * len(adc_channels)
 
-# ------------------------------
-# Persistenz: JSON-Datei
-# ------------------------------
-PARAM_FILE = "weight_calibration.json"
-
-# Standardwerte (werden beim 1. Start verwendet)
-DEFAULT_FAKTOREN = [-0.004423, -0.00425, -0.004543]
-DEFAULT_ZERO_OFFSETS = [0.0, 0.0, 0.0]
-
-# Diese Variablen werden aus der Datei geladen bzw. gespeichert
-faktoren = DEFAULT_FAKTOREN.copy()
-zero_offsets = DEFAULT_ZERO_OFFSETS.copy()
 
 def load_params():
     """Lädt gespeicherte Faktoren und Offsets aus JSON-Datei.
@@ -65,6 +58,7 @@ def load_params():
             print(f"Fehler beim Laden der Parameter: {e}. Verwende Standardwerte.")
     else:
         print("Keine gespeicherten Parameter gefunden. Verwende Standardwerte.")
+
 
 def save_params():
     """Speichert aktuelle Faktoren und Offsets in JSON-Datei.
@@ -84,17 +78,14 @@ def save_params():
     except Exception as e:
         print(f"Fehler beim Speichern der Parameter: {e}")
 
-# ------------------------------
-# MUX umschalten
-# ------------------------------
+
 def select_mux(channel):
+    """Wählt den MUX-Kanal aus, um die entsprechende Zelle zu messen"""
     if not IS_TEST:
         bus.write_byte(MUX_ADDR, 1 << channel)
         time.sleep(0.05)
 
-# ------------------------------
-# ADC-Initialisierung
-# ------------------------------
+
 def init_adc():
     """ADC initialisieren"""
     for index in range(len(adc_channels)):
@@ -103,9 +94,7 @@ def init_adc():
             raise RuntimeError(f"ADC {index} nicht erreichbar")
         #print(f"ADC {index} initialisiert")
 
-# ------------------------------
-# Tara-Funktion (mit automatischem Speichern)
-# ------------------------------
+
 def tara():
     """Tara für alle Zellen"""
     for i in range(len(adc_channels)):
@@ -115,12 +104,10 @@ def tara():
             select_mux(mux_channels[i])
             zero_offsets[i] = adc_channels[i].getAverage(20)
         print(f"Zelle {i}: Zero-Offset = {zero_offsets[i]:.2f}")
-    # Nach jeder Tara werden die neuen Offsets gespeichert
+    # Nach Tara-Offsets speichern
     save_params()
 
-# ------------------------------
-# Kalibrierung einer Zelle (mit automatischem Speichern)
-# ------------------------------
+
 def calibrate_cell(index, known_weight_grams):
     """Kalibriert eine einzelne Zelle mit einem bekannten Gewicht.
     
@@ -128,18 +115,14 @@ def calibrate_cell(index, known_weight_grams):
         index (int): Index der zu kalibrierenden Zelle (0, 1, 2)
         known_weight_grams (float): Bekanntes Gewicht in Gramm, das auf der Zelle liegt
     """    
-    # MUX auf gewünschte Zelle schalten
-    select_mux(mux_channels[index])
-    
-    # Rohwert mit Tara-Offset messen
-    roh = adc_channels[index].getAverage(20) - zero_offsets[index]
-    
+    select_mux(mux_channels[index]) # MUX auf gewünschte Zelle schalten
+    roh = adc_channels[index].getAverage(20) - zero_offsets[index]  # Rohwert mit Tara-Offset messen
+
     if abs(roh) < 1:  # Vermeide Division durch (fast) Null
         #print(f"Warnung: Rohwert zu nahe an Null ({roh:.2f})")
         return faktoren[index]
     
-    # Neuen Kalibrierfaktor berechnen: Gewicht = Rohwert * Faktor
-    neuer_faktor = known_weight_grams / roh
+    neuer_faktor = known_weight_grams / roh # Neuen Kalibrierfaktor berechnen: Gewicht = Rohwert * Faktor
     
     # Negatives Vorzeichen für Dehnungsmessstreifen typisch, sicherstellen
     if neuer_faktor > 0:
@@ -150,17 +133,12 @@ def calibrate_cell(index, known_weight_grams):
     #print(f"Zelle {index}: Neuer Faktor = {faktoren[index]:.6f}")
     #print(f"  Rohwert: {roh:.2f}, Referenz: {known_weight_grams}g")
     
-    # Nach Kalibrierung speichern
-    save_params()
-    
+    save_params()  # Nach Kalibrierung speichern
     return faktoren[index]
 
-# ==============================
-# Einzelmessung einer Zelle
-# ==============================
-gewicht_alt_list = [0.0] * len(adc_channels)
 
 def measure_cell(index):
+    """Misst das Gewicht einer einzelnen Zelle, glättet den Wert und gibt ihn zurück"""
     global gewicht_alt_list
     select_mux(mux_channels[index])
     
@@ -179,9 +157,7 @@ def measure_cell(index):
     #print(f"Zelle {index}: {gewicht:.2f} g")
     return gewicht
 
-# ==============================
-# Gewichtsmessung aller Zellen
-# ==============================
+
 def get_weight():
     """Gibt das Gesamtgewicht aller Zellen zurück"""
     try:
@@ -195,21 +171,15 @@ def get_weight():
         #print(f"Fehler bei der Gewichtsmessung: {e}")
         return "Undefiniert"
 
-# ==============================
-# Hauptprogramm
-# ==============================
+
 if __name__ == "__main__":
+    """"Hauptprogramm: Initialisiert die ADCs, führt Tara durch und startet die Gewichtsmessung.
+       Optional kann eine Kalibrierung mit einem bekannten Gewicht durchgeführt werden."""
     print("Starte Messung der 3 Zellen…\n")
     
-    # Gespeicherte Parameter laden
-    load_params()
-    
-    # ADCs initialisieren
-    init_adc()
-
-    # Tara durchführen (speichert automatisch)
-    tara()
-
+    load_params()   # Gespeicherte Parameter laden
+    init_adc()      # ADCs initialisieren
+    tara()          # Tara durchführen (speichert automatisch)
     print("Alle ADCs initialisiert und tarriert!\n")
     
     # Beispiel Kalibrierung (auskommentiert)

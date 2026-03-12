@@ -4,9 +4,15 @@ import cv2
 import numpy as np
 from PIL import Image
 from pyzbar.pyzbar import decode
+from collections import defaultdict
 
-INPUT_DIR = Path("ParcelBar")   # <- anpassen
-#INPUT_DIR = Path("InventBar")   # <- anpassen
+stats_padding = defaultdict(int)
+stats_method = defaultdict(int)
+stats_scale = defaultdict(int)
+stats_rotation = defaultdict(int)
+
+# INPUT_DIR = Path("ParcelBar")   # <- anpassen
+INPUT_DIR = Path("InventBar")   # <- anpassen
 
 # --- Hilfsfunktionen ---
 def yolo_to_roi(line, iw, ih, pad=0.3):  # jetzt 30% Standardpadding
@@ -69,17 +75,17 @@ def process_image(img_path):
     with open(txt_path, "r") as f:
         line = f.readline()
 
-    padding_steps = [0.3, 0.35, 0.4]  # 30–40%
+    padding_steps = [0.1, 0.3, 0.4]  # 30/40%
     preprocess_methods = {
         "orig": lambda x: x,
-        "unsharp": unsharp,
         "clahe": clahe_equalize,
-        "invert": invert,
+        "unsharp": unsharp,
         "adaptive": adaptive_thresh,
+        "invert": invert,
         "clahe+adaptive+inv": lambda x: invert(adaptive_thresh(clahe_equalize(x)))
     }
-    scales = [1.0, 1.5, 2.0, 3.0]
-    rotations = list(range(-40, 41, 5))  # ±40° in 5°-Schritten
+    scales = [1.0, 1.5, 2.0]  # Originalgröße, 150%, 200%
+    rotations = [-135, -90, -45, -15, -5, 0, 5, 15, 45, 90, 135, 180]   # fokussiert auf die erfolgreichen Winkel
 
     for pad in padding_steps:
         try:
@@ -105,6 +111,10 @@ def process_image(img_path):
                         for d in dec:
                             val = d.data.decode("utf-8", errors="ignore")
                             print(f"   Typ: {d.type}, Wert: {val}")
+                            stats_padding[pad] += 1
+                            stats_method[pname] += 1
+                            stats_scale[s] += 1
+                            stats_rotation[angle] += 1
                         return True
 
     print(f"\n❌ {img_path.name} kein Barcode erkannt (alle Varianten getestet)")
@@ -125,7 +135,13 @@ def main():
             erkannt += 1
 
     quote = (erkannt / gesamt * 100) if gesamt > 0 else 0
+    print("\n=== STATISTIK ===")
+    print("Padding-Werte (Erfolge):", dict(stats_padding))
+    print("Methoden (Erfolge):", dict(stats_method))
+    print("Skalierungen (Erfolge):", dict(stats_scale))
+    print("Rotationen (Erfolge):", dict(stats_rotation))
     print(f"\nTrefferquote: {erkannt}/{gesamt} erkannt ({quote:.2f} %)")
+    print("Top-Paddings:", sorted(stats_padding.items(), key=lambda x: x[1], reverse=True))
 
 if __name__ == "__main__":
     main()

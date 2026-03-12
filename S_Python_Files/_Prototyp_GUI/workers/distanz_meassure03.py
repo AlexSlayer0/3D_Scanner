@@ -70,7 +70,7 @@ def load_calibration():
         active = data.get("active_z_median_index")
         if active is not None and 0 <= active < len(z_list):
             selected = active
-            logger.info(f"Aktiven Index {selected} aus Datei verwendet.")
+            # logger.info(f"Aktiven Index {selected} mit z_median {z_list[selected]:.1f} mm ausgewählt.")
         else:
             selected = 0
             logger.warning(f"Kein gültiger active_z_median_index. Verwende Index {selected}.")
@@ -92,7 +92,7 @@ def load_calibration():
                 calib["focal_length_pix"] = FALLBACK_FOCAL_LENGTH_PX
                 logger.warning(f"focal_length_pix Liste fehlt. Verwende Fallback {FALLBACK_FOCAL_LENGTH_PX} px.")
 
-        logger.info("Kalibrierung fertig geladen")
+        # logger.info("Kalibrierung fertig geladen")
         #logger.info(f"   z_median = {calib['z_median']:.1f} mm")
         # logger.info(f"   mm_per_pixel = {calib['mm_per_pixel']:.4f} mm/px")
         # logger.info(f"   focal_length_pix = {calib['focal_length_pix']:.1f} px")
@@ -125,7 +125,7 @@ def compute_object_size_mm(bbox_px, depth_value_mm, focal_length_px):
 def direct_mode(calib):
     """Einmalige Messung ohne Benutzerinteraktion - nutzt zentrierte ROI.
        Rückgabe: Dictionary mit Messergebnissen oder Fehlerstatus."""
-    logger.info("--- Messmodus gestartet ---")
+    # logger.info("--- Messmodus gestartet ---")
     z_median_mm = calib["z_median"]
     focal_length = calib["focal_length_pix"]
     mm_per_pixel = calib["mm_per_pixel"]
@@ -297,10 +297,10 @@ def direct_mode(calib):
 
             # 10. Ergebnis zusammenstellen
             result["success"] = True
-            result["length"] = height_mm      # erste Seite als Länge
-            result["width"] = width_mm         # zweite Seite als Breite
-            result["height"] = hoehe_ueber_grund_obj
-            result["volume"] = volume_cm3
+            result["length"]  = height_mm      # erste Seite als Länge
+            result["width"]   = width_mm         # zweite Seite als Breite
+            result["height"]  = hoehe_ueber_grund_obj
+            result["volume"]  = volume_cm3
             result["abmessung"] = f"{height_mm:.1f} x {width_mm:.1f} x {hoehe_ueber_grund_obj:.1f}"
 
             # Ausgabe
@@ -323,7 +323,7 @@ def main():
        Rückgabe: Dictionary mit Messergebnissen."""
     if not logging.getLogger().handlers:
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    logger.info("=== Objektvermessung mit OAK-Kamera gestartet ===")
+    # logger.info("=== Objektvermessung mit OAK-Kamera gestartet ===")
     calib = load_calibration()
     return direct_mode(calib)
 
