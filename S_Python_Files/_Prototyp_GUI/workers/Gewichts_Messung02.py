@@ -188,5 +188,6 @@ if __name__ == "__main__":
 
     # Messung starten
     while True:
-        get_weight()
+        aktuelles_gewicht = get_weight()
+        print(f"Aktuelles Gewicht: {aktuelles_gewicht} g")
         time.sleep(2)

@@ -716,11 +716,12 @@ class ParallelWorker(QThread):
             raw_values = []
             for _ in range(20):
                 value = workers.Gewichts_Messung02.get_weight()
-                if value is not None:
+                if isinstance(value, (int, float)):
                     raw_values.append(value)
                 time.sleep(0.05)
             
-            if len(raw_values) < 3:
+            if len(raw_values) < 5:
+                logger.warning("Nicht genügend gültige Gewichtsmessungen")
                 return {"weight": "Undefiniert"}
 
             # Endwert: Median von den letzten 3 Werten auswählen
@@ -769,9 +770,9 @@ class FullscreenApp(QMainWindow):
         self.port = CONFIG.USB0
         self.baudrate = CONFIG.BAURATE
         
-        # import workers.Gewichts_Messung02
-        # workers.Gewichts_Messung02.init_adc()
-        # workers.Gewichts_Messung02.tara()
+        import workers.Gewichts_Messung02
+        workers.Gewichts_Messung02.init_adc()
+        workers.Gewichts_Messung02.tara()
 
         # Datenvariablen
         self.abmessung: Optional[str] = None

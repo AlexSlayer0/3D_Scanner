@@ -7092,3 +7092,201 @@ RuntimeError: No available devices
 2026-03-12 14:13:35,236 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
 2026-03-12 14:13:36,050 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
 2026-03-12 14:13:39,036 - __main__ - INFO - Programm wird beendet
+2026-03-12 16:49:14,561 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 16:49:16,601 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 16:49:16,601 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 16:49:16,602 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 16:49:18,615 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 16:49:18,616 - __main__ - INFO - Licht ein
+2026-03-12 16:49:21,923 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 16:49:22,467 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 16:49:22,947 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 16:49:31,162 - __main__ - INFO - Licht aus
+2026-03-12 16:49:36,950 - __main__ - ERROR - Fehler in run_barcode_detection: No module named 'PIL'
+2026-03-12 16:49:36,950 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 16:49:38,963 - __main__ - ERROR - Gewicht Task Fehler: ufunc 'add' did not contain a loop with signature matching types (dtype('<U11'), dtype('<U11')) -> None
+2026-03-12 16:56:56,662 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 16:56:58,717 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 16:56:58,718 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 16:56:58,719 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 16:57:14,441 - __main__ - INFO - DepthAI Geräte gefunden: [DeviceInfo(name=3.1.2, mxid=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)]
+2026-03-12 16:57:14,441 - __main__ - INFO - Device: DeviceInfo(name=3.1.2, mxid=19443010C1E9181300, X_LINK_UNBOOTED, X_LINK_USB_VSC, X_LINK_MYRIAD_X, X_LINK_SUCCESS)
+2026-03-12 16:57:16,171 - __main__ - INFO - Device 3.1.2 erfolgreich geöffnet
+2026-03-12 16:57:16,172 - __main__ - INFO -   Kameras: [<CameraBoardSocket.CAM_A: 0>, <CameraBoardSocket.CAM_B: 1>, <CameraBoardSocket.CAM_C: 2>]
+2026-03-12 16:57:16,173 - __main__ - INFO -   USB Geschwindigkeit: UsbSpeed.SUPER
+2026-03-12 16:57:20,693 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 16:57:20,693 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 16:57:23,670 - __main__ - INFO - Licht ein
+2026-03-12 16:57:31,492 - __main__ - INFO - Licht aus
+2026-03-12 17:02:49,559 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:02:51,561 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:02:51,561 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:02:51,562 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:02:59,261 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 17:02:59,261 - __main__ - INFO - Licht ein
+2026-03-12 17:03:02,577 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 17:03:03,121 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 17:03:03,601 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 17:03:11,827 - __main__ - INFO - Licht aus
+2026-03-12 17:03:21,240 - __main__ - ERROR - Fehler in run_barcode_detection: No module named 'PIL'
+2026-03-12 17:03:21,240 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 17:03:23,256 - __main__ - WARNING - Nicht genügend gültige Gewichtsmessungen
+2026-03-12 17:06:02,039 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:06:04,085 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:06:04,086 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:06:04,086 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:06:13,765 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 17:06:13,765 - __main__ - INFO - Licht ein
+2026-03-12 17:06:17,084 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 17:06:17,628 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 17:06:18,108 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 17:06:26,343 - __main__ - INFO - Licht aus
+2026-03-12 17:06:29,213 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 17:06:29,239 - __main__ - ERROR - Fehler in run_barcode_detection: No module named 'ultralytics'
+2026-03-12 17:06:33,562 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 350.0 mm
+2026-03-12 17:06:33,564 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 86.6 x 81.5 x 230.0 mm
+2026-03-12 17:06:33,564 - workers.distanz_meassure03 - INFO -   Volumen: 1623.7 cm³
+2026-03-12 17:06:33,735 - __main__ - WARNING - Nicht genügend gültige Gewichtsmessungen
+2026-03-12 17:09:31,886 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:09:33,917 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:09:33,918 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:09:33,918 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:09:41,647 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 17:09:41,647 - __main__ - INFO - Licht ein
+2026-03-12 17:09:44,965 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 17:09:45,509 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 17:09:45,989 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 17:09:54,218 - __main__ - INFO - Licht aus
+2026-03-12 17:09:57,746 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 17:10:00,553 - __main__ - ERROR - Fehler in run_barcode_detection: No module named 'pyzbar'
+2026-03-12 17:10:02,109 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 351.0 mm
+2026-03-12 17:10:02,110 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 85.6 x 81.5 x 229.0 mm
+2026-03-12 17:10:02,110 - workers.distanz_meassure03 - INFO -   Volumen: 1597.6 cm³
+2026-03-12 17:10:02,928 - __main__ - WARNING - Nicht genügend gültige Gewichtsmessungen
+2026-03-12 17:12:33,052 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:12:35,077 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:12:35,077 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:12:35,078 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:12:42,252 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 17:12:42,252 - __main__ - INFO - Licht ein
+2026-03-12 17:12:45,549 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 17:12:46,093 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 17:12:46,574 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 17:12:54,794 - __main__ - INFO - Licht aus
+2026-03-12 17:13:03,805 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 17:13:06,783 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-12 17:13:07,935 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-12 17:13:08,161 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 351.0 mm
+2026-03-12 17:13:08,164 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 85.6 x 81.5 x 229.0 mm
+2026-03-12 17:13:08,165 - workers.distanz_meassure03 - INFO -   Volumen: 1597.6 cm³
+2026-03-12 17:13:08,834 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-12 17:13:08,861 - __main__ - WARNING - Nicht genügend gültige Gewichtsmessungen
+2026-03-12 17:16:21,782 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:16:23,825 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:16:23,825 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:16:23,825 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:16:31,190 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 17:16:31,190 - __main__ - INFO - Licht ein
+2026-03-12 17:16:34,488 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 17:16:35,032 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 17:16:35,512 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 17:16:43,739 - __main__ - INFO - Licht aus
+2026-03-12 17:16:47,726 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 17:16:50,498 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-12 17:16:51,658 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-12 17:16:52,082 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 351.0 mm
+2026-03-12 17:16:52,082 - workers.distanz_meassure03 - WARNING - 2 Objekte in ROI. Verwende das größte.
+2026-03-12 17:16:52,085 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 58.5 x 81.4 x 229.0 mm
+2026-03-12 17:16:52,085 - workers.distanz_meassure03 - INFO -   Volumen: 1090.8 cm³
+2026-03-12 17:16:52,564 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-12 17:16:53,264 - __main__ - INFO - 3D-Abmessungen: 58.5 x 81.4 x 229.0
+2026-03-12 17:16:53,264 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-12 17:16:53,456 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-12 17:16:54,476 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-12 17:16:54,476 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-12 17:17:04,577 - __main__ - WARNING - Nicht genügend gültige Gewichtsmessungen
+2026-03-12 17:21:14,977 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:21:17,021 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:21:17,021 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:21:17,022 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:21:37,296 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:21:39,325 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:21:39,326 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:21:39,327 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:22:05,878 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:22:07,909 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:22:07,909 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:22:07,910 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:22:17,651 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 17:22:17,651 - __main__ - INFO - Licht ein
+2026-03-12 17:22:20,968 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 17:22:21,512 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 17:22:21,992 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 17:22:30,210 - __main__ - INFO - Licht aus
+2026-03-12 17:22:35,038 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 17:22:37,794 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-12 17:22:38,963 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-12 17:22:39,379 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 350.0 mm
+2026-03-12 17:22:39,380 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 83.8 x 88.3 x 230.0 mm
+2026-03-12 17:22:39,381 - workers.distanz_meassure03 - INFO -   Volumen: 1701.2 cm³
+2026-03-12 17:22:39,864 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-12 17:22:40,600 - __main__ - INFO - 3D-Abmessungen: 83.8 x 88.3 x 230.0
+2026-03-12 17:22:40,602 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-12 17:22:40,769 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-12 17:22:41,748 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-12 17:22:41,748 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-12 17:23:14,107 - __main__ - INFO - Gewicht: -4.2999999999999995e-05 kg
+2026-03-12 17:23:14,108 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-12 17:23:14,109 - __main__ - INFO - Alle Tasks fertig
+2026-03-12 17:24:45,251 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:24:47,277 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:24:47,278 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:24:47,278 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:24:50,033 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 17:24:50,033 - __main__ - INFO - Licht ein
+2026-03-12 17:24:53,359 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 17:24:53,903 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 17:24:54,383 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 17:25:02,610 - __main__ - INFO - Licht aus
+2026-03-12 17:25:05,240 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 17:25:07,958 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-12 17:25:09,145 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-12 17:25:09,688 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 351.0 mm
+2026-03-12 17:25:09,689 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 87.6 x 83.6 x 229.0 mm
+2026-03-12 17:25:09,690 - workers.distanz_meassure03 - INFO -   Volumen: 1676.5 cm³
+2026-03-12 17:25:10,026 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-12 17:25:10,870 - __main__ - INFO - 3D-Abmessungen: 87.6 x 83.6 x 229.0
+2026-03-12 17:25:10,871 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-12 17:25:10,960 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-12 17:25:11,947 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-12 17:25:11,947 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-12 17:25:32,352 - __main__ - INFO - Gewicht: -0.000294 kg
+2026-03-12 17:25:32,352 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-12 17:25:32,353 - __main__ - INFO - Alle Tasks fertig
+2026-03-12 17:25:45,526 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-12 17:25:48,624 - __main__ - INFO - Programm wird beendet
+2026-03-12 17:27:03,404 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-12 17:27:05,489 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-12 17:27:05,489 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-12 17:27:05,490 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-12 17:27:08,521 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-12 17:27:08,521 - __main__ - INFO - Licht ein
+2026-03-12 17:27:11,829 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-12 17:27:12,373 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-12 17:27:12,853 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-12 17:27:21,074 - __main__ - INFO - Licht aus
+2026-03-12 17:27:25,014 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-12 17:27:27,807 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-12 17:27:28,963 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-12 17:27:29,362 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 350.0 mm
+2026-03-12 17:27:29,363 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 87.6 x 84.6 x 230.0 mm
+2026-03-12 17:27:29,363 - workers.distanz_meassure03 - INFO -   Volumen: 1704.4 cm³
+2026-03-12 17:27:29,846 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-12 17:27:30,558 - __main__ - INFO - 3D-Abmessungen: 87.6 x 84.6 x 230.0
+2026-03-12 17:27:30,559 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-12 17:27:30,728 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-12 17:27:31,706 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-12 17:27:31,706 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-12 17:27:42,404 - __main__ - INFO - Gewicht: -0.000359 kg
+2026-03-12 17:27:42,404 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-12 17:27:42,406 - __main__ - INFO - Alle Tasks fertig
