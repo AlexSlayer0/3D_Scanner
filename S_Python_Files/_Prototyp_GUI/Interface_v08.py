@@ -2691,6 +2691,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             self.gewicht = "Undefiniert"
             
         # Nach der Barcode-Erkennung Zugeschnittene Bilder erstellen
+        '''
         if self.all_barcodes and hasattr(self, 'images'):
             for barcode in self.all_barcodes:
                 if barcode.get("cropped_image") is None:
@@ -2713,6 +2714,8 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
                                 roi_rgb = roi
                             
                             barcode["cropped_image"] = roi_rgb
+
+        '''
         
         # Prüfe ob alle notwendigen Daten vorhanden sind
         has_abmessung = self.abmessung not in [None, "Undefiniert"]

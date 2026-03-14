@@ -7290,3 +7290,12 @@ RuntimeError: No available devices
 2026-03-12 17:27:42,404 - __main__ - INFO - Gewicht: -0.000359 kg
 2026-03-12 17:27:42,404 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
 2026-03-12 17:27:42,406 - __main__ - INFO - Alle Tasks fertig
+2026-03-13 10:42:11,279 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-13 10:42:12,719 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-13 10:42:12,720 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-13 10:42:12,720 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-13 10:42:24,358 - __main__ - INFO - Programm wird beendet
+2026-03-13 10:43:20,134 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-13 10:43:21,656 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-13 10:43:21,657 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-13 10:43:21,658 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False

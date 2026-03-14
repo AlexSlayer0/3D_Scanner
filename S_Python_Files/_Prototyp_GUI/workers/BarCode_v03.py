@@ -43,14 +43,19 @@ class BarcodeDetector:
             for r in results:
                 if hasattr(r, 'boxes') and r.boxes is not None:
                     for box in r.boxes:
-                        # Bounding Box Koordinaten
-                        # Padding (z.B. 30% der Box-Größe)
+                        # 1. Koordinaten aus YOLO lesen (abhängig von der YOLO-Version)
+                        # Für YOLOv8 ist box.xyxy[0] ein Tensor mit [x1, y1, x2, y2]
+                        coords = box.xyxy[0].tolist()  # oder box.xyxy.cpu().numpy()[0]
+                        x1, y1, x2, y2 = map(int, coords)
+
+                        # 2. Padding berechnen 30%
                         pad_factor = 0.3
                         box_w = x2 - x1
                         box_h = y2 - y1
                         pad_x = int(box_w * pad_factor)
                         pad_y = int(box_h * pad_factor)
 
+                        # 3. Koordinaten mit Padding erweitern (an Bildgrenzen beschränken)
                         x1 = max(0, x1 - pad_x)
                         y1 = max(0, y1 - pad_y)
                         x2 = min(image_rgb.shape[1], x2 + pad_x)
