@@ -174,8 +174,8 @@ def direct_mode(calib):
     stereo.setSubpixel(True)
 
     config = stereo.initialConfig.get()
-    config.postProcessing.speckleFilter.enable = False
-    config.postProcessing.speckleFilter.speckleRange = 50
+    config.postProcessing.speckleFilter.enable = True
+    config.postProcessing.speckleFilter.speckleRange = 232
     config.postProcessing.spatialFilter.holeFillingRadius = 2
     config.postProcessing.spatialFilter.numIterations = 1
     config.postProcessing.thresholdFilter.minRange = 100
@@ -192,7 +192,7 @@ def direct_mode(calib):
         with dai.Device(pipeline) as device:
             q_depth = device.getOutputQueue(name="depth", maxSize=4, blocking=False)
             
-            time.sleep(2) # warte auf konstantes Tiefen frame
+            time.sleep(4) # warte auf konstantes Tiefen frame
             
             in_depth = q_depth.get()            
             depth_frame = in_depth.getFrame()          # in mm
