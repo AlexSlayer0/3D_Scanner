@@ -1713,7 +1713,7 @@ class FullscreenApp(QMainWindow):
         self.load_pages()
         self.stack.setCurrentIndex(0)
         self.update_buttons()
-        logger.info("Anwendung wurde neu gestartet")
+        # logger.info("Anwendung wurde neu gestartet")
 
 
     def add_new_barcode_field(self):
@@ -2370,18 +2370,16 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         
         # Spezialfall: Von Foto-Auswahl (Index 1) zurück zur Startseite (Index 0)
         if idx == 1:
-            if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_loss_confirm"), 
-                                          self.translator.get_text(self.language, "messagebox", "data_loss_message"),
-                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
-                return
-            self.scan_start = False
-            self.keep = [True] * CONFIG.NUM_CAMERAS
-
+            # if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_loss_confirm"), 
+            #                               self.translator.get_text(self.language, "messagebox", "data_loss_message"),
+            #     QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
+            #     return
+            self.rebeginn_application()  # Alle Daten zurücksetzen und zur Startseite wechseln
 
 
         # Spezialfall: Von Kamera-Übersicht (Index 2) zurück zur Foto-Auswahl (Index 1)
         if idx == 2:
-            # Setze scan_start zurück, damit wir neue Bilder aufnehmen können
+            # Setze scan_start zurück, damit neue Bilder aufnehmen können
             self.scan_start = True
             logger.info("Zurück zur Foto-Auswahl: scan_start=True gesetzt")
         
