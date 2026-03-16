@@ -1,0 +1,20 @@
+# Basis-Wissenschaft
+numpy==1.24.4
+
+# Bildverarbeitung & Kamera
+opencv-python==4.9.0.80
+Pillow==10.3.0
+
+depthai==2.25.0.0 # 3D und Tiefenkamera (OAK)
+
+PyQt6==6.6.1       # GUI   # Achtung: auf Raspberry Pi ggf. Systempaket verwenden!
+
+# Hardware-Kommunikation
+pyserial==3.5
+smbus2==0.4.3
+PyNAU7802==0.1.1         # falls nicht per pip, manuelle Installation nötig
+
+# YOLO / KI
+ultralytics==8.2.10      # installiert automatisch torch & torchvision
+
+pyzbar==0.1.9 # Barcode
