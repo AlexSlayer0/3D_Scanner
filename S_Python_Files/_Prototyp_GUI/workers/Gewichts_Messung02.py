@@ -109,31 +109,34 @@ def tara():
 
 
 def calibrate_cell(index, known_weight_grams):
-    """Kalibriert eine einzelne Zelle mit einem bekannten Gewicht.
+    """Kalibriert eine einzelne Zelle mit bekanntem Gewicht (ohne Platte).
     
     Args:
-        index (int): Index der zu kalibrierenden Zelle (0, 1, 2)
-        known_weight_grams (float): Bekanntes Gewicht in Gramm, das auf der Zelle liegt
-    """    
-    select_mux(mux_channels[index]) # MUX auf gewünschte Zelle schalten
-    roh = adc_channels[index].getAverage(20) - zero_offsets[index]  # Rohwert mit Tara-Offset messen
+        index (int): Index der Zelle (0,1,2)
+        known_weight_grams (float): aufgelegtes Gewicht in Gramm
+    """
+    select_mux(mux_channels[index])
 
-    if abs(roh) < 1:  # Vermeide Division durch (fast) Null
-        #print(f"Warnung: Rohwert zu nahe an Null ({roh:.2f})")
+    # 1. Rohwert ohne Last (Zelle unbelastet)
+    raw_zero = adc_channels[index].getAverage(20)
+    print(f"Zelle {index}: Rohwert ohne Last = {raw_zero:.2f}")
+
+    # 2. Gewicht auflegen und Rohwert mit Last messen
+    input(f"Lege jetzt {known_weight_grams} g auf Zelle {index} und drücke Enter…")
+    raw_load = adc_channels[index].getAverage(20)
+    print(f"Zelle {index}: Rohwert mit Last = {raw_load:.2f}")
+
+    # 3. Differenz und neuer Faktor
+    diff = raw_load - raw_zero
+    if abs(diff) < 1:
+        print("Fehler: Differenz zu klein - Kalibrierung abgebrochen.")
         return faktoren[index]
-    
-    neuer_faktor = known_weight_grams / roh # Neuen Kalibrierfaktor berechnen: Gewicht = Rohwert * Faktor
-    
-    # Negatives Vorzeichen für Dehnungsmessstreifen typisch, sicherstellen
-    if neuer_faktor > 0:
-        neuer_faktor = -neuer_faktor
-    
+
+    neuer_faktor = known_weight_grams / diff   # positives Vorzeichen
     faktoren[index] = neuer_faktor
-    
-    #print(f"Zelle {index}: Neuer Faktor = {faktoren[index]:.6f}")
-    #print(f"  Rohwert: {roh:.2f}, Referenz: {known_weight_grams}g")
-    
-    save_params()  # Nach Kalibrierung speichern
+
+    print(f"Zelle {index}: Neuer Faktor = {faktoren[index]:.6f}")
+    save_params()
     return faktoren[index]
 
 

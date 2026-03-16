@@ -48,7 +48,7 @@ class AppConfig:
     NUM_CAMERAS: int = 4
     IMAGE_WIDTH: int = 640
     IMAGE_HEIGHT: int = 480
-    # Bei USB-Verbindung meist /dev/ttyACM0 oder /dev/ttyUSB0
+    # Bei USB-Verbindung des ESP32 /dev/ttyACM0 oder /dev/ttyUSB0
     USB0: str = "/dev/ttyUSB0" 
     BAURATE: int = 9600
     
@@ -57,7 +57,6 @@ class AppConfig:
     GUI_RESOURCES_PATH: str = "GUI_Anzeige"
     LOG_LEVEL: str = "INFO"
     #YOLO_MODEL_PATH: str = "models/YOLOV8s_Barcode_Detection.pt"
-    #SCANS_FOLDER: str = "C:\\Users\\username\\Desktop\\Scans" # Windows
     SCANS_FOLDER: str = "/home/leitner/Desktop/Scans"  # Linux
 
     
@@ -188,6 +187,7 @@ class TranslationManager:
                 "barcode_not_recognized": ("Kein Barcode erkannt - Bitte manuell eingeben", "No barcode detected - Please enter manually", "Nessun codice rilevato - Inserire manualmente"),
                 "article_number_empty": ("Keine Artikelnummer - Bitte eingeben", "No article number - Please enter", "Nessun numero articolo - Inserire"),
                 "ean13_empty": ("Kein EAN13 - Bitte eingeben", "No EAN13 - Please enter", "Nessun EAN13 - Inserire"),
+                "add_barcode_type": ("Welchen Typ von Barcode möchten Sie hinzufügen?", "What type of barcode would you like to add?", "Che tipo di codice a barre vorresti aggiungere?"),
                 
                 # Kamera-Check
                 "checking_cameras": ("Teste Kameras...", "Checking cameras...", "Controllo telecamere..."),
@@ -484,7 +484,6 @@ class CameraManager:
     def take_all_pictures(self) -> List[np.ndarray]:
         """Nimmt Bilder von allen Kameras auf"""
         images: List[np.ndarray] = []
-        self._control_light(True)  # Licht vor allen Aufnahmen einschalten
         
         # Für alle Kameras wird Licht automatisch in take_picture() gesteuert
         if self.debug_single_camera:
@@ -501,8 +500,6 @@ class CameraManager:
             for i in range(CONFIG.NUM_CAMERAS):
                 img = self.take_picture(i)
                 images.append(img)
-        
-        self._control_light(False)  # Sicherstellen, dass Licht aus ist
         return images
     
     def _make_placeholder(self, camera_id: int = -1) -> np.ndarray:
@@ -763,6 +760,8 @@ class FullscreenApp(QMainWindow):
         # Initialisierung
         self.camera = CameraManager(debug_single_camera=False)
         self.control_light = self.camera._control_light # Direkt die Methode für Lichtsteuerung verwenden
+        self.control_light(True)  # Licht einschalten
+
         self.translator = TranslationManager()
         self.language = CONFIG.DEFAULT_LANGUAGE
         self.Explorer_Structure = CONFIG.GUI_RESOURCES_PATH
@@ -1022,7 +1021,7 @@ class FullscreenApp(QMainWindow):
                     background: #323f4d;
                     border: 1px solid #5d6d7e;
                     border-radius: 6px;
-                    padding: 15px;
+                    padding: 8px;
                 }
             """)
             frame_layout = QHBoxLayout(instruction_frame)
@@ -1191,6 +1190,10 @@ class FullscreenApp(QMainWindow):
         """Schließt die Anwendung mit Bestätigungsdialog"""
         logger.info("Programm wird beendet")
         
+        # Licht ausschalten und Kamera-Ressourcen freigeben
+        self.control_light(False)
+        self.camera.close()
+
         # Worker-Ressourcen sauber freigeben        
         if hasattr(self, 'worker') and hasattr(self.worker, 'isRunning'):
             if self.worker.isRunning():
@@ -1229,14 +1232,14 @@ class FullscreenApp(QMainWindow):
         self.scan_start = True
         new_img = self.camera.take_picture(idx)
 
-        self.control_light(True)  # Licht für die Aufnahme einschalten
-        time.sleep(0.5)  # Kurze Verzögerung, damit die Kamera Zeit hat, sich anzupassen
+        # self.control_light(True)  # Licht für die Aufnahme einschalten
+        # time.sleep(0.5)  # Kurze Verzögerung, damit die Kamera Zeit hat, sich anzupassen
         if new_img is not None:
             self.images[idx] = new_img
             pixmap = self.convert_to_pixmap(new_img)
             self.image_labels[idx].setPixmap(pixmap)
             self.keep[idx] = True
-        self.control_light(False)  # Licht nach der Aufnahme ausschalten
+        # self.control_light(False)  # Licht nach der Aufnahme ausschalten
 
     def discard_image(self, idx: int):
         """Verwirft ein Bild"""
@@ -1710,6 +1713,7 @@ class FullscreenApp(QMainWindow):
         self.data_saved = False
 
         self.all_barcodes = []
+        self.control_light(True)  # Licht einschalten
         self.load_pages()
         self.stack.setCurrentIndex(0)
         self.update_buttons()
@@ -1751,7 +1755,7 @@ class FullscreenApp(QMainWindow):
 
         layout = QVBoxLayout(dialog)
 
-        label = QLabel("Welchen Typ von Barcode möchten Sie hinzufügen?")
+        label = QLabel(self.translator.get_text(self.language, "storage", "add_barcode_type"))
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(label)
 
@@ -2370,12 +2374,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         
         # Spezialfall: Von Foto-Auswahl (Index 1) zurück zur Startseite (Index 0)
         if idx == 1:
-            # if QMessageBox.question(self, self.translator.get_text(self.language, "messagebox", "data_loss_confirm"), 
-            #                               self.translator.get_text(self.language, "messagebox", "data_loss_message"),
-            #     QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel) == QMessageBox.StandardButton.Cancel:
-            #     return
             self.rebeginn_application()  # Alle Daten zurücksetzen und zur Startseite wechseln
-
 
         # Spezialfall: Von Kamera-Übersicht (Index 2) zurück zur Foto-Auswahl (Index 1)
         if idx == 2:
@@ -2429,7 +2428,9 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
                     self.translator.get_text(self.language, "messagebox", "no_images_title"),
                     self.translator.get_text(self.language, "messagebox", "no_images_message")
                 )
+        # Von Kamera-Übersicht (Index 2) zu Storage (Index 3)
         elif idx == 2:
+            self.control_light(False)  # Licht aus
             self.stack.setCurrentIndex(idx + 1)
             self.update_buttons()
             
@@ -2864,9 +2865,9 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
     def check_light(self):
         try:
-            self.control_light(True)  # Licht für die Aufnahme einschalten
-            time.sleep(5)  # Verzögerung, damit die Kamera Zeit hat, sich anzupassen
-            self.control_light(False)  # Licht nach der Aufnahme ausschalten
+            self.control_light(False)  # Licht aus
+            time.sleep(5)  # Verzögerung, damit man die Veränderung sehen kann
+            self.control_light(True)  # Licht ein
         except Exception as e:
             logger.warning(f"Fehler: {e}")
 
