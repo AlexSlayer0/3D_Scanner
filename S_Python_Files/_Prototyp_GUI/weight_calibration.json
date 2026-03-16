@@ -5,9 +5,9 @@
         -0.004543
     ],
     "zero_offsets": [
-        -144007.7,
-        -100858.3,
-        -106969.4
+        0,
+        0,
+        0
     ],
     "_comment_default_factors": "Original calibration factors from code: [-0.004423, -0.00425, -0.004543]. Copy these values into 'faktoren' to reset manually."
 }
