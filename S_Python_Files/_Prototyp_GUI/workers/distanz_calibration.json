@@ -1,11 +1,11 @@
 {
-    "z_median_liste": [763.0, 672.0, 580.0],
-    "mm_per_pixel_liste": [1.45, 1.606, 1.333],
-    "focal_length_pix": [526.2, 418.32, 434.78],
+    "z_median_liste": [763.0, 672.0, 593.0, 593.0],
+    "mm_per_pixel_liste": [1.45, 1.606, 1.363, 1.1842],
+    "focal_length_pix": [526.2, 418.32, 425.5, 369.87],
     "COLOR_TOLERANCE": 25,
-    "MIN_AREA": 25,
-    "GROUND_TOLERANCE_MM": 10,
-    "active_z_median_index": 2,
-    "roi_offset_x": 10,
+    "MIN_AREA": 1500,
+    "GROUND_TOLERANCE_MM": 8,
+    "active_z_median_index": 3,
+    "roi_offset_x": -30,
     "roi_offset_y": 0
 }

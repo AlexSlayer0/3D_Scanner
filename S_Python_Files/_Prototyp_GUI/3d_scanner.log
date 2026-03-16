@@ -7299,3 +7299,806 @@ RuntimeError: No available devices
 2026-03-13 10:43:21,656 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
 2026-03-13 10:43:21,657 - __main__ - INFO - Verf�gbare USB-Kameras (Indizes): [0]
 2026-03-13 10:43:21,658 - __main__ - INFO - Verf�gbare Kameras gefunden: [0], OAK-D2: False
+2026-03-14 09:46:12,779 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 09:46:14,796 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 09:46:14,796 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 09:46:14,796 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 09:46:17,852 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 09:46:17,853 - __main__ - INFO - Licht ein
+2026-03-14 09:46:21,175 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 09:46:21,719 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 09:46:22,199 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 09:46:30,421 - __main__ - INFO - Licht aus
+2026-03-14 09:46:41,614 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 09:46:44,371 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 09:46:45,526 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 09:46:45,973 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 350.0 mm
+2026-03-14 09:46:45,973 - workers.distanz_meassure03 - WARNING - 5 Objekte in ROI. Verwende das größte.
+2026-03-14 09:46:45,974 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 85.6 x 63.2 x 230.0 mm
+2026-03-14 09:46:45,974 - workers.distanz_meassure03 - INFO -   Volumen: 1243.6 cm³
+2026-03-14 09:46:46,405 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 09:46:47,169 - __main__ - INFO - 3D-Abmessungen: 85.6 x 63.2 x 230.0
+2026-03-14 09:46:47,169 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 09:46:47,286 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 09:46:48,334 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9780201379624
+2026-03-14 09:46:48,335 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 09:46:48,335 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 09:46:48,337 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 09:46:48,337 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 09:46:48,337 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 09:46:58,781 - __main__ - INFO - Gewicht: -0.000356 kg
+2026-03-14 09:46:58,782 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 09:46:58,783 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 09:47:15,428 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 10:33:33,168 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 10:33:35,180 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 10:33:35,180 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 10:33:35,180 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 10:33:43,910 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 10:33:43,910 - __main__ - INFO - Licht ein
+2026-03-14 10:33:47,219 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 10:33:47,763 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 10:33:48,243 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 10:33:56,466 - __main__ - INFO - Licht aus
+2026-03-14 10:34:11,312 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:34:14,030 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:34:15,768 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 552.0 mm
+2026-03-14 10:34:15,768 - workers.distanz_meassure03 - ERROR - Kein Objekt über Grund in der ROI gefunden.
+2026-03-14 10:34:16,989 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-14 10:34:16,989 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 10:34:19,856 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:34:20,733 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:34:21,608 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:34:22,573 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 10:34:22,575 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 10:34:28,477 - __main__ - INFO - Gewicht: 0.07864600000000001 kg
+2026-03-14 10:34:28,478 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 10:34:28,479 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 10:36:32,108 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 10:36:34,596 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-14 10:36:34,597 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-14 10:36:35,685 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:36:35,795 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:36:40,052 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 552.0 mm
+2026-03-14 10:36:40,053 - workers.distanz_meassure03 - WARNING - 2 Objekte in ROI. Verwende das größte.
+2026-03-14 10:36:40,054 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 43.5 x 43.8 x 41.0 mm
+2026-03-14 10:36:40,054 - workers.distanz_meassure03 - INFO -   Volumen: 78.2 cm³
+2026-03-14 10:36:41,257 - __main__ - INFO - 3D-Abmessungen: 43.5 x 43.8 x 41.0
+2026-03-14 10:36:41,257 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:36:41,607 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:36:42,497 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:36:43,387 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:36:44,353 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 10:36:44,353 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 10:36:52,298 - __main__ - INFO - Gewicht: 0.077594 kg
+2026-03-14 10:36:52,298 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:36:52,299 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 10:37:07,337 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 10:37:15,427 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 10:38:08,122 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-14 10:38:08,122 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-14 10:38:09,212 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:38:09,323 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:38:13,592 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 552.0 mm
+2026-03-14 10:38:13,592 - workers.distanz_meassure03 - WARNING - 2 Objekte in ROI. Verwende das größte.
+2026-03-14 10:38:13,593 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 59.2 x 42.8 x 41.0 mm
+2026-03-14 10:38:13,593 - workers.distanz_meassure03 - INFO -   Volumen: 104.0 cm³
+2026-03-14 10:38:14,789 - __main__ - INFO - 3D-Abmessungen: 59.2 x 42.8 x 41.0
+2026-03-14 10:38:14,789 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:38:15,131 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:38:16,034 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:38:16,925 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:38:17,895 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 10:38:17,895 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 10:38:25,840 - __main__ - INFO - Gewicht: 0.076749 kg
+2026-03-14 10:38:25,840 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:38:25,841 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 10:46:24,821 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 10:46:26,836 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 10:46:26,836 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 10:46:26,837 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 10:46:29,050 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 10:46:29,050 - __main__ - INFO - Licht ein
+2026-03-14 10:46:32,348 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 10:46:32,892 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 10:46:33,372 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 10:46:41,598 - __main__ - INFO - Licht aus
+2026-03-14 10:50:55,349 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:50:58,056 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:50:59,204 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:51:00,091 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:51:00,971 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:51:01,798 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 423.0 mm
+2026-03-14 10:51:01,799 - workers.distanz_meassure03 - WARNING - 2 Objekte in ROI. Verwende das größte.
+2026-03-14 10:51:01,799 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 85.3 x 86.3 x 170.0 mm
+2026-03-14 10:51:01,800 - workers.distanz_meassure03 - INFO -   Volumen: 1251.5 cm³
+2026-03-14 10:51:01,945 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 10:51:01,945 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 10:51:04,469 - __main__ - INFO - 3D-Abmessungen: 85.3 x 86.3 x 170.0
+2026-03-14 10:51:04,469 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 10:51:12,720 - __main__ - INFO - Gewicht: -0.014695 kg
+2026-03-14 10:51:12,721 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:51:12,722 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 10:51:31,418 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-14 10:51:31,418 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-14 10:51:31,835 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-03-14 10:51:33,542 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 10:51:33,542 - __main__ - INFO - Licht ein
+2026-03-14 10:51:34,828 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 10:51:35,372 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 10:51:35,853 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 10:51:44,079 - __main__ - INFO - Licht aus
+2026-03-14 10:51:50,670 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-03-14 10:51:59,271 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 10:51:59,272 - __main__ - INFO - Licht ein
+2026-03-14 10:52:00,558 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 10:52:01,070 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 10:52:01,550 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 10:52:09,764 - __main__ - INFO - Licht aus
+2026-03-14 10:52:13,612 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:52:13,692 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:52:14,836 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:52:15,747 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:52:16,632 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:52:17,594 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 10:52:17,594 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 10:52:19,980 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 424.0 mm
+2026-03-14 10:52:19,981 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 85.2 x 87.1 x 169.0 mm
+2026-03-14 10:52:19,981 - workers.distanz_meassure03 - INFO -   Volumen: 1255.0 cm³
+2026-03-14 10:52:21,867 - __main__ - INFO - 3D-Abmessungen: 85.2 x 87.1 x 169.0
+2026-03-14 10:52:21,867 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:52:30,217 - __main__ - INFO - Gewicht: -0.10860299999999999 kg
+2026-03-14 10:52:30,218 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:52:30,218 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 10:52:48,764 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 10:52:50,792 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 10:52:50,792 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 10:52:50,793 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 10:52:54,110 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 10:52:54,110 - __main__ - INFO - Licht ein
+2026-03-14 10:52:57,426 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 10:52:57,970 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 10:52:58,450 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 10:53:06,672 - __main__ - INFO - Licht aus
+2026-03-14 10:53:09,229 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:53:12,015 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:53:13,197 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:53:14,130 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:53:15,013 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:53:15,580 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 424.0 mm
+2026-03-14 10:53:15,585 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 85.3 x 87.0 x 169.0 mm
+2026-03-14 10:53:15,585 - workers.distanz_meassure03 - INFO -   Volumen: 1254.3 cm³
+2026-03-14 10:53:16,004 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 10:53:16,004 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 10:53:17,479 - __main__ - INFO - 3D-Abmessungen: 85.3 x 87.0 x 169.0
+2026-03-14 10:53:17,479 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 10:53:26,463 - __main__ - INFO - Gewicht: 2.3e-05 kg
+2026-03-14 10:53:26,464 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:53:26,465 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 10:53:44,753 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 10:53:47,275 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 10:53:48,186 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 10:54:06,864 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-14 10:54:06,864 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-14 10:54:07,711 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:54:07,829 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:54:08,969 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:54:09,854 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:54:10,749 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:54:11,286 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:54:11,407 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:54:11,835 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 10:54:11,835 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 10:54:12,582 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:54:13,468 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:54:14,069 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 422.0 mm
+2026-03-14 10:54:14,069 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 78.4 x 62.3 x 171.0 mm
+2026-03-14 10:54:14,070 - workers.distanz_meassure03 - INFO -   Volumen: 835.2 cm³
+2026-03-14 10:54:14,357 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:54:15,333 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 10:54:15,333 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 10:54:15,415 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices (1 connected, but in use)
+Traceback (most recent call last):
+  File "/home/leitner/3d-scanner-projekt/3D_Scanner/S_Python_Files/_Prototyp_GUI/workers/distanz_meassure03.py", line 192, in direct_mode
+    with dai.Device(pipeline) as device:
+RuntimeError: No available devices (1 connected, but in use)
+2026-03-14 10:54:15,415 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-14 10:54:15,416 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:54:28,055 - __main__ - INFO - Gewicht: -0.004222 kg
+2026-03-14 10:54:28,055 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:54:28,056 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 10:54:34,689 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 10:54:36,555 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 10:54:36,556 - __main__ - INFO - Licht ein
+2026-03-14 10:54:37,849 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 10:54:38,361 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 10:54:38,841 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 10:54:47,062 - __main__ - INFO - Licht aus
+2026-03-14 10:54:51,822 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:54:51,906 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:54:53,079 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:54:53,979 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:54:54,897 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:54:55,976 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 8809077745072
+2026-03-14 10:54:55,977 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 10:54:55,977 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 10:54:55,979 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '8809077745072'...
+2026-03-14 10:54:55,979 - __main__ - INFO - Barcode gespeichert: 8809077745072, selected=True
+2026-03-14 10:54:55,979 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 10:54:58,186 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 422.0 mm
+2026-03-14 10:54:58,187 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 76.0 x 62.2 x 171.0 mm
+2026-03-14 10:54:58,188 - workers.distanz_meassure03 - INFO -   Volumen: 808.7 cm³
+2026-03-14 10:55:00,078 - __main__ - INFO - 3D-Abmessungen: 76.0 x 62.2 x 171.0
+2026-03-14 10:55:00,078 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 10:55:08,400 - __main__ - INFO - Gewicht: -4.2999999999999995e-05 kg
+2026-03-14 10:55:08,400 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:55:08,401 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 10:55:32,845 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 10:55:34,166 - __main__ - INFO - Programm wird beendet
+2026-03-14 10:57:38,070 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 10:57:40,124 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 10:57:40,124 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 10:57:40,125 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 10:58:01,041 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 10:58:01,041 - __main__ - INFO - Licht ein
+2026-03-14 10:58:04,358 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 10:58:04,870 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 10:58:05,350 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 10:58:13,577 - __main__ - INFO - Licht aus
+2026-03-14 10:58:17,960 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 10:58:20,713 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 10:58:21,857 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 10:58:22,739 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 10:58:23,624 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 10:58:24,318 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 417.0 mm
+2026-03-14 10:58:24,319 - workers.distanz_meassure03 - WARNING - 2 Objekte in ROI. Verwende das größte.
+2026-03-14 10:58:24,319 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 51.7 x 87.3 x 176.0 mm
+2026-03-14 10:58:24,320 - workers.distanz_meassure03 - INFO -   Volumen: 794.8 cm³
+2026-03-14 10:58:25,818 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 8809077745072
+2026-03-14 10:58:25,819 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 10:58:25,820 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 10:58:25,822 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '8809077745072'...
+2026-03-14 10:58:25,823 - __main__ - INFO - Barcode gespeichert: 8809077745072, selected=True
+2026-03-14 10:58:25,823 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 10:58:26,216 - __main__ - INFO - 3D-Abmessungen: 51.7 x 87.3 x 176.0
+2026-03-14 10:58:26,216 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 10:58:35,204 - __main__ - INFO - Gewicht: 0.7674589999999999 kg
+2026-03-14 10:58:35,205 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 10:58:35,206 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:00:21,623 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:00:40,699 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:00:40,699 - __main__ - INFO - Licht ein
+2026-03-14 11:00:42,000 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:00:42,544 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:00:43,024 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:00:51,241 - __main__ - INFO - Licht aus
+2026-03-14 11:00:54,425 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:00:54,513 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:00:55,682 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:00:56,600 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:00:57,508 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:00:58,477 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:00:58,477 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:01:00,790 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 582.0 mm
+2026-03-14 11:01:00,791 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 171.7 x 31.3 x 11.0 mm
+2026-03-14 11:01:00,791 - workers.distanz_meassure03 - INFO -   Volumen: 59.2 cm³
+2026-03-14 11:01:03,341 - __main__ - INFO - 3D-Abmessungen: 171.7 x 31.3 x 11.0
+2026-03-14 11:01:03,341 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:01:11,006 - __main__ - INFO - Gewicht: 0.091582 kg
+2026-03-14 11:01:11,007 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:01:11,008 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:18:28,285 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 11:18:30,332 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 11:18:30,332 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 11:18:30,332 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 11:18:33,559 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:18:33,559 - __main__ - INFO - Licht ein
+2026-03-14 11:18:36,871 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:18:37,415 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:18:37,895 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:18:46,122 - __main__ - INFO - Licht aus
+2026-03-14 11:18:48,896 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:18:51,609 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:18:52,807 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:18:53,737 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:18:54,623 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:18:55,348 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 593.0 mm
+2026-03-14 11:18:55,349 - workers.distanz_meassure03 - ERROR - Kein Objekt über Grund in der ROI gefunden.
+2026-03-14 11:18:55,594 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:18:55,594 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:18:57,152 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-14 11:18:57,156 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:19:06,339 - __main__ - INFO - Gewicht: -5.5e-05 kg
+2026-03-14 11:19:06,340 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:19:06,340 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:19:09,826 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 11:19:45,059 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:19:46,882 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:19:46,882 - __main__ - INFO - Licht ein
+2026-03-14 11:19:48,171 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:19:48,715 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:19:49,195 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:19:57,417 - __main__ - INFO - Licht aus
+2026-03-14 11:20:01,586 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:20:01,669 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:20:02,819 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:20:03,718 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:20:04,615 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:20:05,682 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9780201379624
+2026-03-14 11:20:05,682 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 11:20:05,682 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 11:20:05,684 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 11:20:05,684 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 11:20:05,684 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:20:07,977 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 397.0 mm
+2026-03-14 11:20:07,978 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 100.1 x 94.2 x 196.0 mm
+2026-03-14 11:20:07,979 - workers.distanz_meassure03 - INFO -   Volumen: 1846.4 cm³
+2026-03-14 11:20:09,873 - __main__ - INFO - 3D-Abmessungen: 100.1 x 94.2 x 196.0
+2026-03-14 11:20:09,873 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:20:18,126 - __main__ - INFO - Gewicht: 0.753623 kg
+2026-03-14 11:20:18,126 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:20:18,127 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:21:05,271 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-14 11:21:05,271 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-14 11:21:06,263 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:21:06,378 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:21:07,516 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:21:08,415 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:21:09,325 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:21:10,366 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9780201379624
+2026-03-14 11:21:10,366 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 11:21:10,366 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 11:21:10,368 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 11:21:10,368 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 11:21:10,368 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:21:12,644 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 396.0 mm
+2026-03-14 11:21:12,645 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 99.4 x 94.5 x 197.0 mm
+2026-03-14 11:21:12,645 - workers.distanz_meassure03 - INFO -   Volumen: 1850.7 cm³
+2026-03-14 11:21:14,535 - __main__ - INFO - 3D-Abmessungen: 99.4 x 94.5 x 197.0
+2026-03-14 11:21:14,535 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:21:22,858 - __main__ - INFO - Gewicht: 0.7540330000000001 kg
+2026-03-14 11:21:22,862 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:21:22,863 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:23:04,361 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-14 11:23:04,361 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-14 11:23:06,098 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:23:06,199 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:23:07,368 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:23:08,295 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:23:09,228 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:23:10,318 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9780201379624
+2026-03-14 11:23:10,318 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 11:23:10,318 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 11:23:10,320 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 11:23:10,320 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 11:23:10,320 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:23:14,224 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: Failed to connect to device, error message: X_LINK_DEVICE_ALREADY_IN_USE
+Traceback (most recent call last):
+  File "/home/leitner/3d-scanner-projekt/3D_Scanner/S_Python_Files/_Prototyp_GUI/workers/distanz_meassure03.py", line 192, in direct_mode
+    with dai.Device(pipeline) as device:
+RuntimeError: Failed to connect to device, error message: X_LINK_DEVICE_ALREADY_IN_USE
+2026-03-14 11:23:14,225 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-14 11:23:14,225 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:23:22,743 - __main__ - INFO - Gewicht: 0.753648 kg
+2026-03-14 11:23:22,744 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:23:22,745 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:27:34,199 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 11:28:13,107 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:28:26,308 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:28:26,308 - __main__ - INFO - Licht ein
+2026-03-14 11:28:27,617 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:28:28,161 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:28:28,641 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:28:36,696 - __main__ - ERROR - OAK-D2 Fehler: Failed to connect to device, error message: X_LINK_DEVICE_ALREADY_IN_USE
+2026-03-14 11:28:36,697 - __main__ - INFO - Licht aus
+2026-03-14 11:28:53,975 - __main__ - INFO - Wiederhole Bild 4
+2026-03-14 11:29:02,047 - __main__ - ERROR - OAK-D2 Fehler: Failed to connect to device, error message: X_LINK_DEVICE_ALREADY_IN_USE
+2026-03-14 11:29:02,047 - __main__ - INFO - Licht ein
+2026-03-14 11:29:03,351 - __main__ - INFO - Licht aus
+2026-03-14 11:29:06,236 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-03-14 11:29:09,136 - __main__ - INFO - DepthAI Geräte gefunden: []
+2026-03-14 11:29:12,156 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-14 11:29:12,156 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 11:29:33,593 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 11:29:35,612 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 11:29:35,612 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 11:29:35,612 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 11:29:39,123 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:29:39,123 - __main__ - INFO - Licht ein
+2026-03-14 11:29:42,436 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:29:42,980 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:29:43,460 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:29:51,682 - __main__ - INFO - Licht aus
+2026-03-14 11:30:09,907 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 11:30:11,932 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 11:30:11,932 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 11:30:11,932 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 11:30:20,047 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:30:20,048 - __main__ - INFO - Licht ein
+2026-03-14 11:30:23,365 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:30:23,909 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:30:24,389 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:30:32,615 - __main__ - INFO - Licht aus
+2026-03-14 11:30:35,378 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:30:38,060 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:30:39,207 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:30:40,105 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:30:40,999 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:30:41,801 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 580.0 mm
+2026-03-14 11:30:41,802 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 40.9 x 201.6 x 13.0 mm
+2026-03-14 11:30:41,802 - workers.distanz_meassure03 - INFO -   Volumen: 107.1 cm³
+2026-03-14 11:30:41,964 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:30:41,964 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:30:43,649 - __main__ - INFO - 3D-Abmessungen: 40.9 x 201.6 x 13.0
+2026-03-14 11:30:43,649 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:30:52,703 - __main__ - INFO - Gewicht: 0.093599 kg
+2026-03-14 11:30:52,703 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:30:52,704 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:32:33,680 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:32:46,239 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:32:46,239 - __main__ - INFO - Licht ein
+2026-03-14 11:32:47,531 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:32:48,075 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:32:48,555 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:32:56,783 - __main__ - INFO - Licht aus
+2026-03-14 11:32:58,917 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:32:59,001 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:33:00,130 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:33:01,009 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:33:01,898 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:33:02,860 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:33:02,860 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:33:05,303 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 552.0 mm
+2026-03-14 11:33:05,304 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 67.0 x 68.7 x 41.0 mm
+2026-03-14 11:33:05,304 - workers.distanz_meassure03 - INFO -   Volumen: 188.7 cm³
+2026-03-14 11:33:07,361 - __main__ - INFO - 3D-Abmessungen: 67.0 x 68.7 x 41.0
+2026-03-14 11:33:07,361 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:33:15,505 - __main__ - INFO - Gewicht: 0.076723 kg
+2026-03-14 11:33:15,506 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:33:15,506 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:34:23,436 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 11:34:29,253 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 11:34:45,239 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-14 11:34:45,239 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-14 11:35:00,775 - __main__ - INFO - Wiederhole Bild 4
+2026-03-14 11:35:09,002 - __main__ - INFO - Licht ein
+2026-03-14 11:35:10,347 - __main__ - INFO - Licht aus
+2026-03-14 11:35:11,781 - __main__ - INFO - Wiederhole Bild 2
+2026-03-14 11:35:12,337 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:35:12,337 - __main__ - INFO - Licht ein
+2026-03-14 11:35:13,641 - __main__ - INFO - Licht aus
+2026-03-14 11:35:15,360 - __main__ - INFO - Wiederhole Bild 1
+2026-03-14 11:35:15,857 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:35:15,857 - __main__ - INFO - Licht ein
+2026-03-14 11:35:17,160 - __main__ - INFO - Licht aus
+2026-03-14 11:35:18,511 - __main__ - INFO - Wiederhole Bild 1
+2026-03-14 11:35:18,993 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:35:18,994 - __main__ - INFO - Licht ein
+2026-03-14 11:35:20,297 - __main__ - INFO - Licht aus
+2026-03-14 11:35:21,365 - __main__ - INFO - Wiederhole Bild 3
+2026-03-14 11:35:21,937 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:35:21,938 - __main__ - INFO - Licht ein
+2026-03-14 11:35:23,241 - __main__ - INFO - Licht aus
+2026-03-14 11:35:25,935 - __main__ - INFO - Wiederhole Bild 1
+2026-03-14 11:35:26,418 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:35:26,418 - __main__ - INFO - Licht ein
+2026-03-14 11:35:27,722 - __main__ - INFO - Licht aus
+2026-03-14 11:35:29,300 - __main__ - INFO - Wiederhole Bild 2
+2026-03-14 11:35:29,842 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:35:29,842 - __main__ - INFO - Licht ein
+2026-03-14 11:35:31,145 - __main__ - INFO - Licht aus
+2026-03-14 11:35:34,374 - __main__ - INFO - Wiederhole Bild 3
+2026-03-14 11:35:34,930 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:35:34,930 - __main__ - INFO - Licht ein
+2026-03-14 11:35:36,233 - __main__ - INFO - Licht aus
+2026-03-14 11:35:37,363 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:35:37,466 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:35:38,619 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:35:39,505 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:35:40,398 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:35:43,748 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 348.0 mm
+2026-03-14 11:35:43,749 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 71.4 x 64.4 x 245.0 mm
+2026-03-14 11:35:43,750 - workers.distanz_meassure03 - INFO -   Volumen: 1126.1 cm³
+2026-03-14 11:35:45,637 - __main__ - INFO - 3D-Abmessungen: 71.4 x 64.4 x 245.0
+2026-03-14 11:35:45,638 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:35:49,707 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:35:49,707 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:35:53,946 - __main__ - INFO - Gewicht: 0.172642 kg
+2026-03-14 11:35:53,946 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:35:53,947 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:36:24,094 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:36:26,252 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:36:26,252 - __main__ - INFO - Licht ein
+2026-03-14 11:36:27,540 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:36:28,084 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:36:28,564 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:36:36,786 - __main__ - INFO - Licht aus
+2026-03-14 11:36:39,073 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:36:39,151 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:36:40,273 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:36:41,153 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:36:42,059 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:36:43,125 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9780201379624
+2026-03-14 11:36:43,125 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 11:36:43,125 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 11:36:43,127 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 11:36:43,127 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 11:36:43,128 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:36:45,441 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 351.0 mm
+2026-03-14 11:36:45,442 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 79.2 x 154.1 x 242.0 mm
+2026-03-14 11:36:45,442 - workers.distanz_meassure03 - INFO -   Volumen: 2953.6 cm³
+2026-03-14 11:36:47,335 - __main__ - INFO - 3D-Abmessungen: 79.2 x 154.1 x 242.0
+2026-03-14 11:36:47,336 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:36:55,698 - __main__ - INFO - Gewicht: 0.17241700000000001 kg
+2026-03-14 11:36:55,698 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:36:55,699 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:37:08,078 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:37:29,069 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:37:29,070 - __main__ - INFO - Licht ein
+2026-03-14 11:37:30,359 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:37:30,903 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:37:31,383 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:37:39,602 - __main__ - INFO - Licht aus
+2026-03-14 11:37:41,443 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:37:41,519 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:37:42,646 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:37:43,533 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:37:44,414 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:37:47,829 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 349.0 mm
+2026-03-14 11:37:47,829 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 73.4 x 64.4 x 244.0 mm
+2026-03-14 11:37:47,830 - workers.distanz_meassure03 - INFO -   Volumen: 1153.1 cm³
+2026-03-14 11:37:49,722 - __main__ - INFO - 3D-Abmessungen: 73.4 x 64.4 x 244.0
+2026-03-14 11:37:49,723 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:37:53,768 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:37:53,768 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:37:58,088 - __main__ - INFO - Gewicht: 0.17149199999999998 kg
+2026-03-14 11:37:58,088 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:37:58,089 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:38:01,507 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 11:38:33,432 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:38:35,467 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:38:35,467 - __main__ - INFO - Licht ein
+2026-03-14 11:38:36,761 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:38:37,305 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:38:37,785 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:38:46,007 - __main__ - INFO - Licht aus
+2026-03-14 11:38:47,081 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:38:47,147 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:38:48,284 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:38:49,173 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:38:50,058 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:38:51,107 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9780201379624
+2026-03-14 11:38:51,109 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 11:38:51,109 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 11:38:51,111 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 11:38:51,111 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 11:38:51,111 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:38:53,452 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 351.0 mm
+2026-03-14 11:38:53,453 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 82.5 x 80.5 x 242.0 mm
+2026-03-14 11:38:53,453 - workers.distanz_meassure03 - INFO -   Volumen: 1605.9 cm³
+2026-03-14 11:38:55,349 - __main__ - INFO - 3D-Abmessungen: 82.5 x 80.5 x 242.0
+2026-03-14 11:38:55,349 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:39:03,705 - __main__ - INFO - Gewicht: 0.171137 kg
+2026-03-14 11:39:03,705 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:39:03,706 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:39:29,081 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 11:39:58,829 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:40:00,269 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:40:00,270 - __main__ - INFO - Licht ein
+2026-03-14 11:40:01,565 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:40:02,109 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:40:02,589 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:40:10,813 - __main__ - INFO - Licht aus
+2026-03-14 11:40:12,869 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:40:12,944 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:40:14,104 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:40:15,006 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:40:15,894 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:40:16,931 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9780201379624
+2026-03-14 11:40:16,931 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 11:40:16,931 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 11:40:16,933 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 11:40:16,933 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 11:40:16,933 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:40:19,251 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 436.0 mm
+2026-03-14 11:40:19,251 - workers.distanz_meassure03 - WARNING - 2 Objekte in ROI. Verwende das größte.
+2026-03-14 11:40:19,252 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 100.2 x 66.8 x 157.0 mm
+2026-03-14 11:40:19,252 - workers.distanz_meassure03 - INFO -   Volumen: 1049.9 cm³
+2026-03-14 11:40:21,145 - __main__ - INFO - 3D-Abmessungen: 100.2 x 66.8 x 157.0
+2026-03-14 11:40:21,145 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:40:29,466 - __main__ - INFO - Gewicht: 0.7504310000000001 kg
+2026-03-14 11:40:29,466 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:40:29,467 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:40:36,325 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-14 11:40:36,325 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-14 11:40:38,356 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:40:38,451 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:40:39,571 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:40:40,499 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:40:41,392 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:40:42,436 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 3: 9780201379624
+2026-03-14 11:40:42,436 - __main__ - INFO - Bild 3: 1 Barcode(s) erkannt
+2026-03-14 11:40:42,436 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 11:40:42,438 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 11:40:42,438 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 11:40:42,439 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:40:44,725 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 437.0 mm
+2026-03-14 11:40:44,726 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 100.2 x 66.8 x 156.0 mm
+2026-03-14 11:40:44,726 - workers.distanz_meassure03 - INFO -   Volumen: 1043.2 cm³
+2026-03-14 11:40:46,615 - __main__ - INFO - 3D-Abmessungen: 100.2 x 66.8 x 156.0
+2026-03-14 11:40:46,615 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:40:54,948 - __main__ - INFO - Gewicht: 0.750341 kg
+2026-03-14 11:40:54,948 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:40:54,949 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:41:18,313 - __main__ - INFO - Neue CSV-Datei erstellt: /home/leitner/Desktop/Scans/2026-03-14/scans_2026-03-14.csv
+2026-03-14 11:41:18,330 - __main__ - INFO - iso_Bild gespeichert: /home/leitner/Desktop/Scans/2026-03-14/Fotos/Scan_20260314_114118/iso_Bild.jpg
+2026-03-14 11:41:18,338 - __main__ - INFO - top_Bild gespeichert: /home/leitner/Desktop/Scans/2026-03-14/Fotos/Scan_20260314_114118/top_Bild.jpg
+2026-03-14 11:41:18,346 - __main__ - INFO - right_Bild gespeichert: /home/leitner/Desktop/Scans/2026-03-14/Fotos/Scan_20260314_114118/right_Bild.jpg
+2026-03-14 11:41:18,436 - __main__ - INFO - behind_Bild gespeichert: /home/leitner/Desktop/Scans/2026-03-14/Fotos/Scan_20260314_114118/behind_Bild.jpg
+2026-03-14 11:41:18,437 - __main__ - INFO - 0x1 Datensätze zu CSV hinzugefügt
+2026-03-14 11:41:26,445 - __main__ - INFO - Scan 20260314_114118 zu /home/leitner/Desktop/Scans/2026-03-14/scans_2026-03-14.csv hinzugefügt
+2026-03-14 11:41:48,712 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:41:51,500 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:41:51,500 - __main__ - INFO - Licht ein
+2026-03-14 11:41:52,802 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:41:53,346 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:41:53,826 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:42:02,048 - __main__ - INFO - Licht aus
+2026-03-14 11:42:06,957 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:42:07,034 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:42:08,198 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:42:09,089 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:42:09,988 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:42:10,952 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:42:10,953 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:42:13,343 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 592.0 mm
+2026-03-14 11:42:13,343 - workers.distanz_meassure03 - ERROR - Kein Objekt über Grund in der ROI gefunden.
+2026-03-14 11:42:15,228 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-14 11:42:15,228 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:42:23,632 - __main__ - INFO - Gewicht: -0.0054329999999999995 kg
+2026-03-14 11:42:23,633 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:42:23,633 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:42:31,107 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 11:43:00,019 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:43:01,301 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:43:01,301 - __main__ - INFO - Licht ein
+2026-03-14 11:43:02,596 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:43:03,140 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:43:03,621 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:43:11,845 - __main__ - INFO - Licht aus
+2026-03-14 11:43:13,701 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:43:13,780 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:43:19,529 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:43:20,044 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 551.0 mm
+2026-03-14 11:43:20,044 - workers.distanz_meassure03 - WARNING - 2 Objekte in ROI. Verwende das größte.
+2026-03-14 11:43:20,045 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 44.6 x 45.0 x 42.0 mm
+2026-03-14 11:43:20,045 - workers.distanz_meassure03 - INFO -   Volumen: 84.4 cm³
+2026-03-14 11:43:20,406 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:43:21,299 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:43:21,940 - __main__ - INFO - 3D-Abmessungen: 44.6 x 45.0 x 42.0
+2026-03-14 11:43:21,940 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:43:22,254 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:43:22,255 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:43:30,253 - __main__ - INFO - Gewicht: 0.072012 kg
+2026-03-14 11:43:30,254 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:43:30,255 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:44:19,306 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:44:20,329 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:44:20,330 - __main__ - INFO - Licht ein
+2026-03-14 11:44:21,608 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:44:22,152 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:44:22,632 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:44:30,858 - __main__ - INFO - Licht aus
+2026-03-14 11:44:36,731 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:44:36,832 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:44:37,965 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:44:38,842 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:44:40,102 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-14 11:44:41,099 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:44:41,099 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-14 11:44:43,093 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 504.0 mm
+2026-03-14 11:44:43,094 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 86.5 x 170.9 x 89.0 mm
+2026-03-14 11:44:43,094 - workers.distanz_meassure03 - INFO -   Volumen: 1315.0 cm³
+2026-03-14 11:44:44,981 - __main__ - INFO - 3D-Abmessungen: 86.5 x 170.9 x 89.0
+2026-03-14 11:44:44,982 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:44:53,286 - __main__ - INFO - Gewicht: 0.747855 kg
+2026-03-14 11:44:53,286 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:44:53,288 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:45:11,848 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:45:32,985 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:45:32,985 - __main__ - INFO - Licht ein
+2026-03-14 11:45:34,283 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:45:34,827 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:45:35,307 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:45:43,529 - __main__ - INFO - Licht aus
+2026-03-14 11:45:47,416 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-14 11:45:47,499 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-14 11:45:48,637 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-14 11:45:49,556 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-14 11:45:50,461 - workers.BarCode_v03 - INFO - Barcode erkannt in Bild 2: 9780201379624
+2026-03-14 11:45:50,461 - __main__ - INFO - Bild 2: 1 Barcode(s) erkannt
+2026-03-14 11:45:51,430 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-14 11:45:51,430 - __main__ - INFO - Insgesamt 1 Barcodes in 4 Bildern erkannt
+2026-03-14 11:45:51,432 - __main__ - INFO - Barcode-Daten empfangen: {'found': True, 'value': '9780201379624'...
+2026-03-14 11:45:51,432 - __main__ - INFO - Barcode gespeichert: 9780201379624, selected=True
+2026-03-14 11:45:51,432 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:45:53,776 - workers.distanz_meassure03 - INFO - Grund (min. Tiefe in ROI): 504.0 mm
+2026-03-14 11:45:53,777 - workers.distanz_meassure03 - INFO -   Objektmaße (Länge x Breite x Höhe): 165.5 x 91.7 x 89.0 mm
+2026-03-14 11:45:53,778 - workers.distanz_meassure03 - INFO -   Volumen: 1350.4 cm³
+2026-03-14 11:45:56,489 - __main__ - INFO - 3D-Abmessungen: 165.5 x 91.7 x 89.0
+2026-03-14 11:45:56,489 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-14 11:46:03,990 - __main__ - INFO - Gewicht: 0.746574 kg
+2026-03-14 11:46:03,990 - __main__ - INFO - Alle Hauptdaten vorhanden - aktualisiere GUI
+2026-03-14 11:46:03,991 - __main__ - INFO - Alle Tasks fertig
+2026-03-14 11:46:17,276 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-14 11:49:45,526 - __main__ - INFO - Anwendung wurde neu gestartet
+2026-03-14 11:50:40,421 - __main__ - INFO - Licht ein
+2026-03-14 11:50:40,422 - __main__ - WARNING - Fehler bei serieller Kommunikation: write failed: [Errno 5] Input/output error
+2026-03-14 11:50:40,522 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:50:46,028 - __main__ - INFO - Licht aus
+2026-03-14 11:50:46,029 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:50:46,129 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:50:47,887 - __main__ - INFO - Licht ein
+2026-03-14 11:50:47,888 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:50:47,988 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:50:53,494 - __main__ - INFO - Licht aus
+2026-03-14 11:50:53,494 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:50:53,594 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:50:59,405 - __main__ - INFO - Licht ein
+2026-03-14 11:50:59,405 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:50:59,507 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:51:05,013 - __main__ - INFO - Licht aus
+2026-03-14 11:51:05,013 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:51:05,113 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:51:05,115 - __main__ - INFO - Licht ein
+2026-03-14 11:51:05,115 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:51:05,216 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:51:10,721 - __main__ - INFO - Licht aus
+2026-03-14 11:51:10,722 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:51:10,822 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:53:09,172 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 11:53:11,192 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 11:53:11,193 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 11:53:11,193 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 11:53:20,504 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 11:53:22,552 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 11:53:22,552 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 11:53:22,553 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 11:53:32,566 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 11:53:34,584 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 11:53:34,584 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 11:53:34,585 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 11:54:09,324 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-14 11:54:11,356 - __main__ - INFO - OAK-D2 ist verfügbar: 1 Gerät(e)
+2026-03-14 11:54:11,356 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0, 2, 4]
+2026-03-14 11:54:11,356 - __main__ - INFO - Verfügbare Kameras gefunden: [0, 2, 4], OAK-D2: True
+2026-03-14 11:54:15,087 - __main__ - INFO - Licht ein
+2026-03-14 11:54:15,087 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:54:15,187 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:54:20,693 - __main__ - INFO - Licht aus
+2026-03-14 11:54:20,693 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:54:20,794 - __main__ - WARNING - Fehler bei serieller Kommunikation: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2026-03-14 11:54:35,413 - __main__ - INFO - Licht ein
+2026-03-14 11:54:43,235 - __main__ - INFO - Licht aus
+2026-03-14 11:54:49,833 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-14 11:54:49,833 - __main__ - INFO - Licht ein
+2026-03-14 11:54:51,142 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:54:51,686 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:54:52,166 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:55:00,389 - __main__ - INFO - Licht aus
+2026-03-14 11:55:13,315 - __main__ - INFO - Wiederhole Bild 1
+2026-03-14 11:55:13,799 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:55:13,799 - __main__ - INFO - Licht ein
+2026-03-14 11:55:15,103 - __main__ - INFO - Licht aus
+2026-03-14 11:55:18,610 - __main__ - INFO - Wiederhole Bild 1
+2026-03-14 11:55:19,111 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-14 11:55:19,112 - __main__ - INFO - Licht ein
+2026-03-14 11:55:20,415 - __main__ - INFO - Licht aus
+2026-03-14 11:55:24,401 - __main__ - INFO - Wiederhole Bild 2
+2026-03-14 11:55:24,968 - __main__ - INFO - Bild von Kamera 2 (logisch 1) aufgenommen
+2026-03-14 11:55:24,968 - __main__ - INFO - Licht ein
+2026-03-14 11:55:26,271 - __main__ - INFO - Licht aus
+2026-03-14 11:55:35,566 - __main__ - INFO - Wiederhole Bild 3
+2026-03-14 11:55:36,104 - __main__ - INFO - Bild von Kamera 4 (logisch 2) aufgenommen
+2026-03-14 11:55:36,104 - __main__ - INFO - Licht ein
+2026-03-14 11:55:37,408 - __main__ - INFO - Licht aus

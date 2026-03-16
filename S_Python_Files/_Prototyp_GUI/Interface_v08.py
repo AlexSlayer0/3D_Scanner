@@ -1,8 +1,8 @@
 #Interface_v08.py
 """=======TODO-Liste v0.8=======
 SAP-Integration                 (Platzhalter-Button/optional)
-Lokal speichern Integration     (Formatierung?)
-Neu beginnen nicht message auf datenverlust sondern direkt zurück zur startseite (mit bestätigung)
+Lichtansteuerung immer an
+Bei overview zurück nach Startseite rebeginn ausführen
 ================================"""
 
 import os # Für Dateipfade und Betriebssysteminteraktionen

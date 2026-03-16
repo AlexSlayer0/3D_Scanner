@@ -24,10 +24,10 @@ ROI_SIZE = 250  # Pixel für die zentrierte ROI
 # Standardwerte
 DEFAULT_COLOR_TOLERANCE = 25      # nicht mehr für Segmentierung genutzt, aber für Kompatibilität
 DEFAULT_MIN_AREA = 25
-FALLBACK_FOCAL_LENGTH_PX = 580
+FALLBACK_FOCAL_LENGTH_PX = 500
 DEFAULT_GROUND_TOLERANCE_MM = 5
 DEFAULT_HUE_TOLERANCE = 5
-DEFAULT_OFFSET_X = 20
+DEFAULT_OFFSET_X = -30
 DEFAULT_OFFSET_Y = 0
 
 def load_calibration():
@@ -315,14 +315,14 @@ def live_mode(calib):
     monoRight.setCamera("right")
 
     stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.DEFAULT)
-    stereo.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_7x7)
+    stereo.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_5x5)
     stereo.setLeftRightCheck(True)
     stereo.setExtendedDisparity(False)
     stereo.setSubpixel(True)
 
     config = stereo.initialConfig.get()
-    config.postProcessing.speckleFilter.enable = False
-    config.postProcessing.speckleFilter.speckleRange = 50
+    config.postProcessing.speckleFilter.enable = True
+    config.postProcessing.speckleFilter.speckleRange = 232
     config.postProcessing.spatialFilter.holeFillingRadius = 2
     config.postProcessing.spatialFilter.numIterations = 1
     config.postProcessing.thresholdFilter.minRange = 100 # 100 mm = 10 cm, um unrealistische Tiefenwerte zu eliminieren
@@ -373,7 +373,7 @@ def live_mode(calib):
 
             # Höhe über Grund (ROI)
             if z_median_mm is not None and not np.isnan(min_z):
-                hoehe = z_median_mm - min_z
+                hoehe = float(z_median_mm - min_z)
                 text_hoehe = f"Hoehe ueber Grund: {hoehe:.1f} mm"
             else:
                 text_hoehe = "Hoehe ueber Grund: ---"
