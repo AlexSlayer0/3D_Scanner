@@ -2213,8 +2213,7 @@ class FullscreenApp(QMainWindow):
                 # 7. Nur Kopfzeile schreiben wenn Datei neu ist
                 if not file_exists:
                     writer.writerow([
-                        "Scan_ID",
-                        "Materialnummer",
+                        "Interne Materialnummer",
                         "Gewicht_kg",
                         "Laenge_mm",
                         "Breite_mm",
@@ -2306,7 +2305,6 @@ class FullscreenApp(QMainWindow):
                 # 13. CSV-Zeilen schreiben - Für SAP
                 if not ean_codes and not article_numbers:
                     writer.writerow([
-                        scan_timestamp,  # Scan_ID
                         "",  # Interne Materialnummer
                         f"{gewicht:.3f}".replace(".", ","),  # Gewicht in kg
                         f"{laenge:.0f}",  # Länge in mm
@@ -2320,7 +2318,6 @@ class FullscreenApp(QMainWindow):
                     for article in (article_numbers if article_numbers else [""]):
                         for ean in (ean_codes if ean_codes else [""]):                            
                             writer.writerow([
-                                scan_timestamp,  # Scan_ID
                                 article,  # Interne Materialnummer
                                 f"{gewicht:.3f}".replace(".", ","),  # Gewicht in kg
                                 f"{laenge:.0f}",  # Länge in mm
@@ -2348,7 +2345,7 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
             
             QMessageBox.information(self, "Scan gespeichert", success_msg)
-            logger.info(f"Scan {scan_timestamp} zu {csv_datei} hinzugefügt")
+            # logger.info(f"Scan {scan_timestamp} zu {csv_datei} hinzugefügt")
             self.data_saved = True  # Flag setzen, dass Daten gespeichert wurden
             
             # 15. Optional: CSV-Datei öffnen (nur bei erstem Scan des Tages)
