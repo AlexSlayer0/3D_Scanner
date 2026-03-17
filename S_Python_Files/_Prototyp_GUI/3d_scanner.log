@@ -8499,3 +8499,14 @@ RuntimeError: No available devices
 2026-03-16 21:00:25,055 - __main__ - INFO - Licht aus
 2026-03-16 21:00:25,055 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
 2026-03-16 21:00:25,161 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-17 07:46:46,589 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-17 07:46:48,864 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-17 07:46:48,865 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-17 07:46:48,865 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-17 07:46:48,866 - __main__ - INFO - Licht ein
+2026-03-17 07:46:48,867 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-17 07:46:48,974 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-17 07:47:03,614 - __main__ - INFO - Programm wird beendet
+2026-03-17 07:47:03,615 - __main__ - INFO - Licht aus
+2026-03-17 07:47:03,616 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-17 07:47:03,720 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
