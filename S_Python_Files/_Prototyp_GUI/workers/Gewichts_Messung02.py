@@ -4,7 +4,10 @@ import sys
 import time
 import json
 import os
+import logging
 
+# Logging setup
+logger = logging.getLogger(__name__)
 
 I2C_BUS = 1                 # I2C & MUX (nur Linux)
 MUX_ADDR = 0x70             # MUX-Adresse (typisch 0x70 für TCA9548A)
@@ -53,11 +56,11 @@ def load_params():
                 data = json.load(f)
             faktoren = data.get('faktoren', DEFAULT_FAKTOREN)
             zero_offsets = data.get('zero_offsets', DEFAULT_ZERO_OFFSETS)
-            print("Parametergeladen aus", PARAM_FILE)
+            logger.info(f"Parametergeladen aus {PARAM_FILE}")
         except Exception as e:
-            print(f"Fehler beim Laden der Parameter: {e}. Verwende Standardwerte.")
+            logger.info(f"Fehler beim Laden der Parameter: {e}. Verwende Standardwerte.")
     else:
-        print("Keine gespeicherten Parameter gefunden. Verwende Standardwerte.")
+        logger.warning("Keine gespeicherten Parameter gefunden. Verwende Standardwerte.")
 
 
 def save_params():
@@ -74,9 +77,9 @@ def save_params():
     try:
         with open(PARAM_FILE, 'w') as f:
             json.dump(data, f, indent=4)
-        print("Parameter gespeichert in", PARAM_FILE)
+            logger.info(f"Parameter gespeichert in {PARAM_FILE}")
     except Exception as e:
-        print(f"Fehler beim Speichern der Parameter: {e}")
+        logger.warning(f"Fehler beim Speichern der Parameter: {e}")
 
 
 def select_mux(channel):
@@ -103,7 +106,7 @@ def tara():
         else:
             select_mux(mux_channels[i])
             zero_offsets[i] = adc_channels[i].getAverage(20)
-        print(f"Zelle {i}: Zero-Offset = {zero_offsets[i]:.2f}")
+        logger.info(f"Zelle {i}: Zero-Offset = {zero_offsets[i]:.2f}")
     # Nach Tara-Offsets speichern
     save_params()
 
@@ -119,23 +122,23 @@ def calibrate_cell(index, known_weight_grams):
 
     # 1. Rohwert ohne Last (Zelle unbelastet)
     raw_zero = adc_channels[index].getAverage(20)
-    print(f"Zelle {index}: Rohwert ohne Last = {raw_zero:.2f}")
+    logger.info(f"Zelle {index}: Rohwert ohne Last = {raw_zero:.2f}")
 
     # 2. Gewicht auflegen und Rohwert mit Last messen
     input(f"Lege jetzt {known_weight_grams} g auf Zelle {index} und drücke Enter…")
     raw_load = adc_channels[index].getAverage(20)
-    print(f"Zelle {index}: Rohwert mit Last = {raw_load:.2f}")
+    logger.info(f"Zelle {index}: Rohwert mit Last = {raw_load:.2f}")
 
     # 3. Differenz und neuer Faktor
     diff = raw_load - raw_zero
     if abs(diff) < 1:
-        print("Fehler: Differenz zu klein - Kalibrierung abgebrochen.")
+        logger.info("Fehler: Differenz zu klein - Kalibrierung abgebrochen.")
         return faktoren[index]
 
     neuer_faktor = known_weight_grams / diff   # positives Vorzeichen
     faktoren[index] = neuer_faktor
 
-    print(f"Zelle {index}: Neuer Faktor = {faktoren[index]:.6f}")
+    logger.info(f"Zelle {index}: Neuer Faktor = {faktoren[index]:.6f}")
     save_params()
     return faktoren[index]
 
@@ -168,10 +171,10 @@ def get_weight():
         for i in range(len(adc_channels)):
             gesamt += measure_cell(i)
             time.sleep(0.1)  # Kurze Pause zwischen den Messungen
-        #print(f"Gesamtgewicht: {gesamt:.2f} g\n")
+        #logger.info(f"Gesamtgewicht: {gesamt:.2f} g\n")
         return gesamt
     except Exception as e:
-        #print(f"Fehler bei der Gewichtsmessung: {e}")
+        logger.error(f"Fehler bei der Gewichtsmessung: {e}")
         return "Undefiniert"
 
 

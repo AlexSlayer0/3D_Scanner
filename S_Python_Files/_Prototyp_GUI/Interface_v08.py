@@ -709,6 +709,7 @@ class ParallelWorker(QThread):
         """
         try:
             import workers.Gewichts_Messung02
+            workers.Gewichts_Messung02.load_params()
             
             raw_values = []
             for _ in range(20):

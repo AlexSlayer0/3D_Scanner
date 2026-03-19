@@ -311,7 +311,7 @@ def direct_mode(calib):
 
     except Exception as e:
         err_msg = f"Fehler während der Messung: {str(e)}"
-        logger.exception(err_msg)  # Loggt auch den Traceback
+        logger.error(err_msg)  # Loggt auch den Traceback
         result["error"] = err_msg
     finally:
         cv2.destroyAllWindows()
