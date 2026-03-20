@@ -78,7 +78,7 @@ class BarcodeDetector:
                                 "value": barcode_data["value"],
                                 "type": barcode_data["type"],
                                 "confidence": float(box.conf[0]) if hasattr(box, 'conf') else 0.0,
-                                "bbox": [x1, y1, x2, y2],  # ÄNDERUNG: Liste statt Tuple
+                                "bbox": [x1, y1, x2, y2],  
                                 "cropped_image": roi.copy()
                             }
                             image_barcodes.append(barcode_info)
@@ -208,6 +208,9 @@ def detect_barcodes(images: List[np.ndarray]) -> List[Dict[str, Any]]:
     """
     Hauptfunktion zur Barcode-Erkennung.
     Wird von der Hauptseite aufgerufen.
+
+    @staticmethod macht 
+    print(BarcodeDetector._try_decode(img))  # möglich sonst Instanz zuvor bilden
     
     Args:
         images: Liste von Bildern als numpy arrays
@@ -224,7 +227,7 @@ def detect_barcodes(images: List[np.ndarray]) -> List[Dict[str, Any]]:
                 continue
                 
             # Bildnamen basierend auf Position
-            image_names = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
+            image_names = ["iso_Bild", "top_Bild", "left_Bild", "behind_Bild"]
             img_name = image_names[idx] if idx < len(image_names) else f"Bild_{idx}"
             
             # Barcodes erkennen

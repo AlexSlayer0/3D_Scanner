@@ -540,7 +540,7 @@ class DetectionManager:
             detector = BarcodeDetector()
             self.all_barcodes = []
             
-            image_names = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
+            image_names = ["iso_Bild", "top_Bild", "left_Bild", "behind_Bild"]
             
             for idx, img in enumerate(images):
                 if img is None:
@@ -786,7 +786,7 @@ class FullscreenApp(QMainWindow):
         self.final_image_labels: List[Optional[QLabel]] = [None] * CONFIG.NUM_CAMERAS
         self.keep: List[bool] = [True] * CONFIG.NUM_CAMERAS
         
-        self.bilder_namen = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"]
+        self.bilder_namen = ["iso_Bild", "top_Bild", "left_Bild", "behind_Bild"]
 
         self.scan_start = False
         self.data_saved = False
@@ -2026,7 +2026,7 @@ class FullscreenApp(QMainWindow):
 
             # Quellenangabe
             source_label_text = self.translator.get_text(self.language, "storage", "source_label")
-            image_names = ["ISO Bild", "Top Bild", "Right Bild", "Behind Bild"]
+            image_names = ["ISO Bild", "Top Bild", "Left Bild", "Behind Bild"]
             img_idx = barcode.get('image_index', 0)
             if img_idx >= 0 and img_idx < len(image_names):
                 source_text = f"{source_label_text} {image_names[img_idx]}"
@@ -2225,7 +2225,7 @@ class FullscreenApp(QMainWindow):
                     logger.info(f"Neue CSV-Datei erstellt: {csv_datei}")
                 
                 # 8. Alle Bilder speichern und Pfade merken
-                image_names = ["iso_Bild", "top_Bild", "right_Bild", "behind_Bild"] # Vielleicht später anpassen oder erweitern
+                image_names = ["iso_Bild", "top_Bild", "left_Bild", "behind_Bild"] # Vielleicht später anpassen oder erweitern
                 bild_pfade = {}
     
                 for idx, img in enumerate(self.images):
