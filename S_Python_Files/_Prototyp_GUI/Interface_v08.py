@@ -2376,9 +2376,17 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
 
         # Spezialfall: Von Kamera-Übersicht (Index 2) zurück zur Foto-Auswahl (Index 1)
         if idx == 2:
-            # Setze scan_start zurück, damit neue Bilder aufnehmen können
-            self.scan_start = True
-            logger.info("Zurück zur Foto-Auswahl: scan_start=True gesetzt")
+            # Nur Ergebnisse zurücksetzen, Bilder bleiben erhalten
+            self.abmessung = None
+            self.gewicht = None
+            self.all_barcodes = []          # Barcodes löschen
+            self.final_images = [None] * CONFIG.NUM_CAMERAS   # Alte Vorschau entfernen
+            self.scan_start = True          # Bilder sind vorhanden
+            
+            self.load_pages()               # Storage-Seite aktualisieren (leere Barcodes)
+            self.stack.setCurrentIndex(1)
+            self.update_buttons()
+            return
         
         if idx > 0:
             self.stack.setCurrentIndex(idx - 1)

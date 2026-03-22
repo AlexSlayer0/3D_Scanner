@@ -8709,3 +8709,268 @@ RuntimeError: No available devices
 2026-03-19 15:13:34,083 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
 2026-03-19 15:13:34,083 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
 2026-03-19 15:13:34,083 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 18:48:12,491 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-22 18:48:14,090 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-22 18:48:14,090 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-22 18:48:14,090 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-22 18:48:14,090 - __main__ - INFO - Licht ein
+2026-03-22 18:48:14,090 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:48:14,206 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:48:14,724 - workers.Gewichts_Messung02 - INFO - Zelle 0: Zero-Offset = 0.00
+2026-03-22 18:48:14,724 - workers.Gewichts_Messung02 - INFO - Zelle 1: Zero-Offset = 0.00
+2026-03-22 18:48:14,724 - workers.Gewichts_Messung02 - INFO - Zelle 2: Zero-Offset = 0.00
+2026-03-22 18:48:14,724 - workers.Gewichts_Messung02 - INFO - Parameter gespeichert in weight_calibration.json
+2026-03-22 18:48:17,053 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-22 18:48:17,623 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 18:48:17,623 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 18:48:17,628 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 18:48:18,351 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 18:48:18,357 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 18:48:22,496 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 18:48:22,604 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 18:48:22,610 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 18:48:22,610 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:48:22,753 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 18:48:24,234 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 18:48:25,611 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 18:48:26,137 - __main__ - INFO - Gewicht: 2.999994 kg
+2026-03-22 18:48:26,137 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:48:26,940 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 18:48:26,955 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 18:48:26,956 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 18:48:28,290 - __main__ - INFO - Licht aus
+2026-03-22 18:48:28,290 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:48:28,406 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:48:32,059 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-22 18:48:32,449 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-22 18:48:32,449 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-22 18:48:33,012 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-03-22 18:48:34,724 - __main__ - INFO - Licht ein
+2026-03-22 18:48:34,724 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:48:34,825 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:48:35,857 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-22 18:48:36,806 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 18:48:36,806 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 18:48:36,816 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 18:48:37,658 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 18:48:37,658 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 18:48:37,707 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 18:48:37,841 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 18:48:39,180 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 18:48:40,572 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 18:48:41,926 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 18:48:41,926 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 18:48:41,938 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 18:48:41,939 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 18:48:41,940 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:48:45,364 - __main__ - INFO - Gewicht: 3.0 kg
+2026-03-22 18:48:45,364 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:48:45,364 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 18:48:47,044 - __main__ - INFO - Licht aus
+2026-03-22 18:48:47,044 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:48:47,156 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:48:47,611 - __main__ - INFO - go_back: Aktuelle Seite 3, scan_start=False
+2026-03-22 18:48:47,914 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-22 18:48:47,914 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-22 18:48:48,827 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 18:48:48,827 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 18:48:48,876 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 18:48:49,036 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 18:48:50,395 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 18:48:51,750 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 18:48:53,089 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 18:48:53,089 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 18:48:53,090 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:48:53,092 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 18:48:53,092 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 18:48:56,551 - __main__ - INFO - Gewicht: 3.0 kg
+2026-03-22 18:48:56,551 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:48:56,551 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 18:48:57,936 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-22 18:48:57,937 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-22 18:48:59,408 - __main__ - INFO - Wiederhole Bild 1
+2026-03-22 18:49:00,359 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 18:49:00,974 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 18:49:00,974 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 18:49:01,022 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 18:49:01,187 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 18:49:02,561 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 18:49:04,024 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 18:49:05,272 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 18:49:05,272 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 18:49:05,272 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:49:05,391 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 18:49:05,391 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 18:49:08,643 - __main__ - INFO - Gewicht: 3.0 kg
+2026-03-22 18:49:08,643 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:49:08,643 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 18:49:30,910 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-22 18:49:30,910 - __main__ - INFO - Zurück zur Foto-Auswahl: scan_start=True gesetzt
+2026-03-22 18:49:32,973 - __main__ - INFO - Wiederhole Bild 1
+2026-03-22 18:49:33,958 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 18:49:35,093 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 18:49:35,093 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 18:49:35,139 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 18:49:35,311 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 18:49:36,721 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 18:49:38,186 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 18:49:39,321 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 18:49:39,321 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 18:49:39,321 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:49:39,649 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 18:49:39,649 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 18:49:42,860 - __main__ - INFO - Gewicht: 3.0 kg
+2026-03-22 18:49:42,860 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:49:42,860 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 18:53:37,770 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-22 18:53:39,611 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-22 18:53:39,612 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-22 18:53:39,612 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-22 18:53:39,612 - __main__ - INFO - Licht ein
+2026-03-22 18:53:39,613 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:53:39,720 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 18:53:40,237 - workers.Gewichts_Messung02 - INFO - Zelle 0: Zero-Offset = 0.00
+2026-03-22 18:53:40,237 - workers.Gewichts_Messung02 - INFO - Zelle 1: Zero-Offset = 0.00
+2026-03-22 18:53:40,238 - workers.Gewichts_Messung02 - INFO - Zelle 2: Zero-Offset = 0.00
+2026-03-22 18:53:40,238 - workers.Gewichts_Messung02 - INFO - Parameter gespeichert in weight_calibration.json
+2026-03-22 18:53:42,403 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-22 18:53:43,354 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 18:53:43,354 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 18:53:43,356 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 18:53:44,540 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 18:53:44,545 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 18:53:46,251 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 18:53:46,452 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 18:53:47,846 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 18:53:48,795 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 18:53:48,798 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 18:53:48,798 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:53:49,220 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 18:53:50,595 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 18:53:50,595 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 18:53:52,340 - __main__ - INFO - Gewicht: 2.999994 kg
+2026-03-22 18:53:52,340 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:53:52,341 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 18:53:53,940 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-22 18:53:55,782 - __main__ - INFO - Wiederhole Bild 1
+2026-03-22 18:53:56,740 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 18:54:04,090 - __main__ - INFO - Wiederhole Bild 2
+2026-03-22 18:54:04,090 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 18:54:04,902 - __main__ - INFO - Wiederhole Bild 3
+2026-03-22 18:54:04,902 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 18:54:05,988 - __main__ - INFO - Wiederhole Bild 4
+2026-03-22 18:54:12,876 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 18:54:12,876 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 18:54:12,927 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 18:54:13,084 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 18:54:14,457 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 18:54:15,851 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 18:54:17,117 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 18:54:17,118 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 18:54:17,118 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:54:17,222 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 18:54:17,222 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 18:54:20,688 - __main__ - INFO - Gewicht: 3.0 kg
+2026-03-22 18:54:20,690 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 18:54:20,690 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 19:23:08,142 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-22 19:23:09,969 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-22 19:23:09,970 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-22 19:23:09,970 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-22 19:23:09,970 - __main__ - INFO - Licht ein
+2026-03-22 19:23:09,971 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:23:10,079 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:23:10,586 - workers.Gewichts_Messung02 - INFO - Zelle 0: Zero-Offset = 0.00
+2026-03-22 19:23:10,587 - workers.Gewichts_Messung02 - INFO - Zelle 1: Zero-Offset = 0.00
+2026-03-22 19:23:10,587 - workers.Gewichts_Messung02 - INFO - Zelle 2: Zero-Offset = 0.00
+2026-03-22 19:23:10,587 - workers.Gewichts_Messung02 - INFO - Parameter gespeichert in weight_calibration.json
+2026-03-22 19:23:12,155 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-22 19:23:13,098 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 19:23:13,098 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 19:23:13,098 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 19:23:13,752 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 19:23:13,752 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 19:23:16,831 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 19:23:17,036 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 19:23:17,996 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 19:23:18,000 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 19:23:18,000 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 19:23:18,388 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 19:23:19,715 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 19:23:21,085 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 19:23:21,085 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 19:23:21,536 - __main__ - INFO - Gewicht: 2.999994 kg
+2026-03-22 19:23:21,537 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 19:23:21,537 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 19:23:24,602 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-22 19:23:26,045 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-03-22 19:23:27,055 - __main__ - INFO - Licht ein
+2026-03-22 19:23:27,055 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:23:27,167 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:23:28,198 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-22 19:23:29,152 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 19:23:29,152 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 19:23:29,152 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 19:23:30,389 - __main__ - INFO - go_back: Aktuelle Seite 1, scan_start=True
+2026-03-22 19:23:31,087 - __main__ - INFO - Licht ein
+2026-03-22 19:23:31,087 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:23:31,200 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:23:31,938 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-22 19:23:32,892 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 19:23:32,892 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 19:23:32,893 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 19:23:34,228 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 19:23:34,228 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 19:23:34,277 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 19:23:34,441 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 19:23:35,806 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 19:23:37,155 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 19:23:38,518 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 19:23:38,518 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 19:23:38,548 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 19:23:38,549 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 19:23:38,549 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 19:23:41,905 - __main__ - INFO - Gewicht: 3.0 kg
+2026-03-22 19:23:41,905 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 19:23:41,906 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 19:23:43,377 - __main__ - INFO - go_back: Aktuelle Seite 2, scan_start=False
+2026-03-22 19:23:46,512 - __main__ - INFO - Wiederhole Bild 1
+2026-03-22 19:23:47,468 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 19:23:48,451 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 19:23:48,460 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 19:23:48,509 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 19:23:48,676 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 19:23:50,184 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 19:23:51,692 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 19:23:52,780 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 19:23:52,780 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 19:23:52,780 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 19:23:53,155 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 19:23:53,155 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 19:23:56,209 - __main__ - INFO - Gewicht: 3.0 kg
+2026-03-22 19:23:56,209 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 19:23:56,210 - __main__ - INFO - Alle Tasks fertig
+2026-03-22 19:23:57,808 - __main__ - INFO - Licht aus
+2026-03-22 19:23:57,809 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:23:57,920 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:24:01,101 - __main__ - INFO - Licht ein
+2026-03-22 19:24:01,101 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:24:01,213 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-22 19:24:02,294 - __main__ - INFO - Starte Bildaufnahme von allen Kameras
+2026-03-22 19:24:03,248 - __main__ - INFO - Bild von Kamera 0 (logisch 0) aufgenommen
+2026-03-22 19:24:03,248 - __main__ - WARNING - Kamera-Index 1 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 19:24:03,249 - __main__ - WARNING - Kamera-Index 2 nicht verfügbar (nur 1 USB-Kameras)
+2026-03-22 19:24:03,859 - workers.Gewichts_Messung02 - INFO - Parametergeladen aus weight_calibration.json
+2026-03-22 19:24:03,861 - workers.distanz_meassure03 - INFO - Kalibrierungsdatei distanz_calibration.json geladen.
+2026-03-22 19:24:03,904 - workers.BarCode_v03 - INFO - YOLO-Modell geladen von models/YOLOV8s_Barcode_Detection.pt
+2026-03-22 19:24:04,044 - __main__ - INFO - Bild 0: Keine Barcodes erkannt
+2026-03-22 19:24:05,418 - __main__ - INFO - Bild 1: Keine Barcodes erkannt
+2026-03-22 19:24:06,789 - __main__ - INFO - Bild 2: Keine Barcodes erkannt
+2026-03-22 19:24:08,096 - workers.distanz_meassure03 - ERROR - Fehler während der Messung: No available devices
+2026-03-22 19:24:08,096 - __main__ - WARNING - Volumenmessung fehlgeschlagen: Keine Fehlermeldung
+2026-03-22 19:24:08,096 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 19:24:08,151 - __main__ - INFO - Bild 3: Keine Barcodes erkannt
+2026-03-22 19:24:08,151 - __main__ - INFO - Insgesamt 0 Barcodes in 4 Bildern erkannt
+2026-03-22 19:24:11,612 - __main__ - INFO - Gewicht: 3.0 kg
+2026-03-22 19:24:11,612 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
+2026-03-22 19:24:11,612 - __main__ - INFO - Alle Tasks fertig
