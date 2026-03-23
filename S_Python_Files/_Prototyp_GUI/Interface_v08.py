@@ -15,6 +15,7 @@ import serial # Für Beleuchtung
 import shutil  # Für Speicherplatzprüfung
 import logging  # Für Logging
 import platform # Für Betriebssystemerkennung
+import subprocess # Für Benutzerhandbuch pdf
 import numpy as np
 import depthai as dai
 from datetime import datetime 
@@ -2556,8 +2557,8 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
             if platform.system() == "Windows":
                 os.startfile(pdf_datei)
             else:
-                os.system(f'xdg-open "{pdf_datei}"')
-            logger.info(f"Benutzerhandbuch geöffnet: {pdf_datei}")
+                subprocess.run(["xdg-open", pdf_datei])            
+                # logger.info(f"Benutzerhandbuch geöffnet: {pdf_datei}")
         except Exception as e:
             logger.error(f"Fehler beim Öffnen der PDF: {e}")
             QMessageBox.critical(
