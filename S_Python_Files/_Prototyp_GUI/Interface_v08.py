@@ -203,6 +203,10 @@ class TranslationManager:
                 "storage_error": ("Speicherfehler", "Storage Error", "Errore di Memoria"),
                 "storage_error_title": ("Fehler", "Error", "Errore"),
                 "storage_error_message": ("Speicherprüfung fehlgeschlagen:", "Storage check failed:", "Verifica spazio fallita:"),
+
+                # Instruction Report Warning
+                "instructions_aborted_title": ("Benutzerhandbuch nicht gefunden", "User manual not found", "Manuale utente non trovato"),
+                "instructions_aborted_message": ("Das Benutzerhandbuch wurde nicht gefunden.\nErwarteter Pfad:", "User manual not found.\nExpected path:", "Manuale utente non trovato.\nPercorso previsto:"),
                 
                 # Datenverlust
                 "data_loss_confirm": ("Datenverlust bestätigen", "Confirm Data Loss", "Conferma Perdita Dati"),
@@ -2536,11 +2540,31 @@ CSV-Status: {os.path.getsize(csv_datei):,} Bytes
         self.loading_dialog.exec()
 
     def show_instructions(self):
-        """Zeigt die Anweisungen im Startseiten-Label an"""
-        pass
-
-
-
+        """Öffnet das Benutzerhandbuch im Standard-Browser / Standard-PDF-Viewer"""
+        pdf_datei = os.path.join(self.Explorer_Structure, "Benutzerhandbuch.pdf")
+        
+        if not os.path.exists(pdf_datei):
+            logger.warning(f"Benutzerhandbuch.pdf nicht gefunden unter: {pdf_datei}")
+            QMessageBox.warning(
+                self,
+                self.translator.get_text(self.language, "messagebox", "instructions_aborted_title"),
+                f"{self.translator.get_text(self.language, 'messagebox', 'instructions_aborted_message')}\n{pdf_datei}"
+            )
+            return
+        
+        try:
+            if platform.system() == "Windows":
+                os.startfile(pdf_datei)
+            else:
+                os.system(f'xdg-open "{pdf_datei}"')
+            logger.info(f"Benutzerhandbuch geöffnet: {pdf_datei}")
+        except Exception as e:
+            logger.error(f"Fehler beim Öffnen der PDF: {e}")
+            QMessageBox.critical(
+                self,
+                self.translator.get_text(self.language, "messagebox", "instructions_aborted_title"),
+                f"{str(e)}"
+            )
 
     def update_buttons(self):
         """Aktualisiert die Sichtbarkeit der Navigationsbuttons"""

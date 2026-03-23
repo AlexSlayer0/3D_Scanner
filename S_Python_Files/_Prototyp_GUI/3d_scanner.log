@@ -8974,3 +8974,63 @@ RuntimeError: No available devices
 2026-03-22 19:24:11,612 - __main__ - INFO - Gewicht: 3.0 kg
 2026-03-22 19:24:11,612 - __main__ - INFO - Barcodes vorhanden - aktualisiere GUI
 2026-03-22 19:24:11,612 - __main__ - INFO - Alle Tasks fertig
+2026-03-23 14:03:30,092 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-23 14:03:32,587 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-23 14:03:32,588 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-23 14:03:32,589 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-23 14:03:32,589 - __main__ - INFO - Licht ein
+2026-03-23 14:03:32,590 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:03:32,696 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:03:33,225 - workers.Gewichts_Messung02 - INFO - Zelle 0: Zero-Offset = 0.00
+2026-03-23 14:03:33,225 - workers.Gewichts_Messung02 - INFO - Zelle 1: Zero-Offset = 0.00
+2026-03-23 14:03:33,226 - workers.Gewichts_Messung02 - INFO - Zelle 2: Zero-Offset = 0.00
+2026-03-23 14:03:33,227 - workers.Gewichts_Messung02 - INFO - Parameter gespeichert in weight_calibration.json
+2026-03-23 14:03:35,029 - __main__ - WARNING - Benutzerhandbuch.pdf nicht gefunden unter: GUI_Anzeige\Benutzerhandbuch.pdf
+2026-03-23 14:04:04,724 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-23 14:04:06,513 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-23 14:04:06,514 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-23 14:04:06,515 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-23 14:04:06,515 - __main__ - INFO - Licht ein
+2026-03-23 14:04:06,516 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:04:06,623 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:04:07,130 - workers.Gewichts_Messung02 - INFO - Zelle 0: Zero-Offset = 0.00
+2026-03-23 14:04:07,131 - workers.Gewichts_Messung02 - INFO - Zelle 1: Zero-Offset = 0.00
+2026-03-23 14:04:07,131 - workers.Gewichts_Messung02 - INFO - Zelle 2: Zero-Offset = 0.00
+2026-03-23 14:04:07,132 - workers.Gewichts_Messung02 - INFO - Parameter gespeichert in weight_calibration.json
+2026-03-23 14:04:08,744 - __main__ - INFO - Benutzerhandbuch geöffnet: GUI_Anzeige\Benutzerhandbuch.pdf
+2026-03-23 14:04:18,838 - __main__ - INFO - Programm wird beendet
+2026-03-23 14:04:18,838 - __main__ - INFO - Licht aus
+2026-03-23 14:04:18,840 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:04:18,944 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:11:18,332 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-23 14:11:20,345 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-23 14:11:20,346 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-23 14:11:20,347 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-23 14:11:20,347 - __main__ - INFO - Licht ein
+2026-03-23 14:11:20,348 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:11:20,455 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:11:20,962 - workers.Gewichts_Messung02 - INFO - Zelle 0: Zero-Offset = 0.00
+2026-03-23 14:11:20,963 - workers.Gewichts_Messung02 - INFO - Zelle 1: Zero-Offset = 0.00
+2026-03-23 14:11:20,963 - workers.Gewichts_Messung02 - INFO - Zelle 2: Zero-Offset = 0.00
+2026-03-23 14:11:20,964 - workers.Gewichts_Messung02 - INFO - Parameter gespeichert in weight_calibration.json
+2026-03-23 14:11:24,121 - __main__ - INFO - Benutzerhandbuch geöffnet: GUI_Anzeige\Benutzerhandbuch.pdf
+2026-03-23 14:11:30,742 - __main__ - INFO - Programm wird beendet
+2026-03-23 14:11:30,742 - __main__ - INFO - Licht aus
+2026-03-23 14:11:30,744 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:11:30,858 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:18:33,899 - __main__ - INFO - 3D-Scanner wird gestartet...
+2026-03-23 14:18:35,706 - __main__ - WARNING - Keine OAK-D2 Kamera gefunden
+2026-03-23 14:18:35,707 - __main__ - INFO - Verfügbare USB-Kameras (Indizes): [0]
+2026-03-23 14:18:35,708 - __main__ - INFO - Verfügbare Kameras gefunden: [0], OAK-D2: False
+2026-03-23 14:18:35,708 - __main__ - INFO - Licht ein
+2026-03-23 14:18:35,708 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:18:35,815 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:18:36,335 - workers.Gewichts_Messung02 - INFO - Zelle 0: Zero-Offset = 0.00
+2026-03-23 14:18:36,335 - workers.Gewichts_Messung02 - INFO - Zelle 1: Zero-Offset = 0.00
+2026-03-23 14:18:36,336 - workers.Gewichts_Messung02 - INFO - Zelle 2: Zero-Offset = 0.00
+2026-03-23 14:18:36,337 - workers.Gewichts_Messung02 - INFO - Parameter gespeichert in weight_calibration.json
+2026-03-23 14:18:40,757 - __main__ - INFO - Benutzerhandbuch geöffnet: GUI_Anzeige\Benutzerhandbuch.pdf
+2026-03-23 14:18:48,600 - __main__ - INFO - Programm wird beendet
+2026-03-23 14:18:48,601 - __main__ - INFO - Licht aus
+2026-03-23 14:18:48,601 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
+2026-03-23 14:18:48,705 - __main__ - WARNING - Fehler bei serieller Kommunikation: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'Das System kann den angegebenen Pfad nicht finden.', None, 3)
