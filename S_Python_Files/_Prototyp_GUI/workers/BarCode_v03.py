@@ -48,8 +48,8 @@ class BarcodeDetector:
                         coords = box.xyxy[0].tolist()  # oder box.xyxy.cpu().numpy()[0]
                         x1, y1, x2, y2 = map(int, coords)
 
-                        # 2. Padding berechnen 30%
-                        pad_factor = 0.3
+                        # 2. Padding berechnen 20%
+                        pad_factor = 0.2
                         box_w = x2 - x1
                         box_h = y2 - y1
                         pad_x = int(box_w * pad_factor)
