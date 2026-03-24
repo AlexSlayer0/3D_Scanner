@@ -650,7 +650,7 @@ class ParallelWorker(QThread):
     def _run_volume_task(self):
         """Führt Volumenmessung mit OAK-D2 durch"""
         try:
-            import workers.distanz_meassure03 as volume_module
+            import workers.distanz_measure03 as volume_module
             volume_result = volume_module.main()
             
             # Formatieren für Anzeige
