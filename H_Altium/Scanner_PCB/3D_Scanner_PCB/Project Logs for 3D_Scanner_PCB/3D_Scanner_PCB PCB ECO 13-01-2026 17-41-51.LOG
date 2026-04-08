@@ -1,0 +1,10 @@
+Removed Pin From Net: NetName=NetR_GPIO_2 Pin=Taster-1
+Change Component Comment : Designator=R_PU Old Comment=10K New Comment=100K
+Change component parameters: Designator = "R_PU" ("R_PU"); Footprint = "R_0207/RM4"; UniqueID = "\XSELBEBU" ("\XSELBEBU")
+Change component parameters (AddParameter): Name = "LatestRevisionDate"; Value = "07-Sep-2019"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Published"; Value = "21-Feb-2011"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Usage"; Value = "only permitted for non-commercial purposes at HTL I Innsbruck"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100K"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetR_GPIO_2 Pin=R_PU-2
+Added Pin To Net: NetName=GND Pin=Taster-1
+Added Pin To Net: NetName=NetR_GPIO_2 Pin=Taster-2

@@ -1,0 +1,10 @@
+Added Component: Designator=Hub(691213510002)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691213510002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND_MOS_12V Pin=Hub-1
+Added Pin To Net: NetName=+12V Pin=Hub-2
+Added Member To Class: ClassName=PCB_Schematic Member=Component Hub 691213510002

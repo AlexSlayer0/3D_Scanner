@@ -1,0 +1,18 @@
+Added Pin To Net: NetName=D1_1 Pin=ADC1-6
+Added Net: Name=D1_1
+Added Pin To Net: NetName=D1_2 Pin=RPI1-29
+Added Net: Name=D1_2
+Added Pin To Net: NetName=D2_1 Pin=ADC2-6
+Added Net: Name=D2_1
+Added Pin To Net: NetName=D2_2 Pin=RPI1-31
+Added Net: Name=D2_2
+Added Pin To Net: NetName=D3_1 Pin=ADC3-6
+Added Net: Name=D3_1
+Added Pin To Net: NetName=D3_2 Pin=RPI1-33
+Added Net: Name=D3_2
+Added Rule: Name=Schematic Supply Nets_5
+Added Rule: Name=Schematic Supply Nets_6
+Added Rule: Name=Schematic Supply Nets_8
+Added Rule: Name=Schematic Supply Nets_9
+Added Rule: Name=Schematic Supply Nets_19
+Added Rule: Name=Schematic Supply Nets_20

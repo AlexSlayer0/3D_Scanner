@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=+5V Pin=Versorgung_Test-3
+Removed Pin From Net: NetName=+5V Pin=Versorgung_Test-4
+Removed Pin From Net: NetName=+12V Pin=Versorgung_Test-5
+Removed Pin From Net: NetName=+12V Pin=Versorgung_Test-6
+Added Pin To Net: NetName=+12V Pin=Versorgung_Test-3
+Added Pin To Net: NetName=+12V Pin=Versorgung_Test-4
+Added Pin To Net: NetName=+5V Pin=Versorgung_Test-5
+Added Pin To Net: NetName=+5V Pin=Versorgung_Test-6

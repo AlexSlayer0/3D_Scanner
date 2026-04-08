@@ -1,0 +1,60 @@
+Removed Pin From Net: NetName=GND Pin=Waage-1
+Removed Pin From Net: NetName=+5V Pin=Waage-7
+Removed Member From Class: ClassName=PCB_Schematic Member=+5V
+Removed Member From Class: ClassName=PCB_Schematic Member=+12V
+Removed Member From Class: ClassName=PCB_Schematic Member=C1
+Removed Member From Class: ClassName=PCB_Schematic Member=D1
+Removed Member From Class: ClassName=PCB_Schematic Member=GND
+Removed Member From Class: ClassName=PCB_Schematic Member=J?
+Removed Member From Class: ClassName=PCB_Schematic Member=Waage
+Change Component Designator: OldDesignator=Pi1 NewDesignator=RPI1
+Added Component: Designator=DRDY(691252710003)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691252710003/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691252710003"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691252710003/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=USB_RPI(TE_6364372-2)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/6364372-2/TE+Connectivity+AMP+Connectors/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Digi-Key_Part_Number"; Value = "A122647-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "EU_RoHS_Compliance"; Value = "Compliant"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "TE Connectivity"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "6364372-2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Purchase-URL"; Value = "https://pricing.snapeda.com/search/part/6364372-2/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/6364372-2/TE+Connectivity+AMP+Connectors/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=V_5V(691242710007)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691242710007/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691242710007"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691242710007/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=V_GND(691242710007)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691242710007/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691242710007"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691242710007/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Versorgung(HDR1X6)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "17-Jul-2002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "Re-released for DXP Platform."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=+5V Pin=USB_RPI-1
+Added Pin To Net: NetName=GND Pin=USB_RPI-4
+Added Pin To Net: NetName=GND Pin=USB_RPI-SH1
+Added Pin To Net: NetName=GND Pin=USB_RPI-SH2
+Added Pin To Net: NetName=GND Pin=Versorgung-1
+Added Pin To Net: NetName=GND Pin=Versorgung-2
+Added Pin To Net: NetName=+5V Pin=Versorgung-3
+Added Pin To Net: NetName=+5V Pin=Versorgung-4
+Added Pin To Net: NetName=+12V Pin=Versorgung-5
+Added Pin To Net: NetName=+12V Pin=Versorgung-6
+Added Member To Class: ClassName=PCB_Schematic Member=Component DRDY 691252710003
+Added Member To Class: ClassName=PCB_Schematic Member=Component USB_RPI 6364372-2
+Added Member To Class: ClassName=PCB_Schematic Member=Component V_5V 691242710007
+Added Member To Class: ClassName=PCB_Schematic Member=Component V_GND 691242710007
+Added Member To Class: ClassName=PCB_Schematic Member=Component Versorgung 691252710003

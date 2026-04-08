@@ -1,0 +1,1166 @@
+{
+  "roi_id": "ProductBarcode007.jpg_box_0",
+  "success": true,
+  "successful_attempt": {
+    "preprocess": "Original",
+    "scale": 1.0,
+    "angle": -15,
+    "found": true,
+    "value": "8852008300000",
+    "type": "EAN13"
+  },
+  "all_attempts": [
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.0,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 1.5,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Original",
+      "scale": 2.0,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.0,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 1.5,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "CLAHE",
+      "scale": 2.0,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.0,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 1.5,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": -15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": -5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": 0,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": 5,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": 15,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Unsharp",
+      "scale": 2.0,
+      "angle": 180,
+      "found": true,
+      "value": "8852008300000",
+      "type": "EAN13"
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": -15,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": -5,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": 0,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": 5,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": 15,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.0,
+      "angle": 180,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": -15,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": -5,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": 0,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": 5,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": 15,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 1.5,
+      "angle": 180,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": -135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": -90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": -45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": -15,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": -5,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": 0,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": 5,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": 15,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": 45,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": 90,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": 135,
+      "found": false,
+      "value": null,
+      "type": null
+    },
+    {
+      "preprocess": "Invertiert",
+      "scale": 2.0,
+      "angle": 180,
+      "found": false,
+      "value": null,
+      "type": null
+    }
+  ]
+}

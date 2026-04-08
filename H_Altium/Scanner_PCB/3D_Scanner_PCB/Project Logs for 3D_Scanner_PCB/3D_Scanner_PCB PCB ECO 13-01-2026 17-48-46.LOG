@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=+5V Pin=LED_Ringe-1
+Removed Pin From Net: NetName=PWM1 Pin=LED_Ringe-2
+Change Component Designator: OldDesignator=R_RGB1 NewDesignator=R_RGB0
+Change Component Designator: OldDesignator=R_RGB2 NewDesignator=R_RGB1
+Added Pin To Net: NetName=PWM1 Pin=LED_Ringe-1
+Added Pin To Net: NetName=+5V Pin=LED_Ringe-2

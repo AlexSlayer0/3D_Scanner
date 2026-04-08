@@ -1,0 +1,24 @@
+Change Component Designator: OldDesignator=P? NewDesignator=Pi1
+Change Component Designator: OldDesignator=Q? NewDesignator=T1
+Change Component Designator: OldDesignator=Q? NewDesignator=T2
+Added Component: Designator=Taster_Tür(691213510002)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "WÃ¼rth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691213510002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Waage(691242710007)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691242710007/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "WÃ¼rth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691242710007"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691242710007/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=Waage-1
+Added Pin To Net: NetName=+3V3 Pin=Waage-7
+Added Net: Name=+3V3
+Added Member To Class: ClassName=PCB_Schematic Member=Component T1 IRLZ44N
+Added Member To Class: ClassName=PCB_Schematic Member=Component Taster_Tür 691213510002
+Added Member To Class: ClassName=PCB_Schematic Member=Component Waage 691242710007
+Added Rule: Name=Schematic Supply Nets_3

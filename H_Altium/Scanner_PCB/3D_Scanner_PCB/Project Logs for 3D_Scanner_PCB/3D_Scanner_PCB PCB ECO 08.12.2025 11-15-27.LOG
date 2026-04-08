@@ -1,0 +1,16 @@
+Removed Pin From Net: NetName=GND_MOS_5V Pin=Bridge1-1
+Removed Pin From Net: NetName=GND Pin=Bridge1-2
+Removed Pin From Net: NetName=GND_MOS_12V Pin=Bridge2-1
+Removed Pin From Net: NetName=GND Pin=Bridge2-2
+Removed Pin From Net: NetName=GND Pin=R_PD1-2
+Removed Pin From Net: NetName=GND Pin=R_PD2-1
+Removed Pin From Net: NetName=GND_MOS_5V Pin=T1-2
+Removed Pin From Net: NetName=GND_MOS_12V Pin=T2-2
+Removed Member From Class: ClassName=PCB_Schematic Member=Bridge1
+Removed Member From Class: ClassName=PCB_Schematic Member=Bridge2
+Removed Member From Class: ClassName=PCB_Schematic Member=R_GPIO2
+Removed Member From Class: ClassName=PCB_Schematic Member=R_GPIO3
+Removed Member From Class: ClassName=PCB_Schematic Member=R_PD1
+Removed Member From Class: ClassName=PCB_Schematic Member=R_PD2
+Removed Member From Class: ClassName=PCB_Schematic Member=T1
+Removed Member From Class: ClassName=PCB_Schematic Member=T2

@@ -1,0 +1,153 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2">
+  <diagram name="Flowchart" id="0">
+    <mxGraphModel dx="1303" dy="903" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="-ywjeX6_Iyvm8jNl8yWW-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="start" target="calib" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="start" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Start&lt;/font&gt;&lt;div style=&quot;background-color: rgb(31, 31, 31); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px; white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#FFFFFF;strokeColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="410" y="20" width="105" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-82" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="calib" target="EuoiG0BfbO5Z13cokWDT-81">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="calib" value="Kalibrierung laden und&amp;nbsp;&lt;div&gt;ADCs initialisieren&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="382.5" y="100" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-84" value="NEIN" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="check" target="depth">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="260" />
+              <mxPoint x="360" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-85" value="JA" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="check" target="pipeline">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="603" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="check" value="Kalibrierung erforderlich?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffcc99;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="383.75" y="200" width="157.5" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-104" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="pipeline" target="EuoiG0BfbO5Z13cokWDT-103">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pipeline" value="Wägezelle einzeln auswählen&amp;nbsp;&lt;div&gt;und kalibrieren&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="518" y="280" width="172" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="depth" value="Messung Starten&lt;div&gt;i = 0&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="389.03" y="430" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-92" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="roi" target="EuoiG0BfbO5Z13cokWDT-91">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="roi" value="Wägezelle einzeln auslesen&lt;div&gt;und in Gramm umwandeln&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="379.03" y="580" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="end" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Ende&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#000000;fontColor=#FFFFFF;" parent="1" vertex="1">
+          <mxGeometry x="582.02" y="680" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-107" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="-ywjeX6_Iyvm8jNl8yWW-2" target="end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-ywjeX6_Iyvm8jNl8yWW-2" value="Fehler: Keine Kalibrierung" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="710" y="610" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-114" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-81" target="check">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-81" value="Tara durchführen&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="382.5" y="160" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-88" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="depth" target="EuoiG0BfbO5Z13cokWDT-87">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="463" y="400" as="sourcePoint" />
+            <mxPoint x="570" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-94" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-87" target="roi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-87" target="EuoiG0BfbO5Z13cokWDT-98">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="654.03" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-97" value="NEIN" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="EuoiG0BfbO5Z13cokWDT-95">
+          <mxGeometry x="-0.2191" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-87" value="i &amp;lt;= Anzahl der&amp;nbsp;&lt;div&gt;Wägezellen (3)&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffcc99;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="384.03" y="490" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-91" target="EuoiG0BfbO5Z13cokWDT-87">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="324" y="645" />
+              <mxPoint x="324" y="510" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-96" value="i = i+1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="EuoiG0BfbO5Z13cokWDT-93">
+          <mxGeometry x="-0.1909" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-91" value="Gewicht aussummieren" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="379.03" y="630" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-98" target="end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-98" value="Ergebis Ausgabe" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="574.03" y="610" width="115.97" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-112" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-100" target="EuoiG0BfbO5Z13cokWDT-109">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-100" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Start GUI&lt;/font&gt;&lt;div style=&quot;background-color: rgb(31, 31, 31); font-family: Consolas, &amp;quot;Courier New&amp;quot;, monospace; font-size: 14px; line-height: 19px; white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="220" y="20" width="105" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-105" value="NEIN" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-103" target="depth">
+          <mxGeometry x="0.1385" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="464" y="400" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-106" value="JA" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-103" target="-ywjeX6_Iyvm8jNl8yWW-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-103" value="Kalibrierung&amp;nbsp;&lt;div&gt;Fehlgeschlagen&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffcc99;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="524" y="340" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-108" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-109" target="EuoiG0BfbO5Z13cokWDT-111">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-109" value="Kalibrierung laden und&amp;nbsp;&lt;div&gt;ADCs initialisieren&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="192.5" y="100" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-110" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="EuoiG0BfbO5Z13cokWDT-111" target="depth">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="273" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-113" value="Interface aufruf&lt;div&gt;mit get_weight()&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="EuoiG0BfbO5Z13cokWDT-110">
+          <mxGeometry x="-0.1926" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EuoiG0BfbO5Z13cokWDT-111" value="Tara durchführen&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="192.5" y="160" width="160" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

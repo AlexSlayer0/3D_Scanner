@@ -1,0 +1,8 @@
+box_instance_segmentation.RVC2.yaml:
+  hash: 122490ecdedfd958c5db8df153b6d841
+  model_id: aim_RFMuEYAXjAXUUoonTvCpZz
+  model_version_id: aimv_AittEjzaEjYox1hxqMK4Tc
+  model_instance_id: aimi_RqRGKFsfLPKCGuG11xznTe
+  downloaded_files:
+    - yolov8n-carton_seg_balanced_synthetic_v2_background_512x320.rvc2.tar.xz
+  folder_name: d4411bc8b1fae7ad130179a6f238908c66b7633c

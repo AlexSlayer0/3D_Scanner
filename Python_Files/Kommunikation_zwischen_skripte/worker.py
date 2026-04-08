@@ -1,1 +1,0 @@
-print("HBarcode Decodiert: 0909098084087589702897 TYPE: CODE128")

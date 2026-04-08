@@ -1,0 +1,8 @@
+Removed Pin From Net: NetName=GND Pin=Versorgung-1
+Removed Pin From Net: NetName=+12V Pin=Versorgung-2
+Removed Pin From Net: NetName=+5V Pin=Versorgung-3
+Removed Member From Class: ClassName=PCB_Schematic Member=Versorgung
+Change Component Designator: OldDesignator=J? NewDesignator=Versrorgung
+Added Pin To Net: NetName=GND Pin=Versrorgung-1
+Added Pin To Net: NetName=+12V Pin=Versrorgung-2
+Added Pin To Net: NetName=+5V Pin=Versrorgung-3

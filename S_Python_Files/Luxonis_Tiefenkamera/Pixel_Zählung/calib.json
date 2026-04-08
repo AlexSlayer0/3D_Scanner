@@ -1,0 +1,9 @@
+{
+    "z_median_liste": [763.0, 672.0, 580.0],
+    "mm_per_pixel_liste": [1.45, 1.606, 1.764],
+    "focal_length_pix": [526.2, 418.32, 309.2],
+    "COLOR_TOLERANCE": 25,
+    "MIN_AREA": 25,
+    "GROUND_TOLERANCE_MM": 10,
+    "active_z_median_index": 1
+}

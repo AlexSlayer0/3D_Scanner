@@ -1,0 +1,5 @@
+Change Component Designator: OldDesignator=J? NewDesignator=USB_RPI
+Added Pin To Net: NetName=+5V Pin=USB_RPI-1
+Added Pin To Net: NetName=GND Pin=USB_RPI-4
+Added Pin To Net: NetName=GND Pin=USB_RPI-SH1
+Added Pin To Net: NetName=GND Pin=USB_RPI-SH2

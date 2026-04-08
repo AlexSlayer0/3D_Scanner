@@ -1,0 +1,130 @@
+Removed Pin From Net: NetName=PWM0 Pin=R_RGB1-1
+Removed Pin From Net: NetName=PWM1 Pin=R_RGB2-2
+Removed Pin From Net: NetName=GND Pin=Taster_Door-1
+Removed Member From Class: ClassName=PCB_Schematic Member=R_GPIO1
+Removed Member From Class: ClassName=PCB_Schematic Member=R_PU1
+Removed Member From Class: ClassName=PCB_Schematic Member=Taster_Door
+Added Component: Designator=DRD3_1(691236610001)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691236610001"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=DRDY1_1(691236610001)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691236610001"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=DRDY1_2(691236610001)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691236610001"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=DRDY2_1(691236610001)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691236610001"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=DRDY2_2(691236610001)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691236610001"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=DRDY3_2(691236610001)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691236610001"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691236610001/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=ESP8266(61300811821)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/61300811821/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "61300811821"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/61300811821/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=J?(61300811821)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/61300811821/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "61300811821"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/61300811821/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Schirm1(691213510002)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691213510002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Schirm2(691213510002)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691213510002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=Schirm3(691213510002)
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Würth Elektronik"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "691213510002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/691213510002/W%25C3%25BCrth+Elektronik+Midcom/view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Add Pin To Net: Unknown Pin: Pin J?-14
+Add Pin To Net: Unknown Pin: Pin J?-15
+Added Pin To Net: NetName=PWM1 Pin=R_RGB1-2
+Added Pin To Net: NetName=PWM0 Pin=R_RGB2-2
+Added Pin To Net: NetName=GND Pin=Schirm3-1
+Added Pin To Net: NetName=GND Pin=Schirm3-2
+Added Pin To Net: NetName=NetADC1_6 Pin=ADC1-6
+Added Pin To Net: NetName=NetADC1_6 Pin=DRDY1_1-1
+Added Net: Name=NetADC1_6
+Added Pin To Net: NetName=NetADC2_6 Pin=ADC2-6
+Added Pin To Net: NetName=NetADC2_6 Pin=DRDY2_1-1
+Added Net: Name=NetADC2_6
+Added Pin To Net: NetName=NetADC3_6 Pin=ADC3-6
+Added Pin To Net: NetName=NetADC3_6 Pin=DRD3_1-1
+Added Net: Name=NetADC3_6
+Added Pin To Net: NetName=NetDRDY1_2_1 Pin=DRDY1_2-1
+Added Pin To Net: NetName=NetDRDY1_2_1 Pin=RPI1-29
+Added Net: Name=NetDRDY1_2_1
+Added Pin To Net: NetName=NetDRDY2_2_1 Pin=DRDY2_2-1
+Added Pin To Net: NetName=NetDRDY2_2_1 Pin=RPI1-31
+Added Net: Name=NetDRDY2_2_1
+Added Pin To Net: NetName=NetDRDY3_2_1 Pin=DRDY3_2-1
+Added Pin To Net: NetName=NetDRDY3_2_1 Pin=RPI1-33
+Added Net: Name=NetDRDY3_2_1
+Added Pin To Net: NetName=NetESP8266_6 Pin=ESP8266-6
+Added Pin To Net: NetName=NetESP8266_6 Pin=R_RGB2-1
+Added Net: Name=NetESP8266_6
+Added Pin To Net: NetName=NetESP8266_7 Pin=ESP8266-7
+Added Pin To Net: NetName=NetESP8266_7 Pin=R_RGB1-1
+Added Net: Name=NetESP8266_7
+Added Pin To Net: NetName=RX Pin=RPI1-10
+Added Net: Name=RX
+Added Pin To Net: NetName=TX Pin=RPI1-8
+Added Net: Name=TX
+Added Member To Class: ClassName=PCB_Schematic Member=Component DRD3_1 691236610001
+Added Member To Class: ClassName=PCB_Schematic Member=Component DRDY1_1 691236610001
+Added Member To Class: ClassName=PCB_Schematic Member=Component DRDY1_2 691236610001
+Added Member To Class: ClassName=PCB_Schematic Member=Component DRDY2_1 691236610001
+Added Member To Class: ClassName=PCB_Schematic Member=Component DRDY2_2 691236610001
+Added Member To Class: ClassName=PCB_Schematic Member=Component DRDY3_2 691236610001
+Added Member To Class: ClassName=PCB_Schematic Member=Component ESP8266 6130XX11821_61300811821
+Added Member To Class: ClassName=PCB_Schematic Member=Component J? 6130XX11821_61300811821
+Added Member To Class: ClassName=PCB_Schematic Member=Component Schirm1 691213510002
+Added Member To Class: ClassName=PCB_Schematic Member=Component Schirm2 691213510002
+Added Member To Class: ClassName=PCB_Schematic Member=Component Schirm3 691213510002
+Added Rule: Name=Schematic Supply Nets_5
+Added Rule: Name=Schematic Supply Nets_8

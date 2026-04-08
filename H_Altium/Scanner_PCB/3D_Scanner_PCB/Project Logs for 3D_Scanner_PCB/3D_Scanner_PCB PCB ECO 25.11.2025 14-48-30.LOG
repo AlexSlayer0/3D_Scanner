@@ -1,0 +1,2 @@
+Change Component Designator: OldDesignator=Versrorgung NewDesignator=Versorgung
+Added Member To Class: ClassName=PCB_Schematic Member=Component USB_RPI 6364372-2
